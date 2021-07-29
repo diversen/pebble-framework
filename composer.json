@@ -13,10 +13,11 @@
             "role": "Developer"
         }
     ],
+
     "autoload": {
-        "psr-4": {
-            "Pebble\\": "Pebble/"
-        }
+        "classmap": [
+            "Pebble/"
+        ]
     },
     "require": {
         "php": ">=7.2",
