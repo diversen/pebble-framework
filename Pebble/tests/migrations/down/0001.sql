@@ -1,1 +1,3 @@
 DROP TABLE IF EXISTS `acl`;
+
+DROP TABLE IF EXISTS `auth`;

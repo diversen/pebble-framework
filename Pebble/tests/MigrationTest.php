@@ -17,5 +17,23 @@ if (file_exists($config_dir)) {
 final class MigrationTest extends TestCase
 {
 
+    private function connect()
+    {
+        $db_config = Config::getSection('DB');
+        DBInstance::connect($db_config['url'], $db_config['username'], $db_config['password']);
+    }
+
+
+    public function test_up() {
+
+        
+        $this->connect();
+        $m = new Migration(__DIR__ . '/migrations', __DIR__ . '/.migration');
+        $m->up(0002);
+
+        $m->down();
+
+
+    }
 
 }
