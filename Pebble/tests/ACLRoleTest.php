@@ -7,6 +7,12 @@ use Pebble\DBInstance;
 use Pebble\Exception\ForbiddenException;
 use PHPUnit\Framework\TestCase;
 
+$config_dir = __DIR__ . '/../../config';
+Config::readConfig($config_dir);
+
+$config_dir = __DIR__ . '/../../config-locale';
+Config::readConfig($config_dir);
+
 final class ACLRoleTest extends TestCase
 {
 

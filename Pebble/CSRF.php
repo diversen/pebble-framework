@@ -2,9 +2,6 @@
 
 namespace Pebble;
 
-use Exception;
-use Diversen\Lang;
-
 class CSRF
 {
     /**

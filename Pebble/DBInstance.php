@@ -7,6 +7,9 @@ use Exception;
 
 class DBInstance {
 
+    /**
+     * var \Pebble\DB
+     */
     private static $DB = null;
 
     /**
@@ -26,7 +29,7 @@ class DBInstance {
     /**
      * Get an instance of \Pebble\DB
      * `DBInstance::get();` 
-     * @return \Pebble\DB 
+     * @return \Pebble\DB $db
      */
     public static function get()
     {

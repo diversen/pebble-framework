@@ -2,8 +2,6 @@
 
 namespace Pebble;
 
-use Exception;
-
 use PDO;
 
 /**
