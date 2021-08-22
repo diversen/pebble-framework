@@ -4,9 +4,6 @@ use PHPUnit\Framework\TestCase;
 use Pebble\Config;
 use Pebble\DBInstance;
 
-$config_dir = dirname(__FILE__) . '/../../config';
-Config::readConfig($config_dir);
-
 final class DBInstanceTest extends TestCase
 {
 

@@ -2,6 +2,6 @@
 
 return [
 	'url' => 'mysql:host=127.0.0.1;dbname=database',
-	'username' => 'user',
+	'username' => 'root',
 	'password' => 'password',
 ];
