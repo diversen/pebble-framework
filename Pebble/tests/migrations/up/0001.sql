@@ -1,4 +1,6 @@
-CREATE TABLE `acl` (
+DROP TABLE IF EXISTS `table_1`;
+
+CREATE TABLE `table_1` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `entity` varchar(100) NOT NULL DEFAULT '',
   `right` varchar(64) NOT NULL DEFAULT '',
@@ -7,7 +9,9 @@ CREATE TABLE `acl` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `auth` (
+DROP TABLE IF EXISTS `table_2`;
+
+CREATE TABLE `table_2` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `password_hash` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,

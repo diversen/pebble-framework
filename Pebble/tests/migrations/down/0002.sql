@@ -1,3 +1,3 @@
-DROP TABLE IF EXISTS `auth_cookie`;
+DROP TABLE IF EXISTS `table_3`;
 
-DROP TABLE IF EXISTS `cache_system`;
+DROP TABLE IF EXISTS `table_4`;
