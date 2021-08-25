@@ -120,7 +120,7 @@ final class ACLTest extends TestCase
         $this->assertEquals(true, $res);
 
         $res = $acl->hasAccessRightsOrThrow($rights);
-        $this->assertEquals(true, $res);
+        $this->assertEquals(null, $res);
 
         $res = $acl->removeAccessRights(['auth_id' => $row['id']]);
         $this->assertEquals(true, $res);
@@ -153,7 +153,7 @@ final class ACLTest extends TestCase
         ];
 
         $res = $acl->hasAccessRightsOrThrow($rights);
-        $this->assertEquals(true, $res);
+        $this->assertEquals(null, $res);
 
     }
 
