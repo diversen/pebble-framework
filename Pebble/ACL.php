@@ -126,6 +126,7 @@ class ACL
     /**
      * If a user has the right 'owner', then if we test for 'owner,admin', using e.g. hasAccessRightsOrThrow,
      * then he will be allowed. He just needs one 'right' in a list of rights.
+     * Checks array consisting of ['entity', 'entity_id', 'right', 'auth_id']
      */
     protected function hasAccessRights(array $ary)
     {
@@ -146,15 +147,17 @@ class ACL
     /**
      * If a user has the right 'owner', then if we test for 'owner,admin', using e.g. hasAccessRightsOrThrow,
      * then he will be allowed. He just needs one 'right' in a list of rights.
-     * 
+     * Checks array consisting of ['entity', 'entity_id', 'right', 'auth_id']
      */
-    public function hasAccessRightsOrThrow(array $ary)
+    public function hasAccessRightsOrThrow(array $ary, string $error_message = null)
     {
 
         $has_access_rights = $this->hasAccessRights($ary);
         if (!$has_access_rights) {
-            throw new ForbiddenException('You can not access this page');
+            if (!$error_message) {
+                $error_message = 'You can not access this page';
+            }
+            throw new ForbiddenException($error_message);
         }
-        return true;
     }
 }
