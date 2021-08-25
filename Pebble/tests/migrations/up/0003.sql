@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS `table_2`;
+DROP TABLE IF EXISTS `table_3`;
 
-CREATE TABLE `table_2` (
+CREATE TABLE `table_3` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `cookie_id` varchar(100) NOT NULL,
   `auth_id` int(10) NOT NULL,

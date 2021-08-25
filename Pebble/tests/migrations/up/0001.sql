@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS `table_1`;
+DROP TABLE IF EXISTS `table_1_a`;
 
-CREATE TABLE `table_1` (
+CREATE TABLE `table_1_a` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `entity` varchar(100) NOT NULL DEFAULT '',
   `right` varchar(64) NOT NULL DEFAULT '',
@@ -9,9 +9,9 @@ CREATE TABLE `table_1` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS `table_2`;
+DROP TABLE IF EXISTS `table_1_b`;
 
-CREATE TABLE `table_2` (
+CREATE TABLE `table_1_b` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `password_hash` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,

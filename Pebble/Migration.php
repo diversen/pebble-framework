@@ -36,7 +36,7 @@ class Migration {
         }
     }
 
-    public function setCurrentVersion($version) {
+    public function setCurrentVersion($version = null) {
         file_put_contents($this->migrationFile, $version);
         if (!$version) {
             unlink($this->migrationFile);
@@ -61,7 +61,7 @@ class Migration {
         return (int)$info['filename'];
     }
 
-    public function getUpFilesToExecute(int $target_version) {
+    public function getUpFilesToExecute(int $target_version = null) {
         $up_dir = $this->migrationDir . '/' . 'up';
         $sql_files = File::dirToArray($up_dir);
         natsort($sql_files);
@@ -71,7 +71,7 @@ class Migration {
         if (!$target_version) {
             
             foreach($sql_files as $file) {
-                if ($this->getVersionFromFile($file) < $current_version) {
+                if ($this->getVersionFromFile($file) > $current_version) {
                     $files_to_exec[] = $file;
                 }
             } 
@@ -87,15 +87,59 @@ class Migration {
 
         return $files_to_exec;
     }
+
+    public function getDownFilesToExecute(int $target_version = null) {
+        $up_dir = $this->migrationDir . '/' . 'down';
+        $sql_files = File::dirToArray($up_dir);
+        natsort($sql_files);
+        $sql_files = array_reverse($sql_files);
+
+        $files_to_exec = [];
+        $current_version = $this->getCurrentVersion();
+        if (!$target_version) {
+            
+            foreach($sql_files as $file) {
+                if ($this->getVersionFromFile($file) <= $current_version) {
+                    $files_to_exec[] = $file;
+                }
+            } 
+
+        } else {
+
+            foreach($sql_files as $file) {
+                if ( $this->getVersionFromFile($file) <= $current_version  && $this->getVersionFromFile($file) > $target_version  ) {
+                    $files_to_exec[] = $file;
+                }
+            }
+        }
+
+        return $files_to_exec;
+    }
     
     /**
-     * Executes up to and including target_version
+     * Executes up to and INCLUDING target_version
      */
-    public function up(int $target_version) {
+    public function up(int $target_version = null) {
         $files = $this->getUpFilesToExecute($target_version);
 
         foreach($files as $file) {
             $file_path = $this->migrationDir . '/up/' . $file;
+            $sql_statements = $this->getSQLStatements($file_path);
+            $this->executeStatements($sql_statements);
+        }
+
+        $this->setCurrentVersion($target_version);
+        
+    }
+
+    /**
+     * Executes up to and EXCLUDING target_version
+     */
+    public function down(int $target_version = null) {
+        $files = $this->getDownFilesToExecute($target_version);
+        
+        foreach($files as $file) {
+            $file_path = $this->migrationDir . '/down/' . $file;
             $sql_statements = $this->getSQLStatements($file_path);
             $this->executeStatements($sql_statements);
         }

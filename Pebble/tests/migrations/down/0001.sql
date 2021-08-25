@@ -1,3 +1,3 @@
-DROP TABLE IF EXISTS `table_1`;
+DROP TABLE IF EXISTS `table_1_a`;
 
-DROP TABLE IF EXISTS `table_2`;
+DROP TABLE IF EXISTS `table_1_b`;
