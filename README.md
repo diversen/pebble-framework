@@ -4,7 +4,7 @@ A simple, small, and fast php framework.
 
 # Requirements
 
-Known to work on:  `PHP >= 7.2.24`
+Known to work on:  `PHP >= 7.4.3`
 
 # Run tests
 
