@@ -2,7 +2,9 @@
 
 namespace Pebble;
 
+use Exception;
 use Pebble\Special;
+use Pebble\Exception\TemplateException;
 
 class Template
 {
@@ -27,13 +29,19 @@ class Template
      * Set options['raw'] and no encoding will occur
      */
     public static function render ($template_path, $variables = [], array $options = []) {
-        if (!isset($options['raw'])) {
-            $variables = Special::encodeAry($variables);
-        }
-        
-        extract($variables);
 
-        require($template_path);
+        try {
+
+            if (!isset($options['raw'])) {
+                $variables = Special::encodeAry($variables);
+            }
+            
+            extract($variables);
+
+            require($template_path);
+        } catch (Exception $e) {
+            throw new TemplateException($e);
+        }
     }
 }
 
