@@ -7,6 +7,11 @@ use Exception;
 class Log
 {
 
+    /**
+     * Create a log 
+     * `$log = new Log(['stream' => 'php://stderr'])` or  `$log = new Log(['log_dir' => './logs'])`
+     * ]);`
+     */
     public function __construct(array $options = [])
     {
 
