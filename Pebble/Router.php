@@ -216,10 +216,14 @@ class Router
         foreach($methods as $method) {
             $method_name = $method->name;
             $doc = $reflector->getMethod($method_name)->getDocComment();
-            if ($doc) {
-                $parsed_doc = $this->parseDocBlock($doc);
-                $this->addClassMethods($class, $method_name, $parsed_doc);
-            }
+            
+            if (!$doc) continue;
+
+            $parsed_doc = $this->parseDocBlock($doc);
+            
+            if (!$parsed_doc) continue;
+
+            $this->addClassMethods($class, $method_name, $parsed_doc);
         }
     }
 
