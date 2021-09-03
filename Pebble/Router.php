@@ -181,6 +181,49 @@ class Router
     }
 
     /**
+     * Parse a doc block and return all tags as an array. We are looking for 'route' and 'verbs'
+     */
+    private function parseDocBlock($doc) {
+        if (preg_match_all('/@(\w+)\s+(.*)\r?\n/m', $doc, $matches)){
+            $result = array_combine($matches[1], $matches[2]);
+            return $result;
+        } 
+    }
+
+    private function addClassMethods(string $class, string $method_name, array $parsed_doc) {
+        if (isset($parsed_doc['route']) && isset($parsed_doc['verbs'])) {
+            $route = $parsed_doc['route'];
+            $verbs = explode(',', $parsed_doc['verbs']);
+            foreach($verbs as $verb) {
+                $verb = trim($verb);
+                $this->add($verb, $route, $class, $method_name);
+            }
+        }
+    }
+
+    /**
+     * Add class routes found in doc block. In order for a method to be added to the router
+     * it needs a @route and a @verbs tag. Like the following
+     * 
+     * @route /api/posts/:id
+     * @verbs GET,POST  
+     */
+    public function addClass(string $class) {
+
+        $reflector = new \ReflectionClass($class);
+        $methods = $reflector->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+        foreach($methods as $method) {
+            $method_name = $method->name;
+            $doc = $reflector->getMethod($method_name)->getDocComment();
+            if ($doc) {
+                $parsed_doc = $this->parseDocBlock($doc);
+                $this->addClassMethods($class, $method_name, $parsed_doc);
+            }
+        }
+    }
+
+    /**
      * When all routes are loadedm then run the application
      * `$router->run()`
      */
