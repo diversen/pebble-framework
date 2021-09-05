@@ -3,7 +3,6 @@
 namespace Pebble;
 
 use Pebble\Exception\NotFoundException;
-use Exception;
 
 class Router
 {
