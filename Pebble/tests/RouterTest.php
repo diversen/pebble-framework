@@ -67,6 +67,34 @@ final class RouterTest extends TestCase
 
     }
 
+    /**
+     * Same as above we just use annotations for the same routes
+     */
+    public function test_getValidRoutesFromClass()
+    {
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['REQUEST_URI'] = '/test/hello_world/';
+
+        $router = new Router();
+        $router->addClass(Pebble\Test::class);
+    
+        $routes = $router->getValidRoutes();
+
+        // 2 correct matches
+        $this->assertEquals(2, count($routes));
+
+        $this->assertEquals($routes[0]['route'], '/test/:param1');
+        $this->assertEquals($routes[0]['class'], 'Pebble\Test');
+        $this->assertEquals($routes[0]['method'], 'index');
+        $this->assertEquals($routes[0]['params']['param1'], 'hello_world');
+
+        $this->assertEquals($routes[1]['route'], '/test/hello_world');
+        $this->assertEquals($routes[1]['class'], 'Pebble\Test');
+        $this->assertEquals($routes[1]['method'], 'helloWorld');
+
+    }
+
     public function test_run()
     {
 
