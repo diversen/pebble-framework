@@ -22,7 +22,7 @@ Create a database:
     exit; # exit from mysql-server 
     exit; # exit from container
 
-The framework is tightly coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php` and add a correct database. 
+The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php` and add a correct database. 
 
 Into this database you will need to load `sql/mysql.sql`, 
 

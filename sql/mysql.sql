@@ -6,7 +6,11 @@ CREATE TABLE `acl` (
   `right` varchar(64) NOT NULL DEFAULT '',
   `entity_id` int(11) unsigned NOT NULL,
   `auth_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_entity` (`entity`),
+  KEY `idx_right` (`right`),
+  KEY `idx_entity_id` (`entity_id`),
+  KEY `idx_auth_id` (`auth_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `auth`;
