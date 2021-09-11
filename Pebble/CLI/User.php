@@ -17,8 +17,7 @@ class User
             'options' => array(
                 '--create-user' => 'Create a new user',
             ),
-
-            
+  
             // //
             // 'arguments' => array(
             //     'File' => 'Read from a file and out put to stdout',
