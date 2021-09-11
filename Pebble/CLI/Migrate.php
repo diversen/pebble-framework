@@ -2,7 +2,7 @@
 
 namespace Pebble\CLI;
 
-use diversen\parseArgv;
+use Diversen\ParseArgv;
 use Pebble\Migration;
 use Pebble\DBInstance;
 use Pebble\Config;
@@ -29,7 +29,7 @@ class Migrate
     }
 
 
-    public function runCommand(parseArgv $args)
+    public function runCommand(ParseArgv $args)
     {
 
         // Get DB configuration

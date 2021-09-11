@@ -4,6 +4,7 @@ namespace Pebble\CLI;
 
 use Pebble\Config;
 use Pebble\DB\Helpers;
+use Diversen\ParseArgv;
 
 class DB
 {
@@ -29,7 +30,7 @@ class DB
             );
     }
 
-    private function connect($args)
+    private function connect(ParseArgv $args)
     {
 
         $verbose = $args->getFlag('v');
@@ -43,10 +44,9 @@ class DB
         proc_close(proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes));
     }
 
-    private function backup($args)
+    private function backup(ParseArgv $args)
     {
-
-
+        
         $no_data = '';
         if ($args->getFlag('no-data')) {
             $no_data = '--no-data';
@@ -68,7 +68,7 @@ class DB
     }
 
 
-    public function runCommand($args)
+    public function runCommand(ParseArgv $args)
     {
 
         if ($args->getFlag('connect')) {

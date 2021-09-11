@@ -2,6 +2,7 @@
 
 namespace Pebble\CLI;
 
+use Diversen\ParseArgv;
 use Pebble\Auth;
 use diversen\Cli\Utils;
 
@@ -22,7 +23,7 @@ class User
     }
 
 
-    public function runCommand($args)
+    public function runCommand(ParseArgv $args)
     {
         $auth = new Auth();
 
