@@ -56,7 +56,7 @@ class Migration {
         return $sql_statements;
     }
 
-    private function getVersionFromFile(string $file) {
+    private function getVersionFromFile(string $file): int {
         $info = pathinfo($file);
         return (int)$info['filename'];
     }
@@ -86,6 +86,17 @@ class Migration {
         }
 
         return $files_to_exec;
+    }
+
+    public function getLatestVersion() {
+        $files = $this->getUpFilesToExecute();
+        $last = array_pop($files);
+        if (!$last) {
+            return 0;
+        }
+
+        return $this->getVersionFromFile($last);
+        
     }
 
     public function getDownFilesToExecute(int $target_version = null) {

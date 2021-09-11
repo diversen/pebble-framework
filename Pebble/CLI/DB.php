@@ -71,7 +71,6 @@ class DB
     public function runCommand($args)
     {
 
-        
         if ($args->getFlag('connect')) {
             $this->connect($args);
         }
@@ -79,12 +78,6 @@ class DB
         if ($args->getFlag('backup')) {
             $this->backup($args);
         }
-
-
-
-
-
-
 
         return 0;
     }
