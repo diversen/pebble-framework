@@ -2,10 +2,7 @@
 
 namespace Pebble;
 
-use Pebble\Exception\NotFoundException;
-
 class Autoloader {
-
 
     public function setPath($path) {
 
@@ -17,8 +14,9 @@ class Autoloader {
             if (file_exists($class_path)) {
                 require_once $class_path;
             } else {
-                throw new NotFoundException(
-                    "The autoloader could not load ($class_name). Path: $class_path");
+                
+                echo "The autoloader could not load ($class_name). Path: $class_path";
+                exit(255);
             }
         });
 
