@@ -205,7 +205,7 @@ class Auth
 
     /**
      * Set session cookie. It is actualy not a session cookie, because session cookies are not
-     * Are not reliable across browsers 
+     * reliable across browsers 
      */
     public function setSessionCookie(array $auth): bool
     {
