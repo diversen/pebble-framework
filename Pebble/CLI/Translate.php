@@ -28,11 +28,12 @@ class Translate
     {
 
         $default_lang = Config::get('Language.default');
+        $translate_dir = Config::get('Language.translate_base_dir');
 
         // Extract first
         $e = new Extractor();
         $e->defaultLanguage = $default_lang;
-        $e->setSingleDir("www/App");
+        $e->setSingleDir($translate_dir);
         $e->updateLang();
     }
 
@@ -41,6 +42,7 @@ class Translate
 
         $default_lang = Config::get('Language.default');
         $enabled = Config::get('Language.enabled');
+        $translate_dir = Config::get('Language.translate_base_dir');
 
         $translate_to = [];
         foreach($enabled as $lang) {
@@ -52,7 +54,7 @@ class Translate
         // Extract first
         $e = new Extractor();
         $e->defaultLanguage = $default_lang;
-        $e->setSingleDir("www/App");
+        $e->setSingleDir($translate_dir);
         $e->updateLang();
 
         $google_credentials = Config::get('Language.google_application_credentials');
@@ -64,7 +66,7 @@ class Translate
                 $t = new GoogleTranslate();
                 $t->source = $default_lang;
                 $t->target = $lang;
-                $t->setSingleDir("www/App");
+                $t->setSingleDir($translate_dir);
                 $t->updateLang();
             }
         } catch (Exception $e) {
