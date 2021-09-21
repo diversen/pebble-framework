@@ -7,35 +7,8 @@ use Pebble\Auth;
 use Pebble\DBInstance;
 use Pebble\Exception\ForbiddenException;
 
-class ACL
+class ACL extends Auth
 {
-
-    /**
-     * Just set the auth id of the current user
-     */
-    public function __construct()
-    {
-        $this->auth_id = Auth::getInstance()->getAuthId();
-    }
-
-    /**
-     * Gets the auth id
-     */
-    public function getAuthId(): string {
-        return $this->auth_id;
-    }
-
-    /**
-     * Check if there is a valid auth id
-     */
-    private function isAuthenticated()
-    {
-
-        if (!$this->auth_id) {
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Check if user is authenticated or throw a ForbiddenException

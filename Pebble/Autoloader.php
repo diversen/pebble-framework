@@ -19,6 +19,5 @@ class Autoloader {
                 exit(255);
             }
         });
-
     }
 }

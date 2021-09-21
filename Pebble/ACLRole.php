@@ -8,11 +8,6 @@ use Pebble\Exception\ForbiddenException;
 class ACLRole extends ACL
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Sets a user role ['right => 'admin', 'auth_id' => '1234']
 	 * `$aclr->setRole(['right' => 'admin', 'auth_id' => '1234'])`
