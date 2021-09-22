@@ -23,13 +23,6 @@ class Log
     }
 
     /**
-     * Log types not used yet, but may come in handy at a time
-     */
-    private $logTypes = [
-        'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency',
-    ];
-
-    /**
      * Get log file from configuration
      */
     private function getLogFile(?string $custom_log_file = null) {
@@ -49,7 +42,10 @@ class Log
     }
 
     /**
-     * Log a message to a log file or a stream
+     * Log a message
+     * @param string $message
+     * @param string $type RFC types are: 'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'
+     * @param string $custom_log_file 
      */
     public function message($message, string $type = 'debug', ?string $custom_log_file = null): void
     {
@@ -78,9 +74,14 @@ class Log
             $message = var_export($message, true);
         }
 
+        // Add REMOTE_ADDR and REMOTE_PORT
+        $remote_addr = $_SERVER['REMOTE_ADDR'] ?? 'NO_REMOTE_ADDR';
+        $remote_port = $_SERVER['REMOTE_PORT'] ?? 'NO_REMOTE_PORT';
+        $remote = $remote_addr . ':' . $remote_port;
+
         // Generate message
         $time_stamp = date('Y-m-d H:i:s');
-        $log_message = $time_stamp . ' ' . strtoupper($type) . ' ' . $message . PHP_EOL;
+        $log_message = "[$time_stamp]" . ' ' . "$remote" . ' ' . strtoupper($type) . ' ' . $message . PHP_EOL;
         return $log_message;
     }
 

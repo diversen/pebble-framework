@@ -5,6 +5,9 @@ namespace Pebble;
 class ExceptionTrace
 {
 
+    /**
+     * Get information from an exception as a string
+     */
     public static function get($e)
     {
 
@@ -15,7 +18,5 @@ class ExceptionTrace
         'Trace: ' . $e->getTraceAsString() . "\n";
 
         return $exception_str;
-
     }
-
 }
