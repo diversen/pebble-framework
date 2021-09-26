@@ -137,7 +137,6 @@ class Migration {
             return;
         }
         
-
         foreach($files as $file) {
             $file_path = $this->migrationDir . '/up/' . $file;
             $sql_statements = $this->getSQLStatements($file_path);
