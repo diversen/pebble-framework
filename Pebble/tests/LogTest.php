@@ -1,6 +1,6 @@
 <?php declare (strict_types = 1);
 
-use Pebble\Log;
+use Pebble\Log\File as Log;
 use PHPUnit\Framework\TestCase;
 
 final class LogTest extends TestCase
