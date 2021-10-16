@@ -15,7 +15,7 @@ class LogInstance {
     /**
      * Init the log instance
      */
-    public static function init(Log $log) {
+    public static function init($log) {
         self::$log = $log;
     }
 
