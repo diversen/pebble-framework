@@ -2,13 +2,13 @@
 
 namespace Pebble\Log;
 
-use Pebble\Log;
+use Pebble\Log\Base;
 use Exception;
 
 /**
  * Stream logging
  */
-class Stream extends Log {
+class Stream extends Base {
  
     /**
      * Create a log 

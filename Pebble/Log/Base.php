@@ -1,8 +1,8 @@
 <?php declare (strict_types = 1);
 
-namespace Pebble;
+namespace Pebble\Log;
 
-class Log
+class Base
 {
 
     /**
@@ -55,5 +55,16 @@ class Log
         ];
 
         $this->events[] = $event;
+    }
+
+
+    /**
+     * Log a message. This is overridden in the implementation used. 
+     * @param string $message
+     * @param string $type RFC types are: 'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'
+     * @param string $custom_log_file 
+     */
+    public function message($message, string $type = 'debug', ?string $custom_log_file = null): void
+    {
     }
 }

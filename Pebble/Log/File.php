@@ -2,10 +2,10 @@
 
 namespace Pebble\Log;
 
-use Pebble\Log;
+use Pebble\Log\Base;
 use Exception;
 
-class File extends Log {
+class File extends Base {
  
     /**
      * Create a log 
