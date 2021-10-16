@@ -2,15 +2,13 @@
 
 namespace Pebble;
 
-use Pebble\Log;
-
 /**
  * Used for holding a single instance of Pebble\Log
  */
 class LogInstance {
 
     /**
-     * Var holding the log
+     * @var Pebble\Log\File
      */
     public static $log = null;
 
@@ -22,7 +20,7 @@ class LogInstance {
     }
 
     /**
-     * @return Log
+     * @return \Pebble\Log\File
      */
     public static function get() {
         return self::$log;
