@@ -23,7 +23,7 @@ final class LogInstanceTest extends TestCase
         $log = new Log(['log_dir' => $log_dir]);
         LogInstance::init($log);
 
-        $this->assertInstanceOf(Pebble\Log::class, LogInstance::get());
+        $this->assertInstanceOf(Pebble\Log\Base::class, LogInstance::get());
 
     }
 }

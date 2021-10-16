@@ -19,7 +19,7 @@ final class LogTest extends TestCase
         $log_dir = __DIR__ . '/logs';
         $log = new Log(['log_dir' => $log_dir]);
 
-        $this->assertInstanceOf(Pebble\Log::class, $log);
+        $this->assertInstanceOf(Pebble\Log\Base::class, $log);
 
     }
 
