@@ -8,7 +8,7 @@ class Log
     /**
      * Create log message
      */
-    public function getMessage($message, string $type): string
+    protected function getMessage($message, string $type): string
     {
         if (!is_string($message)) {
             $message = var_export($message, true);
@@ -28,7 +28,7 @@ class Log
     /**
      * Trigger special log events
      */
-    public function triggerEvents($log_message, $type)
+    protected function triggerEvents($log_message, $type)
     {
         foreach ($this->events as $event) {
             if (in_array($type, $event['types'])) {
@@ -41,7 +41,7 @@ class Log
     /**
      * Varaible hold $events
      */
-    public $events = [];
+    protected $events = [];
 
     /**
      * Add an event to a log type, e.g. 'alert' or 'emergency' using a callable

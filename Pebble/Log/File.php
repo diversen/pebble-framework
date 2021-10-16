@@ -7,16 +7,16 @@ use Exception;
 
 class File extends Log {
  
-        /**
+    /**
      * Create a log 
-     * `$log = new Log(['stream' => 'php://stderr'])` or  `$log = new Log(['log_dir' => './logs'])`
+     * `$log = new Log(['log_dir' => './logs'])`
      * ]);`
      */
     public function __construct(array $options = [])
     {
 
-        if (!isset($options['log_dir']) && !isset($options['stream'])) {
-            throw new Exception("The \Pebble\Log __construct method expects a log dir -> 'log_dir' => './logs' (log into a file) or a stream, e.g: 'stream' => 'php://stderr' ");
+        if (!isset($options['log_dir'])) {
+            throw new Exception("The \Pebble\Log __construct method expects a log dir -> 'log_dir' => './logs' (log into a file)");
         }
 
         $this->options = $options;
@@ -54,12 +54,7 @@ class File extends Log {
         if (isset($this->options['log_dir'])) {
             $log_file = $this->getLogFile($custom_log_file);
             file_put_contents($log_file, $log_message, FILE_APPEND);
-        }
-
-        if (isset($this->options['stream'])) {
-            file_put_contents($this->options['stream'], $log_message, FILE_APPEND);
-        }
-        
+        }        
 
         $this->triggerEvents($log_message, $type);
 
