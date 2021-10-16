@@ -148,7 +148,7 @@ class Migration {
     }
 
     /**
-     * Executes up to and EXCLUDING target_version
+     * Executes down to and EXCLUDING target_version
      */
     public function down(int $target_version = null) {
         $files = $this->getDownFilesToExecute($target_version);
