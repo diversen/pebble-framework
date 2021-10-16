@@ -15,12 +15,12 @@ class LogInstance {
     /**
      * Init the log instance
      */
-    public static function init(Log $log) {
+    public static function init($log) {
         self::$log = $log;
     }
 
     /**
-     * @return \Pebble\Log\File
+     * @return \Pebble\Log\Base
      */
     public static function get() {
         return self::$log;
