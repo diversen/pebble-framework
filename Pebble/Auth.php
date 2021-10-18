@@ -9,6 +9,12 @@ use Pebble\DBInstance;
  */
 class Auth
 {
+
+    private $db;
+    public function __construct()
+    {
+        $this->db = DBInstance::get();
+    }
     /**
      * Authenticate a against database auth table
      */
@@ -16,7 +22,7 @@ class Auth
     {
 
         $sql = 'SELECT * FROM auth WHERE email = ? AND verified = 1 AND locked = 0';
-        $row = DBInstance::get()->prepareFetch($sql, [$email]);
+        $row = $this->db->prepareFetch($sql, [$email]);
 
         if (!empty($row) && password_verify($password, $row['password_hash'])) {
             return $row;
@@ -37,18 +43,12 @@ class Auth
     public function create(string $email, string $password): bool
     {
 
-        $db = DBInstance::get();
         $random = $this->getRandom(32);
-
-        $options = [
-            'cost' => 12,
-        ];
-
+        $options = ['cost' => 12];
         $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
 
         $sql = "INSERT INTO auth (`email`, `password_hash`, `random`) VALUES(?, ?, ?)";
-        return $db->prepareExecute($sql, [$email, $password_hash, $random]);
-
+        return $this->db->prepareExecute($sql, [$email, $password_hash, $random]);
     }
 
     /**
@@ -58,15 +58,13 @@ class Auth
     public function verifyKey(string $key): bool
     {
 
-        $db = DBInstance::get();
-
         $row = $this->getByWhere(['random' => $key]);
 
         if (!empty($row)) {
 
             $new_key = $this->getRandom(32);
             $sql = "UPDATE auth SET `verified` = 1, `random` = ? WHERE id= ? ";
-            return $db->prepareExecute($sql, [$new_key, $row['id']]);
+            return $this->db->prepareExecute($sql, [$new_key, $row['id']]);
 
         } else {
             return false;
@@ -90,9 +88,7 @@ class Auth
      */
     public function getByWhere($where)
     {
-        $db = DBInstance::get();
-        return $db->getOne('auth', $where);
-
+        return $this->db->getOne('auth', $where);
     }
 
     /**
@@ -101,17 +97,12 @@ class Auth
     public function updatePassword(string $id, string $password): bool
     {
 
-        $db = DBInstance::get();
         $random = $this->getRandom(32);
-
-        $options = [
-            'cost' => 12,
-        ];
-
+        $options = ['cost' => 12];
         $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
 
         $sql = "UPDATE auth SET `password_hash` = ?, `random` = ? WHERE id = ?";
-        return $db->prepareExecute($sql, [$password_hash, $random, $id]);
+        return $this->db->prepareExecute($sql, [$password_hash, $random, $id]);
 
     }
 
@@ -124,7 +115,7 @@ class Auth
         if (isset($_COOKIE['auth'])) {
 
             $sql = "SELECT * FROM auth_cookie WHERE cookie_id = ?";
-            $row = DBInstance::get()->prepareFetch($sql, [$_COOKIE['auth']]);
+            $row = $this->db->prepareFetch($sql, [$_COOKIE['auth']]);
             return $row;
         }
 
@@ -168,7 +159,7 @@ class Auth
 
             // Delete current cookie
             $sql = "DELETE FROM auth_cookie WHERE cookie_id = ?";
-            DBInstance::get()->prepareExecute($sql, [$_COOKIE['auth']]);
+            $this->db->prepareExecute($sql, [$_COOKIE['auth']]);
 
         }
     }
@@ -180,7 +171,7 @@ class Auth
     {
 
         $sql = "DELETE FROM auth_cookie WHERE auth_id = ?";
-        return DBInstance::get()->prepareExecute($sql, [$auth_id]);
+        return $this->db->prepareExecute($sql, [$auth_id]);
 
     }
 
@@ -195,10 +186,8 @@ class Auth
         $res = $this->setBrowserCookie('auth', $random, $expires);
 
         if ($res) {
-
-            $db = DBInstance::get();
             $sql = "INSERT INTO auth_cookie (`cookie_id`, `auth_id`, `expires`) VALUES (?, ?, ?) ";
-            return $db->prepareExecute($sql, [$random, $auth['id'], $expires]);
+            return $this->db->prepareExecute($sql, [$random, $auth['id'], $expires]);
         }
         return false;
     }
