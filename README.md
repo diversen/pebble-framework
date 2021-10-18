@@ -14,9 +14,15 @@ The framework is coupled against MySQL, so in order to run the tests you will ne
 
 You can also add a `config-locale` folder and copy the `DB.php` file into this folder. 
 
+    mkdir config-locale && cp config/DB.php config-locale/
+
 `config-locale` will not be overwritten on checkout. 
 
 Edit one of the `DB.php` files and add a valid database, username, and password
+
+Check if you can connect:
+
+    ./cli.sh db --con
 
 # Install
 
