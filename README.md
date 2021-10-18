@@ -8,17 +8,29 @@ Known to work on:  `PHP >= 7.4.3`
 
 # Run tests
 
-# Edit config
+# Config
 
-The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php` and add a correct database.
+The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php`.
 
 You can also add a `config-locale` folder and copy the `DB.php` file into this folder. 
 
-Edit `DB.php` and add a valid database, username, and password
+`config-locale` will not be overwritten on checkout. 
 
-## Create a MySQL database
+Edit one of the `DB.php` files and add a valid database, username, and password
 
-You can set up a docker MySQL database:
+# Install
+
+    composer install
+
+    ./cli.sh migrate --up
+
+Then run the unit tests:
+
+    ./Pebble/test.sh
+
+# Docker MySQL
+
+If you don't have a mysql-server it easy to setup a docker MySQL database:
 
     docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
 
@@ -30,13 +42,23 @@ Create a database:
     exit; # exit from mysql-server 
     exit; # exit from container
 
-Into this database you will need to load SQL found in `migrations`, 
+# Other docker commands
 
-    ./cli.sh migrate --up
+List conainers 
 
-Then run the unit tests:
+    docker container ls
 
-    ./Pebble/test.sh
+Stop container (mysql-server):
+
+    docker stop mysql-server
+
+Start container (mysql-server) again:
+
+    docker start mysql-server
+
+Remove container (you will need run 'run' command again):
+
+    docker rm mysql-server
 
 # License
 
