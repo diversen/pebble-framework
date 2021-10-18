@@ -10,6 +10,11 @@ use Pebble\Exception\ForbiddenException;
 class ACL extends Auth
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * Check if user is authenticated or throw a ForbiddenException
      */
