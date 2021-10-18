@@ -8,6 +8,14 @@ Known to work on:  `PHP >= 7.4.3`
 
 # Run tests
 
+# Edit config
+
+The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php` and add a correct database.
+
+You can also add a `config-locale` folder and copy the `DB.php` file into this folder. 
+
+Edit `DB.php` and add a valid database, username, and password
+
 ## Create a MySQL database
 
 You can set up a docker MySQL database:
@@ -22,11 +30,9 @@ Create a database:
     exit; # exit from mysql-server 
     exit; # exit from container
 
-The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php` and add a correct database. 
+Into this database you will need to load SQL found in `migrations`, 
 
-Into this database you will need to load `sql/mysql.sql`, 
-
-    docker exec -i mysql-server mysql -uroot -ppassword pebble  < ./sql/mysql.sql
+    ./cli.sh migrate --up
 
 Then run the unit tests:
 

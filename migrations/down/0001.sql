@@ -1,0 +1,9 @@
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP TABLE IF EXISTS `acl`;
+
+DROP TABLE IF EXISTS `auth`;
+
+DROP TABLE IF EXISTS `auth_cookie`;
+
+DROP TABLE IF EXISTS `cache_system`;
