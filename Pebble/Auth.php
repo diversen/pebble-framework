@@ -10,7 +10,7 @@ use Pebble\DBInstance;
 class Auth
 {
 
-    private $db;
+    public $db;
     public function __construct()
     {
         $this->db = DBInstance::get();

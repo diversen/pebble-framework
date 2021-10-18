@@ -4,11 +4,15 @@ namespace Pebble;
 
 use InvalidArgumentException;
 use Pebble\Auth;
-use Pebble\DBInstance;
 use Pebble\Exception\ForbiddenException;
 
 class ACL extends Auth
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * Check if user is authenticated or throw a ForbiddenException
@@ -45,8 +49,7 @@ class ACL extends Auth
     public function setAccessRights(array $access_rights)
     {
         $this->validateAccessAry($access_rights);
-        $db = DBInstance::get();
-        return $db->insert('acl', $access_rights);
+        return $this->db->insert('acl', $access_rights);
 
     }
 
@@ -56,8 +59,7 @@ class ACL extends Auth
      */
     public function removeAccessRights(array $where_access_rights)
     {
-        $db = DBInstance::get();
-        return $db->delete('acl', $where_access_rights);
+        return $this->db->delete('acl', $where_access_rights);
     }
 
     /**
@@ -75,8 +77,7 @@ class ACL extends Auth
      */
     private function hasRights(array $where_access_rights): bool
     {
-        $db = DBInstance::get();
-        $row = $db->getOne('acl', $where_access_rights);
+        $row = $this->db->getOne('acl', $where_access_rights);
         if (empty($row)) {
             return false;
         }
@@ -104,7 +105,6 @@ class ACL extends Auth
     protected function hasAccessRights(array $ary)
     {
         $this->validateAccessAry($ary);
-
         $rights_ary = $this->getRightsArray($ary['right']);
         foreach ($rights_ary as $right) {
 
@@ -124,7 +124,6 @@ class ACL extends Auth
      */
     public function hasAccessRightsOrThrow(array $ary, string $error_message = null)
     {
-
         $has_access_rights = $this->hasAccessRights($ary);
         if (!$has_access_rights) {
             if (!$error_message) {
