@@ -20,13 +20,17 @@ You can also add a `config-locale` folder and copy the `DB.php` file into this f
 
 Edit one of the `DB.php` files and add a valid database, username, and password
 
+# Install
+
+Install dependencies:
+
+    composer install
+    
 Check if you can connect:
 
     ./cli.sh db --con
 
-# Install
-
-    composer install
+Run DB migrations
 
     ./cli.sh migrate --up
 
