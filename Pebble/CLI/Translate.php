@@ -20,6 +20,7 @@ class Translate
                 'options' => array(
                     '--extract'    => 'Extract translation strings from default language (Language.default) set in configuration',
                     '--gtranslate' => 'Translate into other languages (Language.enabled) using google translate',
+                    '--js' => 'Export as a JS file'
                 ),
             );
     }
@@ -77,6 +78,20 @@ class Translate
         return 0;
     }
 
+    private function toJS () {
+        $translate_dir = Config::get('Language.translate_base_dir');
+        $enabled = Config::get('Language.enabled');
+
+        foreach($enabled as $lang) {
+            $lang_base_dir = "$translate_dir/lang/$lang";
+            $translation_file = "$lang_base_dir/language.php";
+            if(!file_exists($translation_file)) continue;
+            include $translation_file;
+            file_put_contents("$lang_base_dir/language.json", json_encode($LANG));
+        }
+
+    }
+
 
     public function runCommand(ParseArgv $args)
     {
@@ -85,8 +100,14 @@ class Translate
             return $this->extract($args);
         }
 
-        if ($args->getFlag('gtranslate')) {   
-            return $this->gtranslate($args);
+        if ($args->getFlag('gtranslate')) {
+            $res = $this->gtranslate($args);
+            $this->toJS();
+            return $res;
+        }
+
+        if ($args->getFlag('js')) {
+            $this->toJS();
         }
 
         return 0;
