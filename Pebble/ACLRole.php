@@ -4,13 +4,14 @@ namespace Pebble;
 
 use Pebble\ACL;
 use Pebble\Exception\ForbiddenException;
+use Pebble\DB;
 
 class ACLRole extends ACL
 {
 
-    public function __construct()
+    public function __construct(DB $db, array $settings)
     {
-        parent::__construct();
+        parent::__construct($db, $settings);
     }
 
     /**

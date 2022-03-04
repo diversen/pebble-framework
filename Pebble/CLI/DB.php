@@ -9,6 +9,10 @@ use Diversen\ParseArgv;
 class DB
 {
 
+    public function __construct(Config $config) {
+        $this->config = $config;
+    }
+
     // Return main commands help
     public function getCommand()
     {
@@ -34,7 +38,7 @@ class DB
     {
 
         $verbose = $args->getFlag('v');
-        $db = Config::getSection('DB');
+        $db = $this->config->getSection('DB');
         $ary = Helpers::parsePDOString($db['url']);
 
         $command = "mysql -u $db[username] -p$db[password] -h$ary[host] $ary[dbname]";
@@ -52,7 +56,7 @@ class DB
             $no_data = '--no-data';
 
         }
-        $db = Config::getSection('DB');
+        $db = $this->config->getSection('DB');
         $ary = Helpers::parsePDOString($db['url']);
 
         if (!file_exists('./backup')) {

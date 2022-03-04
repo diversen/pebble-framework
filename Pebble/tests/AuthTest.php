@@ -1,55 +1,59 @@
 <?php declare (strict_types = 1);
 
-use Pebble\Auth;
 use Pebble\Config;
-use Pebble\DBInstance;
+use Pebble\Auth;
+use Pebble\DB;
 use PHPUnit\Framework\TestCase;
 
 final class AuthTest extends TestCase
 {
 
-    private function dbConnect()
-    {
-        $db_config = Config::getSection('DB');
-        DBInstance::connect($db_config['url'], $db_config['username'], $db_config['password']);
+    private function __setup() {
+        $this->config = new Config();
+
+        $config_dir = __DIR__ . '/../../config';
+        $config_dir_locale =  __DIR__ . '/../../config-locale';
+
+        $this->config->readConfig($config_dir);
+        $this->config->readConfig($config_dir_locale);
+
+        $db_config = $this->config->getSection('DB');
+        $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $this->auth = new Auth($this->db, $this->config->getSection('Auth'));
     }
 
-    private function cleanup()
+    private function __cleanup()
     {
-        $db = DBInstance::get();
-        $db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
-        $db->prepareExecute("DELETE FROM `auth_cookie`");
+
+        $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
+        $this->db->prepareExecute("DELETE FROM `auth_cookie`");
     }
 
 
 
-    private function create() {
+    private function __create() {
 
-        $auth = Auth::getInstance();
-        $res = $auth->create('some_email@test.dk', 'some_password');
+        $res = $this->auth->create('some_email@test.dk', 'some_password');
         return $res;
     }
 
-    private function verify() {
-        $auth = Auth::getInstance();
-        $row = $auth->getByWhere(['email' => 'some_email@test.dk']);
-
-        return $auth->verifyKey($row['random']);
+    private function __verify() {
+        
+        $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
+        return $this->auth->verifyKey($row['random']);
 
 
     }
 
     public function test_authenticate()
     {
-        $this->dbConnect();
-        $this->cleanup();
 
-        $this->create();
-        $this->verify();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $auth = Auth::getInstance();
-
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
         $rows[] = $row;
 
         $this->assertEquals(1, count($rows));
@@ -59,35 +63,30 @@ final class AuthTest extends TestCase
     public function test_verify()
     {
 
-        $this->dbConnect();
-        $this->cleanup();
-        $this->create();
-        
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
 
-        $auth = Auth::getInstance();
-
-
-        $row = $auth->getByWhere(['email' => 'some_email@test.dk']);
+        $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         $this->assertEquals("0", $row['verified']);
 
-        $res = $auth->isVerified($row['email']);
+        $res = $this->auth->isVerified($row['email']);
         $this->assertEquals(false, $res);
 
-        $res = $this->verify();
+        $res = $this->__verify();
         $this->assertEquals(true, $res);
 
-        $row = $auth->getByWhere(['email' => 'some_email@test.dk']);
+        $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         $this->assertEquals("1", $row['verified']);
 
     }
 
     public function test_create()
     {
+        $this->__setup();
+        $this->__cleanup();
 
-        $this->dbConnect();
-        $this->cleanup();
-
-        $this->assertEquals($this->create(), true);
+        $this->assertEquals($this->__create(), true);
 
     }
 
@@ -96,12 +95,11 @@ final class AuthTest extends TestCase
 
         $this->expectException(PDOException::class);
 
-        $this->dbConnect();
-        $this->cleanup();
+        $this->__setup();
+        $this->__cleanup();
 
-        $auth = Auth::getInstance();
-        $auth->create('some_email@test.dk', 'some_password');
-        $auth->create('some_email@test.dk', 'some_password');
+        $this->auth->create('some_email@test.dk', 'some_password');
+        $this->auth->create('some_email@test.dk', 'some_password');
 
     }
 
@@ -109,13 +107,12 @@ final class AuthTest extends TestCase
 
     public function test_getByWhere()
     {
-        $this->dbConnect();
-        $this->cleanup();
-        $this->create();
 
-        $auth = Auth::getInstance();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
 
-        $row = $auth->getByWhere(['email' => 'some_email@test.dk']);
+        $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
 
         $rows[] = $row;
         $this->assertEquals(1, count($rows));
@@ -125,56 +122,49 @@ final class AuthTest extends TestCase
     public function test_updatePassword()
     {
 
-        $this->dbConnect();
-        $this->cleanup();
-        $this->create();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+    
+        $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
+        $this->auth->updatePassword($row['id'], 'new secure password');
 
-        $auth = Auth::getInstance();
-        
-
-        $row = $auth->getByWhere(['email' => 'some_email@test.dk']);
-
-        $auth->updatePassword($row['id'], 'new secure password');
-
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
         $this->assertEquals([], $row);
 
-        $row = $auth->authenticate('some_email@test.dk', 'new secure password');
+        $row = $this->auth->authenticate('some_email@test.dk', 'new secure password');
         $rows[] = $row;
         $this->assertEquals(1, count($rows));
 
     }
 
     public function test_isAuthenticated() {
-        $this->dbConnect();
-        $this->cleanup();
 
-        $this->create();
-        $this->verify();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $auth = Auth::getInstance();
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setPermanentCookie($row);
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
+        $this->auth->setPermanentCookie($row);
 
 
-        $res = $auth->isAuthenticated();
+        $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);
 
     }
 
     public function test_getAuthId() {
-        $this->dbConnect();
-        $this->cleanup();
 
-        $this->create();
-        $this->verify();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $auth = Auth::getInstance();
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setPermanentCookie($row);
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
+        $this->auth->setPermanentCookie($row);
 
-        $res = $auth->getAuthId();
+        $res = $this->auth->getAuthId();
         $this->assertGreaterThan(0, (int)$res);
         
 
@@ -182,78 +172,74 @@ final class AuthTest extends TestCase
 
     public function test_unlinkCurrentCookie() {
 
-        $this->dbConnect();
-        $this->cleanup();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $this->create();
-        $this->verify();
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
+        $this->auth->setPermanentCookie($row);
 
-        $auth = Auth::getInstance();
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setPermanentCookie($row);
-
-        $res = $auth->isAuthenticated();
+        $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);
 
-        $auth->unlinkCurrentCookie();
-        $res = $auth->isAuthenticated();
+        $this->auth->unlinkCurrentCookie();
+        $res = $this->auth->isAuthenticated();
         $this->assertEquals(false, $res);
 
     }
 
     public function test_unlinkAllCookies() {
-        $this->dbConnect();
-        $this->cleanup();
 
-        $this->create();
-        $this->verify();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $auth = Auth::getInstance();
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setPermanentCookie($row);
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
+        $this->auth->setPermanentCookie($row);
 
-        $res = $auth->isAuthenticated();
+        $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);
 
-        $auth->unlinkAllCookies($row['id']);
-        $res = $auth->isAuthenticated();
+        $this->auth->unlinkAllCookies($row['id']);
+        $res = $this->auth->isAuthenticated();
         $this->assertEquals(false, $res);
     }
 
     public function test_setSessionCookie() {
-        $this->dbConnect();
-        $this->cleanup();
 
-        $this->create();
-        $this->verify();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $auth = Auth::getInstance();
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setSessionCookie($row);
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
+        $this->auth->setSessionCookie($row);
 
-        $res = $auth->isAuthenticated();
+        $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);
     }
 
     public function test_setPermanentCookie() {
-        $this->dbConnect();
-        $this->cleanup();
 
-        $this->create();
-        $this->verify();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $auth = Auth::getInstance();
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setSessionCookie($row);
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
+        $this->auth->setSessionCookie($row);
 
-        $res = $auth->isAuthenticated();
+        $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);
     }
 
+    /*
     public static function tearDownAfterClass(): void
     {
         $db = DBInstance::get();
         $db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
         $db->prepareExecute("DELETE FROM `auth_cookie`");
-    }
+    }*/
 }

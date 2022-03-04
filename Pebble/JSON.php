@@ -3,7 +3,6 @@
 namespace Pebble;
 
 use Exception;
-use Pebble\Config;
 
 class JSON {
 
@@ -24,13 +23,15 @@ class JSON {
         return $res;
     }
 
+    public static $debug = false;
+
     /**
      * json_encode wrapper which add content-type header
-     * If the App.env is 'dev' then the response also adds POST and GET vars
+     * If self::$debug is 'true' then the response also adds POST and GET vars
      */
     public static function responseAddRequest(array $value, int $flags = 0, int $depth= 512, $send_header = true ) {
 
-        if (Config::get('App.env') == 'dev') {
+        if (self::$debug) {
             $value['__POST'] = $_POST;
             $value['__GET'] = $_GET;
         }

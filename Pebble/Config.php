@@ -9,20 +9,27 @@ use Exception;
 class Config
 {
 
+    public function __construct(array $config_files = []) 
+    {
+        foreach($config_files as $file) {
+            $this->readConfig($file);
+        }
+    }
+
     /**
      * Var holding all config variables
      */
-    public static $variables = [];
+    public $variables = [];
 
     /**
      * Var holding all sections
      */
-    public static $sections = [];
+    public $sections = [];
 
     /**
      * Get filename without extension
      */
-    private static function getFilename(string $file) : string
+    private function getFilename(string $file) : string
     {
         $info = pathinfo($file);
         return $info['filename'];
@@ -31,7 +38,7 @@ class Config
     /**
      * Get config array from a dir and a file
      */
-    private static function getConfigArray($dir, $file) {
+    private function getConfigArray($dir, $file) {
         
         $config_file = $dir . "/$file";
         $config_array = require($config_file);
@@ -42,7 +49,7 @@ class Config
      * Only php files a vlid from a configuration dir. 
      * Remove everything that is not a config file.
      */
-    private static function getCleanedFiles($files) {
+    private function getCleanedFiles($files) {
 
         $files_ret = [];
         foreach($files as $file) {
@@ -58,21 +65,21 @@ class Config
     /**
      * Read all configuration files (php files) from dir. 
      */
-    public static function readConfig(string $dir)
+    public function readConfig(string $dir)
     {
         if (!file_exists($dir)) {
             throw new Exception('Before reading a config dir, you need to make sure the dir exist: ' . $dir);
         }
 
         $files = File::dirToArray($dir);
-        $files = self::getCleanedFiles($files);
+        $files = $this->getCleanedFiles($files);
 
         foreach ($files as $file) {
 
-            $config_array = self::getConfigArray($dir, $file);
-            $filename = self::getFilename($file);
-            self::$sections[$filename] = $config_array;
-            self::$variables = array_merge(self::$variables, self::getSectionByName($filename, $config_array));
+            $config_array = $this->getConfigArray($dir, $file);
+            $filename = $this->getFilename($file);
+            $this->sections[$filename] = $config_array;
+            $this->variables = array_merge($this->variables, $this->getSectionByName($filename, $config_array));
             
         }
     }
@@ -80,7 +87,7 @@ class Config
     /**
      * get a config section. E.g. 'SMTP' will get the configuration from the file 'config/SMTP.php'
      */
-    private static function getSectionByName(string $section, array $configAry) : array
+    private function getSectionByName(string $section, array $configAry) : array
     {
         $ret = [];
         foreach ($configAry as $key => $value) {
@@ -92,10 +99,10 @@ class Config
     /**
      * Get e.g. `Config::get('SMTP.username')`
      */
-    public static function get(string $key)
+    public function get(string $key)
     {
-        if (isset(self::$variables[$key])) {
-            return self::$variables[$key];
+        if (isset($this->variables[$key])) {
+            return $this->variables[$key];
         }
         return null;
     }
@@ -103,10 +110,10 @@ class Config
     /**
      * Get section of configuration, e.g. `Config::get('DB')`
      */
-    public static function getSection(string $key) : array
+    public function getSection(string $key) : array
     {
-        if (isset(self::$sections[$key])) {
-            return self::$sections[$key];
+        if (isset($this->sections[$key])) {
+            return $this->sections[$key];
         }
         return [];
     }

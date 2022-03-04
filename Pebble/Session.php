@@ -3,7 +3,6 @@
 namespace Pebble;
 
 use Exception;
-use \Pebble\Config;
 
 /**
  * Session class just sets default parameters for sessions
@@ -14,9 +13,8 @@ class Session
     /**
      * Set SESSION defaults from Session Configuration
      */
-    public static function setConfigSettings()
+    public static function setConfigSettings(array $session_config)
     {
-        $session_config = Config::getSection('Session');
 
         if ($session_config) {
             $res = session_set_cookie_params(

@@ -5,13 +5,14 @@ namespace Pebble;
 use InvalidArgumentException;
 use Pebble\Auth;
 use Pebble\Exception\ForbiddenException;
+use Pebble\DB;
 
 class ACL extends Auth
 {
 
-    public function __construct()
+    public function __construct(DB $db, array $auth_cookie_settings)
     {
-        parent::__construct();
+        parent::__construct($db, $auth_cookie_settings);
     }
 
     /**

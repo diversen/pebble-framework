@@ -4,12 +4,17 @@ namespace Pebble\CLI;
 
 use Diversen\ParseArgv;
 use Pebble\Migration;
-use Pebble\DBInstance;
+use Pebble\DB;
 use Pebble\Config;
 
 
 class Migrate
 {
+
+    public function __construct(Config $config) {
+        $this->config = $config;
+
+    }
 
     // Return main commands help
     public function getCommand()
@@ -33,18 +38,18 @@ class Migrate
     {
 
         // Get DB configuration
-        $db_config = Config::getSection('DB');
+        $db_config = $this->config->getSection('DB');
         if (!$db_config) {
             echo "You will need to create a DB.php in a loaded cofiguration folder\n";
             return 1;
         }
 
         // Connect to DB and create an instance
-        DBInstance::connect($db_config['url'], $db_config['username'], $db_config['password']);
+        $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
 
         
 
-        $migrate = new Migration();
+        $migrate = new Migration($db);
         
         $version = $args->getValueByKey(0);
         if ($args->getFlag('up')) {

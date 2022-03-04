@@ -13,6 +13,8 @@ use Pebble\ExceptionTrace;
 class SMTP
 {
 
+
+
     /**
      * Default SMTP from (email)
      */
@@ -38,17 +40,29 @@ class SMTP
     }
 
     /**
-     * Constructor
+     * Constructor take an settings array
+     * 
+     * [
+     * 'DefaultFrom' => 'mail@10kilobyte.com',
+     * 'DefaultFromName' => 'Time Manager',
+     * 'Host' => 'smtp-relay.sendinblue.com',
+     * 'Port' => 587,
+     * 'SMTPAuth' => true,
+     * 'SMTPSecure' => 'tls',
+     * 'Username' => 'username',
+     * 'Password' => 'password',
+     * 'SMTPDebug' => 0
+     * ]
      */
-    public function __construct () {
+    public function __construct (array $settings = []) {
 
-        // If variables NOT SET in constructor then load from Configuration
-        if (!Config::get('SMTP.DefaultFrom') || !Config::get('SMTP.DefaultFromName')) { 
-            throw new Exception('Set DefaultFrom and DefaultFromName in config/SMTP.php');
+        $this->settings = $settings;
+        if (!$settings['DefaultFrom'] || !$settings['DefaultFromName']) { 
+            throw new \Exception('Set DefaultFrom and DefaultFromName in config/SMTP.php');
         }
 
-        $this->from = Config::get('SMTP.DefaultFrom');
-        $this->fromName = Config::get('SMTP.DefaultFromName');
+        $this->from = $settings['DefaultFrom'];
+        $this->fromName = $settings['DefaultFromName'];
 
     }
 
@@ -60,27 +74,26 @@ class SMTP
     private function getPHPMailer()
     {
 
-        $smtp_config = Config::getSection('SMTP');
         $mail = new PHPMailer(true);
 
         // You don't need to catch configuration settings
-        $mail->SMTPDebug = $smtp_config['SMTPDebug'];
+        $mail->SMTPDebug = $this->settings['SMTPDebug'];
         $mail->CharSet = 'UTF-8';
         $mail->isSMTP();
-        $mail->Host = $smtp_config['Host'];
-        $mail->SMTPAuth = $smtp_config['SMTPAuth'];
-        $mail->Username = $smtp_config['Username'];
-        $mail->Password = $smtp_config['Password'];
-        $mail->SMTPSecure = $smtp_config['SMTPSecure'];
-        $mail->Port = $smtp_config['Port'];
+        $mail->Host = $this->settings['Host'];
+        $mail->SMTPAuth = $this->settings['SMTPAuth'];
+        $mail->Username = $this->settings['Username'];
+        $mail->Password = $this->settings['Password'];
+        $mail->SMTPSecure = $this->settings['SMTPSecure'];
+        $mail->Port = $this->settings['Port'];
 
         return $mail;
     }
 
     /**
-     * This method sends a mail a throws an exception in case of an error
+     * This method sends a mail but catches the exception and return a boolean
      */
-    public function sendWithException (string $to, string $subject, string $text, string $html, array $attachments = [])
+    public function send(string $to, string $subject, string $text, string $html, array $attachments = [])
     {
 
         $mail = $this->getPHPMailer();
@@ -100,42 +113,8 @@ class SMTP
         }
 
         $mail->send();
-    
-    }
-
-    /**
-     * This method sends a mail but catches the exception and return a boolean
-     */
-    public function send(string $to, string $subject, string $text, string $html, array $attachments = [])
-    {
-
-        try {
-
-            $mail = $this->getPHPMailer();
-            $mail->setFrom($this->from, $this->fromName);
-            $mail->addAddress($to);
-            $mail->addReplyTo($this->from);
-
-            $mail->isHTML(true);
-            $mail->Subject = $subject;
-            $mail->Body = $html;
-            $mail->AltBody = $text;
-
-            if (!empty($attachments)) {
-                foreach ($attachments as $file) {
-                    $mail->addAttachment($file);
-                }
-            }
-
-            $mail->send();
         
-        } catch (Exception $e) {
-            LogInstance::get()->message(ExceptionTrace::get($e), 'error');
-            
-            return false;
-        }
 
-        return true;
     }
 
     private function getMarkdown (string $text) {
@@ -153,7 +132,6 @@ class SMTP
     {
 
         $html = $this->getMarkdown($text);
-
         return $this->send($to, $subject, $text, $html, $attachments);
 
     }

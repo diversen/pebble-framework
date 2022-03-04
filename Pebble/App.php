@@ -1,23 +1,33 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
-use Pebble\Config;
 
 class App
 {
+    public function isSecure()
+    {
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+    }
 
     /**
      * Get scheme and host from App config file
      */
     public function getSchemeAndHost(): string
     {
-        $server = Config::getSection('App');
-        if (!$server['server_scheme']) {
-            $server['server_scheme'] = 'http';
+
+        if(!$this->isSecure()) {
+            $scheme = 'http://';
+        } else {
+            $scheme = 'https://';
         }
 
-        return $server['server_scheme'] . '://' . $server['server_name'];
+        $url = $scheme . $_SERVER['SERVER_NAME'];
+        if($_SERVER['SERVER_PORT'] !== '80' || $_SERVER['SERVER_PORT'] !== '443') {
+            $url .= ':' . $_SERVER['SERVER_PORT'];
+        } 
+        return $url;
     }
 }
-

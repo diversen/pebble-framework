@@ -2,7 +2,7 @@
 
 namespace Pebble;
 
-use Pebble\DBInstance;
+use Pebble\DB;
 
 class DBCache
 {
@@ -17,8 +17,9 @@ class DBCache
      * @param   object $conn PDO connection
      * @param   string $table database table
      */
-    public function __construct($table = null)
+    public function __construct(DB $db, $table = null)
     {
+        $this->db = $db;
         if ($table) {
             $this->table = $table;
         }
@@ -60,8 +61,7 @@ class DBCache
     {
 
         $query = "SELECT * FROM {$this->table} WHERE id = ? ";
-        $db = DBInstance::get();
-        $row = $db->prepareFetch($query, [$this->generateHashKey($id)]);
+        $row = $this->db->prepareFetch($query, [$this->generateHashKey($id)]);
 
         if (empty($row)) {
             return null;
@@ -84,24 +84,24 @@ class DBCache
      */
     public function set($id, $data): bool
     {
-        $db = DBInstance::get();
-        $db->beginTransaction();
+
+        $this->db->beginTransaction();
 
         $res = $this->delete($id);
         if (!$res) {
-            $db->rollback();
+            $this->db->rollback();
             return false;
         }
 
         $query = "INSERT INTO {$this->table} (id, json_key, unix_ts, data) VALUES (?, ?, ?, ?)";
-        $res = $db->prepareExecute($query, [$this->generateHashKey($id), $this->generateJsonKey($id), time(), json_encode($data)]);
+        $res = $this->db->prepareExecute($query, [$this->generateHashKey($id), $this->generateJsonKey($id), time(), json_encode($data)]);
 
         if (!$res) {
-            $db->rollback();
+            $this->db->rollback();
             return false;
         }
 
-        return $db->commit();
+        return $this->db->commit();
     }
 
     /**
@@ -112,14 +112,12 @@ class DBCache
     public function delete($id): bool
     {
 
-        $db = DBInstance::get();
-
         $query = "SELECT * FROM {$this->table} WHERE id = ?";
-        $row = $db->prepareFetch($query, [$this->generateHashKey($id)]);
+        $row = $this->db->prepareFetch($query, [$this->generateHashKey($id)]);
 
         if (!empty($row)) {
             $query = "DELETE FROM {$this->table} WHERE id = ?";
-            return $db->prepareExecute($query, [$this->generateHashKey($id)]);
+            return $this->db->prepareExecute($query, [$this->generateHashKey($id)]);
         }
 
         return true;

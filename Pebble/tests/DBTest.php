@@ -2,7 +2,6 @@
 
 use Pebble\Config;
 use Pebble\DB;
-use Pebble\DBInstance;
 use PHPUnit\Framework\TestCase;
 
 final class DBTest extends TestCase
@@ -11,20 +10,33 @@ final class DBTest extends TestCase
     /**
      * @return \Pebble\DB
      */
-    private function getDB()
+    private $db = null;
+    private function __getDB()
     {
-        $db_config = Config::getSection('DB');
-        DBInstance::connect($db_config['url'], $db_config['username'], $db_config['password']);
-        return DBInstance::get();
+        if(!$this->db){
+            $this->config = new Config();
+
+            $config_dir = __DIR__ . '/../../config';
+            $config_dir_locale =  __DIR__ . '/../../config-locale';
+    
+            $this->config->readConfig($config_dir);
+            $this->config->readConfig($config_dir_locale);
+    
+            $db_config = $this->config->getSection('DB');
+            $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        }
+
+        return $this->db;
+
     }
 
-    private function cleanup()
+    private function __cleanup()
     {
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $db->prepareExecute('DROP TABLE IF EXISTS account_test');
     }
 
-    public function createTestTable()
+    private function __createTestTable()
     {
 
         $sql = <<<EOF
@@ -36,7 +48,7 @@ CREATE TABLE `account_test` (
     ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 EOF;
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
 
         $res = $db->prepareExecute($sql);
         return $res;
@@ -46,7 +58,7 @@ EOF;
     {
 
         $this->expectException(PDOException::class);
-        $db = $this->getDB();
+        $db = $this->__getDB();
 
         // Bad SQL
         $bad_sql = "CREATE xxTABLE bogus sql";
@@ -56,8 +68,8 @@ EOF;
 
     public function test_prepareExecute_GoodSQL()
     {
-        $this->cleanup();
-        $res = $this->createTestTable();
+        $this->__cleanup();
+        $res = $this->__createTestTable();
         $this->assertEquals(
             $res,
             true
@@ -71,13 +83,13 @@ EOF;
     public function test_prepareExecute_WithBoundVariables()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
         $values = array(':email' => 'test@test.dk', ':password' => 'secret');
         $sql = "INSERT INTO account_test (`email`, `password`) VALUES (:email, :password)";
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $res = $db->prepareExecute($sql, $values);
         $this->assertEquals(
             $res,
@@ -91,13 +103,13 @@ EOF;
     public function test_prepareExecute_WithPositionalValues()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
         $values = array('test@test.dk', 'secret');
         $sql = "INSERT INTO account_test (`email`, `password`) VALUES (?, ?)";
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $res = $db->prepareExecute($sql, $values);
         $this->assertEquals(
             $res,
@@ -111,13 +123,13 @@ EOF;
     public function test_lastInsertId_string()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
         $values = array('test@test.dk', 'secret');
         $sql = "INSERT INTO account_test (`email`, `password`) VALUES (?, ?)";
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $db->prepareExecute($sql, $values);
         $last_insert_id = $db->lastInsertId();
 
@@ -134,11 +146,10 @@ EOF;
     public function test_lastInsertId_false()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
-        $db_config = Config::getSection('DB');
-        $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $db = $this->__getDB();
 
         // No insertion prior to his - so we expect 0 (or false)
         $last_insert_id = $db->lastInsertId();
@@ -151,7 +162,7 @@ EOF;
     /**
      * Utils method that just adds three rows
      */
-    private function addRows()
+    private function __addRows()
     {
 
         $values = [
@@ -160,7 +171,7 @@ EOF;
             ['test3@test.dk', 'secret3'],
         ];
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         foreach ($values as $value) {
             $sql = "INSERT INTO account_test (`email`, `password`) VALUES (?, ?)";
             $db->prepareExecute($sql, $value);
@@ -170,11 +181,11 @@ EOF;
     public function test_prepareFetchAll()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
-        $this->addRows();
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
 
         $rows = $db->prepareFetchAll("SELECT * FROM account_test LIMIT 0, 2");
         $this->assertIsArray($rows);
@@ -185,11 +196,11 @@ EOF;
     public function test_prepareFetch()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
-        $this->addRows();
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
 
         $row = $db->prepareFetch("SELECT * FROM account_test");
 
@@ -203,11 +214,11 @@ EOF;
     public function test_getStmt()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
-        $this->addRows();
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
 
         $stmt = $db->getStmt("SELECT * FROM account_test");
         $this->assertEquals(get_class($stmt), 'PDOStatement');
@@ -217,11 +228,11 @@ EOF;
     public function test_rowCount()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
-        $this->addRows();
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $db->prepareExecute("UPDATE account_test SET `email` = 'some_test_email@test.dk'");
 
         $rows_affected = $db->rowCount();
@@ -232,21 +243,20 @@ EOF;
     public function test_rollback()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
-        DBInstance::close();
-
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $res = $db->beginTransaction();
         $this->assertEquals(true, $res);
 
-        $this->addRows();
+        $this->__addRows();
         $res = $db->rollback();
         $this->assertEquals(true, $res);
 
         $rows = $db->prepareFetchAll("SELECT * FROM account_test");
         $num_rows = count($rows);
+
         $this->assertEquals($num_rows, 0);
 
     }
@@ -254,14 +264,14 @@ EOF;
     public function test_commit()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $res = $db->beginTransaction();
         $this->assertEquals(true, $res);
 
-        $this->addRows();
+        $this->__addRows();
         $res = $db->commit();
         $this->assertEquals(true, $res);
 
@@ -274,10 +284,10 @@ EOF;
     public function test_insert()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $res = $db->insert('account_test', ['email' => 'test4@test.dk', 'password' => 'secret4']);
         $this->assertEquals(true, $res);
 
@@ -289,11 +299,11 @@ EOF;
     public function test_update()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
-        $this->addRows();
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $res = $db->update(
             'account_test',
             ['email' => 'test_update_zxc@test.dk', 'password' => 'update_very_secret'],
@@ -311,10 +321,10 @@ EOF;
     public function test_getOne()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
+        $this->__cleanup();
+        $this->__createTestTable();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $res = $db->insert('account_test', ['email' => 'test4@test.dk', 'password' => 'secret4']);
         $this->assertEquals(true, $res);
 
@@ -326,11 +336,11 @@ EOF;
     public function test_getAll()
     {
 
-        $this->cleanup();
-        $this->createTestTable();
-        $this->addRows();
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
 
         $rows = $db->getAll('account_test', ['email' => 'test@test.dk']);
         $this->assertIsArray($rows);
@@ -343,16 +353,9 @@ EOF;
     public function test_getWhereSql()
     {
 
-        $db = $this->getDB();
+        $db = $this->__getDB();
         $where = $db->getWhereSql(['id' => 100, 'test' => 'this is a test']);
         $this->assertEquals($where, " WHERE  `id`=:id  AND  `test`=:test  ");
 
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        $db = DBInstance::get();
-        $db->prepareExecute("DROP TABLE account_test");
-        DBInstance::close();
     }
 }

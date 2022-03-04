@@ -12,7 +12,7 @@ final class HeadersTest extends TestCase
 
         $headers = Headers::getHttpsHeaders();
 
-        $this->assertEquals($headers[0], 'HTTP/1.1 301 Moved Permanently');
+        $this->assertEquals($headers[0], 'HTTP/1.1 302 Found');
         $this->assertEquals($headers[1], 'Location: https://localhost/some/url');
 
     }

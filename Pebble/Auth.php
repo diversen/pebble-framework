@@ -2,7 +2,7 @@
 
 namespace Pebble;
 
-use Pebble\DBInstance;
+use Pebble\DB;
 
 /**
  * A simple authentication class based on a single database table
@@ -11,9 +11,18 @@ class Auth
 {
 
     public $db;
-    public function __construct()
+
+    /**
+     * Auth cookie settings
+     * $auth_cookie_settings['cookie_path'];
+     * $auth_cookie_settings['cookie_domain'];
+     * $auth_cookie_settings['cookie_secure'];
+     * $auth_cookie_settings['cookie_http'];
+     */
+    public function __construct(DB $db, array $auth_cookie_settings)
     {
-        $this->db = DBInstance::get();
+        $this->auth_cookie_settings = $auth_cookie_settings;
+        $this->db = $db;
     }
     /**
      * Authenticate a against database auth table
@@ -194,15 +203,17 @@ class Auth
 
     /**
      * Set session cookie. It is actualy not a session cookie, because session cookies are not
-     * reliable across browsers 
+     * reliable across browsers
+     * 
+     * But chances are that if set to 0 then the cookie will expire when the browser is closed
      */
-    public function setSessionCookie(array $auth): bool
+    public function setSessionCookie(array $auth, int $cookie_seconds = 0): bool
     {
-        $cookie_seconds = Config::get('Auth.cookie_seconds');
+        
         if ($cookie_seconds == 0) {
             $expires = 0;
         } else {
-            $expires = time() + Config::get('Auth.cookie_seconds');
+            $expires = time() + $cookie_seconds;
         }
 
         return $this->setCookie($auth, $expires);
@@ -212,9 +223,10 @@ class Auth
      * Set a cookie that can last over many days or years
      * @param array $auth
      */
-    public function setPermanentCookie(array $auth): bool
+    public function setPermanentCookie(array $auth, int $cookie_seconds = 0): bool
     {
-        $expires = time() + Config::get('Auth.cookie_seconds_permanent');
+
+        $expires = time() + $cookie_seconds;
         return $this->setCookie($auth, $expires);
     }
 
@@ -231,13 +243,10 @@ class Auth
      */
     private function setBrowserCookie(string $key, string $value, int $time)
     {
-
-        $auth_settings = Config::getSection('Auth');
-
-        $path = $auth_settings['cookie_path'];
-        $domain = $auth_settings['cookie_domain'];
-        $secure = $auth_settings['cookie_secure'];
-        $http_only = $auth_settings['cookie_http'];
+        $path = $this->auth_cookie_settings['cookie_path'];
+        $domain = $this->auth_cookie_settings['cookie_domain'];
+        $secure = $this->auth_cookie_settings['cookie_secure'];
+        $http_only = $this->auth_cookie_settings['cookie_http'];
 
         // Little hack for unit testing
         if ($this->isCli()) {
@@ -247,17 +256,5 @@ class Auth
 
         return setcookie($key, $value, $time, $path, $domain, $secure, $http_only);
 
-    }
-
-    /**
-     * @return \Pebble\Auth
-     */
-    public static function getInstance() {
-        static $instance;
-        if (!$instance) {
-            $instance = new Auth();
-        }
-
-        return $instance;
     }
 }

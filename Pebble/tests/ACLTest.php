@@ -2,76 +2,89 @@
 
 use Pebble\ACL;
 use Pebble\Auth;
+use Pebble\DB;
 use Pebble\Config;
-use Pebble\DBInstance;
 use Pebble\Exception\ForbiddenException;
 use PHPUnit\Framework\TestCase;
 
 final class ACLTest extends TestCase
 {
+    public $config;
+    public $db;
 
-    private function dbConnect()
-    {
-        $db_config = Config::getSection('DB');
-        DBInstance::connect($db_config['url'], $db_config['username'], $db_config['password']);
+    private function __setup() {
+        $this->config = new Config();
+
+        $config_dir = __DIR__ . '/../../config';
+        $config_dir_locale =  __DIR__ . '/../../config-locale';
+
+        $this->config->readConfig($config_dir);
+        $this->config->readConfig($config_dir_locale);
+
+        $db_config = $this->config->getSection('DB');
+        $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $this->auth = new Auth($this->db, $this->config->getSection('Auth'));
     }
 
-    private static function cleanup()
-    {
-        $db = DBInstance::get();
-        $db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
-        $db->prepareExecute("DELETE FROM `auth_cookie`");
 
-        $acl = new ACL();
+    private function __cleanup()
+    {
+
+        $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
+        $this->db->prepareExecute("DELETE FROM `auth_cookie`");
+
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
         $acl->removeAccessRights(['entity' => 'test_entity']);
 
     }
 
-    private function create()
+
+    private function __create()
     {
 
-        $auth = Auth::getInstance();
-        $res = $auth->create('some_email@test.dk', 'some_password');
+        $res = $this->auth->create('some_email@test.dk', 'some_password');
         return $res;
     }
 
-    private function verify()
+    private function __verify()
     {
-        $auth = Auth::getInstance();
-        $row = $auth->getByWhere(['email' => 'some_email@test.dk']);
-
-        return $auth->verifyKey($row['random']);
+        
+        $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
+        return $this->auth->verifyKey($row['random']);
 
     }
 
-    public function test_isAuthenticatedOrThrow_throw()
+    private function __createVerifyLoginUser()
     {
 
-        $this->expectException(ForbiddenException::class);
-        $acl = new ACL();
-        $acl->isAuthenticatedOrThrow();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-    }
-
-    public function createVerifyLoginUser()
-    {
-        $this->dbConnect();
-        $this->cleanup();
-        $this->create();
-        $this->verify();
-
-        $auth = new Auth();
+        $auth = new Auth($this->db, $this->config->getSection('Auth'));
         $row = $auth->authenticate('some_email@test.dk', 'some_password');
         $auth->setPermanentCookie($row);
         return $row;
     }
 
+    public function test_isAuthenticatedOrThrow_throw()
+    {   
+        $this->__setup();
+        $this->__cleanup();
+        
+        $this->expectException(ForbiddenException::class);
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
+        $acl->isAuthenticatedOrThrow();
+
+    }
+
     public function test_isAuthenticatedOrThrow()
     {
 
-        $this->createVerifyLoginUser();
+        $this->__setup();
+        $this->__createVerifyLoginUser();
 
-        $acl = new ACL();
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
 
         $res = $acl->isAuthenticatedOrThrow();
 
@@ -82,9 +95,10 @@ final class ACLTest extends TestCase
     public function test_isAuthenticatedOrJSONError_throw()
     {
 
-        $this->cleanup();
+        $this->__setup();
+        $this->__cleanup();
 
-        $acl = new ACL();
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
         $res = $acl->isAuthenticatedOrJSONError();
         $this->assertEquals(false, $res);
         $this->expectOutputString('{"error":"You can not access this page"}');
@@ -93,10 +107,10 @@ final class ACLTest extends TestCase
 
     public function test_isAuthenticatedOrJSONError()
     {
+        $this->__setup();
+        $this->__createVerifyLoginUser();
 
-        $this->createVerifyLoginUser();
-
-        $acl = new ACL();
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
         $res = $acl->isAuthenticatedOrJSONError();
         $this->assertEquals(true, $res);
 
@@ -105,9 +119,10 @@ final class ACLTest extends TestCase
     public function test_setAccessRights_removeAccessRights()
     {
 
-        $row = $this->createVerifyLoginUser();
+        $this->__setup();
+        $row = $this->__createVerifyLoginUser();
 
-        $acl = new ACL();
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
 
         $rights = [
             'entity' => 'test_entity',
@@ -132,9 +147,11 @@ final class ACLTest extends TestCase
 
     public function test_hasAccessRightsOrThrow()
     {
-        $row = $this->createVerifyLoginUser();
 
-        $acl = new ACL();
+        $this->__setup();
+        $row = $this->__createVerifyLoginUser();
+
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));;
 
         $rights = [
             'entity' => 'test_entity',
@@ -159,9 +176,11 @@ final class ACLTest extends TestCase
 
     public function test_hasAccessRightsOrThrow_throw()
     {
-        $row = $this->createVerifyLoginUser();
 
-        $acl = new ACL();
+        $this->__setup();
+        $row = $this->__createVerifyLoginUser();
+
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
 
         $rights = [
             'entity' => 'test_entity',
@@ -184,6 +203,7 @@ final class ACLTest extends TestCase
 
     }
 
+    /*
     public static function tearDownAfterClass(): void
     {
         $db = DBInstance::get();
@@ -192,5 +212,5 @@ final class ACLTest extends TestCase
 
         $acl = new ACL();
         $acl->removeAccessRights(['entity' => 'test_entity']);
-    }
+    }*/
 }

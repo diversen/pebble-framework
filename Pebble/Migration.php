@@ -3,7 +3,7 @@
 namespace Pebble;
 
 use Pebble\File;
-use Pebble\DBInstance;
+use Pebble\DB;
 
 /**
  * Quite primite migration
@@ -18,10 +18,12 @@ class Migration {
     /**
      * Path to dir holding migration files
      */
-
     private $migrationDir = 'migrations';
 
-    public function __construct(string $migration_dir = null, string $migration_file = null) {
+    private $db;
+    public function __construct(DB $db, string $migration_dir = null, string $migration_file = null) {
+        
+        $this->db = $db;
         if ($migration_dir) $this->migrationDir = $migration_dir;
         if ($migration_file) $this->migrationFile = $migration_file;
 
@@ -44,9 +46,8 @@ class Migration {
     }
 
     private function executeStatements($sql_statements) {
-        $db = DBInstance::get();
         foreach($sql_statements as $sql_Statement) {
-            $db->prepareExecute($sql_Statement);
+            $this->db->prepareExecute($sql_Statement);
         }       
     }
 

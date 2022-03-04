@@ -1,35 +1,45 @@
 <?php declare (strict_types = 1);
 
 use Pebble\Config;
-use Pebble\DBInstance;
+use Pebble\DB;
 use PHPUnit\Framework\TestCase;
 use Pebble\Migration;
-
-$config_dir = __DIR__ . '/../../config';
-Config::readConfig($config_dir);
 
 final class MigrationTest extends TestCase
 {
 
-    private function connect()
-    {
-        DBInstance::close();
-        $db_config = Config::getSection('DB');
-        DBInstance::connect($db_config['url'], $db_config['username'], $db_config['password']);
+    public $config;
+    public $db;
+    public function __setup() {
+
+        if(!$this->db) {
+            $this->config = new Config();
+
+            $config_dir = __DIR__ . '/../../config';
+            $config_dir_locale =  __DIR__ . '/../../config-locale';
+
+            $this->config->readConfig($config_dir);
+            $this->config->readConfig($config_dir_locale);
+            
+        }
     }
+
 
 
     public function test_get_up_files() {
 
-        $this->connect();
+        $this->__setup();
+
+        $db_config = $this->config->getSection('DB');
+        $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
 
         // Drop all test tables
-        DBInstance::get()->prepareExecute('DROP TABLE IF EXISTS table_1_a');
-        DBInstance::get()->prepareExecute('DROP TABLE IF EXISTS table_1_b');
-        DBInstance::get()->prepareExecute('DROP TABLE IF EXISTS table_2');
-        DBInstance::get()->prepareExecute('DROP TABLE IF EXISTS table_3');
-
-        $m = new Migration(__DIR__ . '/migrations', __DIR__ . '/.migration');
+        $db->prepareExecute('DROP TABLE IF EXISTS table_1_a');
+        $db->prepareExecute('DROP TABLE IF EXISTS table_1_b');
+        $db->prepareExecute('DROP TABLE IF EXISTS table_2');
+        $db->prepareExecute('DROP TABLE IF EXISTS table_3');
+        
+        $m = new Migration($db, __DIR__ . '/migrations', __DIR__ . '/.migration');
 
         $m->setCurrentVersion(0000);
 
@@ -63,7 +73,7 @@ final class MigrationTest extends TestCase
         $m->setCurrentVersion();
         $m->up(0002);
 
-        $tables = DBInstance::get()->prepareFetchAll('SHOW TABLES');
+        $tables = $db->prepareFetchAll('SHOW TABLES');
         $tables = array_column($tables, 'Tables_in_pebble');
 
         $this->assertContains('table_1_a', $tables);
@@ -81,7 +91,7 @@ final class MigrationTest extends TestCase
         $version = $m->getCurrentVersion();
         $this->assertEquals(0001, $version);
         
-        $tables = DBInstance::get()->prepareFetchAll('SHOW TABLES');
+        $tables = $db->prepareFetchAll('SHOW TABLES');
         $tables = array_column($tables, 'Tables_in_pebble');
 
         $this->assertContains('table_1_a', $tables);
@@ -94,13 +104,14 @@ final class MigrationTest extends TestCase
         $version = $m->getCurrentVersion();
         $this->assertEquals(0001, $version);
         
-        $this->connect();
+        $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $m = new Migration($db, __DIR__ . '/migrations', __DIR__ . '/.migration');
         $m->down();
 
         $version = $m->getCurrentVersion();
         $this->assertEquals(0, $version);
 
-        $tables = DBInstance::get()->prepareFetchAll('SHOW TABLES');
+        $tables = $db->prepareFetchAll('SHOW TABLES');
         $tables = array_column($tables, 'Tables_in_pebble');
 
         $this->assertNotContains('table_1_a', $tables);

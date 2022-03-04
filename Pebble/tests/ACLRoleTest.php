@@ -2,76 +2,75 @@
 
 use Pebble\ACLRole;
 use Pebble\Auth;
+use Pebble\DB;
 use Pebble\Config;
-use Pebble\DBInstance;
+
 use Pebble\Exception\ForbiddenException;
 use PHPUnit\Framework\TestCase;
-
-$config_dir = __DIR__ . '/../../config';
-Config::readConfig($config_dir);
-
-$config_dir = __DIR__ . '/../../config-locale';
-if (file_exists($config_dir)) {
-    Config::readConfig($config_dir);
-}
-
 
 final class ACLRoleTest extends TestCase
 {
 
-    private function dbConnect()
-    {
-        $db_config = Config::getSection('DB');
-        DBInstance::connect($db_config['url'], $db_config['username'], $db_config['password']);
+    public $config;
+    public $db;
+
+    private function __setup() {
+        $this->config = new Config();
+
+        $config_dir = __DIR__ . '/../../config';
+        $config_dir_locale =  __DIR__ . '/../../config-locale';
+
+        $this->config->readConfig($config_dir);
+        $this->config->readConfig($config_dir_locale);
+
+        $db_config = $this->config->getSection('DB');
+        $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $this->auth = new Auth($this->db, $this->config->getSection('Auth'));
     }
 
-    private static function cleanup()
+    private function __cleanup()
     {
-        $db = DBInstance::get();
-        $db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
-        $db->prepareExecute("DELETE FROM `auth_cookie`");
+        
+        $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
+        $this->db->prepareExecute("DELETE FROM `auth_cookie`");
 
-        $acl = new ACLRole();
+        $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
         $acl->removeAccessRights(['entity' => 'test_entity']);
-
+        
     }
 
-    private function create()
+    private function __create()
     {
 
-        $auth = Auth::getInstance();
-        $res = $auth->create('some_email@test.dk', 'some_password');
+        $res = $this->auth->create('some_email@test.dk', 'some_password');
         return $res;
     }
 
-    private function verify()
+    private function __verify()
     {
-        $auth = Auth::getInstance();
-        $row = $auth->getByWhere(['email' => 'some_email@test.dk']);
-
-        return $auth->verifyKey($row['random']);
+        
+        $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
+        return $this->auth->verifyKey($row['random']);
 
     }
 
-    public function createVerifyLoginUser()
+    public function createVerifiedLoginUser()
     {
-        $this->dbConnect();
-        $this->cleanup();
-        $this->create();
-        $this->verify();
+        $this->__setup();
+        $this->__cleanup();
+        $this->__create();
+        $this->__verify();
 
-        $auth = new Auth();
-        $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setPermanentCookie($row);
+        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
+        $this->auth->setPermanentCookie($row);
         return $row;
     }
 
     public function test_setRole_removeRole()
     {
 
-        $row = $this->createVerifyLoginUser();
-
-        $acl = new ACLRole();
+        $row = $this->createVerifiedLoginUser();        
+        $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
 
         $role = [
             'right' => 'admin',
@@ -93,9 +92,10 @@ final class ACLRoleTest extends TestCase
 
     public function test_hasRoleOrThrow()
     {
-        $row = $this->createVerifyLoginUser();
+       
+        $row = $this->createVerifiedLoginUser();
 
-        $acl = new ACLRole();
+        $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
 
         $role = [
             'right' => 'admin',
@@ -116,9 +116,9 @@ final class ACLRoleTest extends TestCase
 
     public function test_hasRoleOrThrow_throw()
     {
-        $row = $this->createVerifyLoginUser();
 
-        $acl = new ACLRole();
+        $row = $this->createVerifiedLoginUser();
+        $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
 
         $role = [
             'right' => 'admin', // This is 'admin'
@@ -137,13 +137,11 @@ final class ACLRoleTest extends TestCase
 
     }
 
+    /*
     public static function tearDownAfterClass(): void
     {
-        $db = DBInstance::get();
-        $db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
-        $db->prepareExecute("DELETE FROM `auth_cookie`");
 
-        $acl = new ACLRole();
-        $acl->removeAccessRights(['entity' => 'ROLE']);
+       
     }
+    */
 }
