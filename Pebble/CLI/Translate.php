@@ -11,6 +11,10 @@ use Exception;
 class Translate
 {
 
+    public function __construct(Config $config) {
+        $this->config = $config;
+    }
+    
     // Return main commands help
     public function getCommand()
     {
@@ -28,8 +32,8 @@ class Translate
     private function extract(ParseArgv $args)
     {
 
-        $default_lang = Config::get('Language.default');
-        $translate_dir = Config::get('Language.translate_base_dir');
+        $default_lang = $this->config->get('Language.default');
+        $translate_dir = $this->config->get('Language.translate_base_dir');
 
         // Extract first
         $e = new Extractor();
@@ -41,9 +45,9 @@ class Translate
     private function gtranslate(ParseArgv $args)
     {
 
-        $default_lang = Config::get('Language.default');
-        $enabled = Config::get('Language.enabled');
-        $translate_dir = Config::get('Language.translate_base_dir');
+        $default_lang = $this->config->get('Language.default');
+        $enabled = $this->config->get('Language.enabled');
+        $translate_dir = $this->config->get('Language.translate_base_dir');
 
         $translate_to = [];
         foreach($enabled as $lang) {
@@ -58,7 +62,7 @@ class Translate
         $e->setSingleDir($translate_dir);
         $e->updateLang();
 
-        $google_credentials = Config::get('Language.google_application_credentials');
+        $google_credentials = $this->config->get('Language.google_application_credentials');
 
         try {
             putenv("GOOGLE_APPLICATION_CREDENTIALS=$google_credentials");
@@ -79,8 +83,8 @@ class Translate
     }
 
     private function toJS () {
-        $translate_dir = Config::get('Language.translate_base_dir');
-        $enabled = Config::get('Language.enabled');
+        $translate_dir = $this->config->get('Language.translate_base_dir');
+        $enabled = $this->config->get('Language.enabled');
 
         foreach($enabled as $lang) {
             $lang_base_dir = "$translate_dir/lang/$lang";

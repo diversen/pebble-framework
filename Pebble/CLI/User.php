@@ -4,10 +4,19 @@ namespace Pebble\CLI;
 
 use Diversen\ParseArgv;
 use Pebble\Auth;
+use Pebble\Config;
+use Pebble\DB;
 use diversen\Cli\Utils;
 
 class User
 {
+    private $config;
+    private $db;
+    public function __construct(Config $config) {
+        $this->config = $config;
+        $db_config = $this->config->getSection('DB');
+        $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+    }
 
     // Return main commands help
     public function getCommand()
@@ -25,8 +34,8 @@ class User
 
     public function runCommand(ParseArgv $args)
     {
-        $auth = new Auth();
-
+        
+        $auth = new Auth($this->db, $this->config->getSection('Auth'));
         $utils = new Utils();
         if ($args->getFlag('create-user')) {
             $email = trim($utils->readSingleline("Enter email: "));
