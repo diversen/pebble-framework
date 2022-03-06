@@ -7,6 +7,13 @@ use Pebble\Auth;
 use Pebble\Exception\ForbiddenException;
 use Pebble\DB;
 
+/**
+ * Class that can set some access rights based on a 
+ * - entity (often just a database row)
+ * - entity id (often just the id of the row)
+ * - the right to the entity with id (e.g. 'read', 'write')
+ * - the auth_id (the id of the user trying to access the entity)
+ */
 class ACL extends Auth
 {
 

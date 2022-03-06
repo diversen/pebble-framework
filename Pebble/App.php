@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-
 class App
 {
     public function isSecure()
@@ -25,7 +24,7 @@ class App
         }
 
         $url = $scheme . $_SERVER['SERVER_NAME'];
-        if($_SERVER['SERVER_PORT'] !== '80' || $_SERVER['SERVER_PORT'] !== '443') {
+        if($_SERVER['SERVER_PORT'] !== '80' && $_SERVER['SERVER_PORT'] !== '443') {
             $url .= ':' . $_SERVER['SERVER_PORT'];
         } 
         return $url;
