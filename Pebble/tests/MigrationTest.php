@@ -32,6 +32,7 @@ final class MigrationTest extends TestCase
 
         $db_config = $this->config->getSection('DB');
         $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $pdo_handle = $db->getDbh();
 
         // Drop all test tables
         $db->prepareExecute('DROP TABLE IF EXISTS table_1_a');
@@ -39,7 +40,7 @@ final class MigrationTest extends TestCase
         $db->prepareExecute('DROP TABLE IF EXISTS table_2');
         $db->prepareExecute('DROP TABLE IF EXISTS table_3');
         
-        $m = new Migration($db, __DIR__ . '/migrations', __DIR__ . '/.migration');
+        $m = new Migration($pdo_handle, __DIR__ . '/migrations', __DIR__ . '/.migration');
 
         $m->setCurrentVersion(0000);
 
@@ -105,10 +106,11 @@ final class MigrationTest extends TestCase
         $this->assertEquals(0001, $version);
         
         $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
-        $m = new Migration($db, __DIR__ . '/migrations', __DIR__ . '/.migration');
+        $m = new Migration($pdo_handle, __DIR__ . '/migrations', __DIR__ . '/.migration');
         $m->down();
 
         $version = $m->getCurrentVersion();
+
         $this->assertEquals(0, $version);
 
         $tables = $db->prepareFetchAll('SHOW TABLES');

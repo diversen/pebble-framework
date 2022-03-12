@@ -2,8 +2,7 @@
 
 namespace Pebble;
 
-use Pebble\File;
-use Pebble\DB;
+use PDO;
 
 /**
  * Quite primite migration
@@ -20,16 +19,22 @@ class Migration {
      */
     private $migrationDir = 'migrations';
 
-    private $db;
-    public function __construct(DB $db, string $migration_dir = null, string $migration_file = null) {
+    /**
+     * @var PDOStatement
+     */
+    private $dbh;
+    public function __construct(PDO $dbh, string $migration_dir = null, string $migration_file = null) {
         
-        $this->db = $db;
+        $this->dbh = $dbh;
         if ($migration_dir) $this->migrationDir = $migration_dir;
         if ($migration_file) $this->migrationFile = $migration_file;
 
 
     }
 
+    /**
+     * @return int $version
+     */
     public function getCurrentVersion () {
         if (file_exists($this->migrationFile)) {
             return (int)file_get_contents($this->migrationFile);
@@ -45,10 +50,38 @@ class Migration {
         }
     }
 
+
+    /**
+     * Recursively read all file in a dir except '.', '..'
+     * From http://php.net/manual/en/function.scandir.php#110570
+     */
+    private function dirToArray(string $dir): array {
+
+        $result = array();
+        $cdir = scandir($dir);
+        foreach ($cdir as $value) {
+            if (!in_array($value, array(".", ".."))) {
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
+                    $result[$value] = $this->dirToArray($dir . DIRECTORY_SEPARATOR . $value);
+                } else {
+                    $result[] = $value;
+                }
+            }
+        }
+        return $result;
+    }
+    
+
+    private function executeSql($sql) {
+        $stmt = $this->dbh->prepare($sql);
+        return $stmt->execute();
+    }
+
     private function executeStatements($sql_statements) {
+
         foreach($sql_statements as $sql_Statement) {
-            $this->db->prepareExecute($sql_Statement);
-        }       
+            $this->executeSql($sql_Statement);
+        }
     }
 
     private function getSQLStatements(string $file) {
@@ -64,7 +97,7 @@ class Migration {
 
     public function getUpFilesToExecute(int $target_version = null) {
         $up_dir = $this->migrationDir . '/' . 'up';
-        $sql_files = File::dirToArray($up_dir);
+        $sql_files = $this->dirToArray($up_dir);
         natsort($sql_files);
 
         $files_to_exec = [];
@@ -103,7 +136,7 @@ class Migration {
 
     public function getDownFilesToExecute(int $target_version = null) {
         $up_dir = $this->migrationDir . '/' . 'down';
-        $sql_files = File::dirToArray($up_dir);
+        $sql_files = $this->dirToArray($up_dir);
         natsort($sql_files);
         $sql_files = array_reverse($sql_files);
 
@@ -153,9 +186,6 @@ class Migration {
      */
     public function down(int $target_version = null) {
         $files = $this->getDownFilesToExecute($target_version);
-        if (empty($files)) {
-            return;
-        }
         
         foreach($files as $file) {
             $file_path = $this->migrationDir . '/down/' . $file;
