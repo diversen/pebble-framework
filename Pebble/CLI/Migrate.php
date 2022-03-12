@@ -47,9 +47,8 @@ class Migrate
         // Connect to DB and create an instance
         $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
 
-        
-
-        $migrate = new Migration($db);
+    
+        $migrate = new Migration($db->getDbh());
         
         $version = $args->getValueByKey(0);
         if ($args->getFlag('up')) {
