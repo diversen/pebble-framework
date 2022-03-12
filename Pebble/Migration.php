@@ -166,11 +166,8 @@ class Migration {
      * Executes up to and INCLUDING target_version
      */
     public function up(int $target_version = null) {
-        $files = $this->getUpFilesToExecute($target_version);
-        if (empty($files)) {
-            return;
-        }
-        
+
+        $files = $this->getUpFilesToExecute($target_version);        
         foreach($files as $file) {
             $file_path = $this->migrationDir . '/up/' . $file;
             $sql_statements = $this->getSQLStatements($file_path);
@@ -185,8 +182,8 @@ class Migration {
      * Executes down to and EXCLUDING target_version
      */
     public function down(int $target_version = null) {
-        $files = $this->getDownFilesToExecute($target_version);
         
+        $files = $this->getDownFilesToExecute($target_version);
         foreach($files as $file) {
             $file_path = $this->migrationDir . '/down/' . $file;
             $sql_statements = $this->getSQLStatements($file_path);
