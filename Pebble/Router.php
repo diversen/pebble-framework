@@ -227,7 +227,7 @@ class Router
     }
 
     /**
-     * When all routes are loadedm then run the application
+     * When all routes are loaded then run the application
      * `$router->run()`
      */
     public function run()
