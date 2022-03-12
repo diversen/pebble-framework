@@ -3,6 +3,7 @@
 namespace Pebble;
 
 use PDO;
+use PDOStatement;
 
 /**
  * Simple database class that can do anything you need to do with a database
@@ -11,12 +12,12 @@ class DB
 {
 
     /**
-     * Var holding current stmt
+     * @var PDOStatement
      */
     private $stmt = null;
 
     /**
-     * var holding DB handle
+     * @var PDO
      */
     private $dbh = null;
 
@@ -91,7 +92,7 @@ class DB
 
     /**
      * Get PDOStatement where you can run e.g. `$stmt->fetch(PDO::FETCH_ASSOC)`;
-     * @return \PDOStatement
+     * @return PDOStatement
      */
     public function getStmt(string $sql, array $params = [] ) {
         $this->stmt = $this->dbh->prepare($sql);
