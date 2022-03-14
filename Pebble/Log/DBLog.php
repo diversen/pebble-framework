@@ -43,7 +43,7 @@ class DBLog extends Base {
         if (!is_string($message)) {
             $message = var_export($message, true);
         }
-        
+
         $this->db->insert('log', [
             'message' => $message, 
             'date' => date('Y-m-d H:i:s'),
@@ -52,6 +52,7 @@ class DBLog extends Base {
             'type' => $type, 
             'section' => $section, 
             'auth_id' => $this->auth->getAuthId()]);
+            
         $this->triggerEvents($message, $type);
 
     }   
