@@ -5,6 +5,13 @@ namespace Pebble\Log;
 class Base
 {
 
+    protected function getRemoteAddr() {
+        // Add REMOTE_ADDR and REMOTE_PORT
+        $remote_addr = $_SERVER['REMOTE_ADDR'] ?? 'NO_REMOTE_ADDR';
+        $remote_port = $_SERVER['REMOTE_PORT'] ?? 'NO_REMOTE_PORT';
+        $remote = $remote_addr . ':' . $remote_port;
+        return $remote;
+    }
     /**
      * Create log message
      */
@@ -14,10 +21,7 @@ class Base
             $message = var_export($message, true);
         }
 
-        // Add REMOTE_ADDR and REMOTE_PORT
-        $remote_addr = $_SERVER['REMOTE_ADDR'] ?? 'NO_REMOTE_ADDR';
-        $remote_port = $_SERVER['REMOTE_PORT'] ?? 'NO_REMOTE_PORT';
-        $remote = $remote_addr . ':' . $remote_port;
+        $remote = $this->getRemoteAddr();
 
         // Generate message
         $time_stamp = date('Y-m-d H:i:s');
