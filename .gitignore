@@ -2,3 +2,4 @@
 vendor
 config-locale
 .migration
+composer.lock
