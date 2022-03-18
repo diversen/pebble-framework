@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -8,7 +10,7 @@ use Pebble\Exception\ForbiddenException;
 use Pebble\DB;
 
 /**
- * Class that can set some access rights based on a 
+ * Class that can set some access rights based on a
  * - entity (often just a database row)
  * - entity id (often just the id of the row)
  * - the right to the entity with id (e.g. 'read', 'write')
@@ -16,7 +18,6 @@ use Pebble\DB;
  */
 class ACL extends Auth
 {
-
     public function __construct(DB $db, array $auth_cookie_settings)
     {
         parent::__construct($db, $auth_cookie_settings);
@@ -37,7 +38,6 @@ class ACL extends Auth
      */
     public function isAuthenticatedOrJSONError(): bool
     {
-
         $response = [];
 
         try {
@@ -58,7 +58,6 @@ class ACL extends Auth
     {
         $this->validateAccessAry($access_rights);
         return $this->db->insert('acl', $access_rights);
-
     }
 
     /**
@@ -115,7 +114,6 @@ class ACL extends Auth
         $this->validateAccessAry($ary);
         $rights_ary = $this->getRightsArray($ary['right']);
         foreach ($rights_ary as $right) {
-
             $ary['right'] = $right;
 
             if ($this->hasRights($ary)) {

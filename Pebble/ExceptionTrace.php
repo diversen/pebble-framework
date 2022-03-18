@@ -1,10 +1,11 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
 class ExceptionTrace
 {
-
     /**
      * Get information from an exception as a string
      */

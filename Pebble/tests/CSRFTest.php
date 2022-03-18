@@ -1,11 +1,12 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use Pebble\CSRF;
 use PHPUnit\Framework\TestCase;
 
 final class CSRFTest extends TestCase
 {
-
     public function test_getToken()
     {
         $token = (new CSRF())->getToken();
@@ -18,6 +19,5 @@ final class CSRFTest extends TestCase
         $token = $csrf->getToken();
         $_POST['csrf_token'] = $token;
         $this->assertEquals(true, $csrf->validateToken());
-
     }
 }

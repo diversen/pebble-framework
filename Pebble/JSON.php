@@ -1,18 +1,20 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
 use Exception;
 
-class JSON {
-
+class JSON
+{
     public static $debug = false;
 
     /**
      * json_encode wrapper which just add content-type header
      */
-    public static function response(array $value, int $flags = 0, int $depth= 512, $send_header = true ) {
-        
+    public static function response(array $value, int $flags = 0, int $depth= 512, $send_header = true)
+    {
         if ($send_header) {
             header('Content-Type: application/json');
         }
@@ -23,7 +25,7 @@ class JSON {
         }
 
         $res = json_encode($value, $flags, $depth);
-        if ($res === false){
+        if ($res === false) {
             throw new Exception('JSON could not be encoded');
         }
 

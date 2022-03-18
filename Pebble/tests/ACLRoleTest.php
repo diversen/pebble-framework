@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use Pebble\ACLRole;
 use Pebble\Auth;
@@ -10,11 +12,11 @@ use PHPUnit\Framework\TestCase;
 
 final class ACLRoleTest extends TestCase
 {
-
     public $config;
     public $db;
 
-    private function __setup() {
+    private function __setup()
+    {
         $this->config = new Config();
 
         $config_dir = __DIR__ . '/../../config';
@@ -30,28 +32,23 @@ final class ACLRoleTest extends TestCase
 
     private function __cleanup()
     {
-        
         $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
         $this->db->prepareExecute("DELETE FROM `auth_cookie`");
 
         $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
         $acl->removeAccessRights(['entity' => 'test_entity']);
-        
     }
 
     private function __create()
     {
-
         $res = $this->auth->create('some_email@test.dk', 'some_password');
         return $res;
     }
 
     private function __verify()
     {
-        
         $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         return $this->auth->verifyKey($row['random']);
-
     }
 
     public function createVerifiedLoginUser()
@@ -68,8 +65,7 @@ final class ACLRoleTest extends TestCase
 
     public function test_setRole_removeRole()
     {
-
-        $row = $this->createVerifiedLoginUser();        
+        $row = $this->createVerifiedLoginUser();
         $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
 
         $role = [
@@ -87,12 +83,10 @@ final class ACLRoleTest extends TestCase
 
         $this->expectException(ForbiddenException::class);
         $acl->hasRoleOrThrow($role);
-
     }
 
     public function test_hasRoleOrThrow()
     {
-       
         $row = $this->createVerifiedLoginUser();
 
         $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
@@ -111,12 +105,10 @@ final class ACLRoleTest extends TestCase
 
         $res = $acl->hasRoleOrThrow($role);
         $this->assertEquals(true, $res);
-
     }
 
     public function test_hasRoleOrThrow_throw()
     {
-
         $row = $this->createVerifiedLoginUser();
         $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
 
@@ -134,14 +126,13 @@ final class ACLRoleTest extends TestCase
 
         $this->expectException(ForbiddenException::class);
         $acl->hasRoleOrThrow($role);
-
     }
 
     /*
     public static function tearDownAfterClass(): void
     {
 
-       
+
     }
     */
 }

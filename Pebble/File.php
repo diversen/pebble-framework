@@ -1,17 +1,17 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
 class File
 {
-
     /**
      * Recursively read all file in a dir except '.', '..'
      * From http://php.net/manual/en/function.scandir.php#110570
      */
     public static function dirToArray(string $dir): array
     {
-
         $result = array();
 
         $cdir = scandir($dir);

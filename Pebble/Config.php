@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -8,10 +10,9 @@ use Exception;
 
 class Config
 {
-
-    public function __construct(array $config_files = []) 
+    public function __construct(array $config_files = [])
     {
-        foreach($config_files as $file) {
+        foreach ($config_files as $file) {
             $this->readConfig($file);
         }
     }
@@ -29,7 +30,7 @@ class Config
     /**
      * Get filename without extension
      */
-    private function getFilename(string $file) : string
+    private function getFilename(string $file): string
     {
         $info = pathinfo($file);
         return $info['filename'];
@@ -38,21 +39,21 @@ class Config
     /**
      * Get config array from a dir and a file
      */
-    private function getConfigArray($dir, $file) {
-        
+    private function getConfigArray($dir, $file)
+    {
         $config_file = $dir . "/$file";
         $config_array = require($config_file);
         return $config_array;
     }
 
     /**
-     * Only php files a vlid from a configuration dir. 
+     * Only php files a vlid from a configuration dir.
      * Remove everything that is not a config file.
      */
-    private function getCleanedFiles($files) {
-
+    private function getCleanedFiles($files)
+    {
         $files_ret = [];
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $ext = pathinfo($file, PATHINFO_EXTENSION);
             if ($ext !== 'php') {
                 continue;
@@ -63,7 +64,7 @@ class Config
     }
 
     /**
-     * Read all configuration files (php files) from dir. 
+     * Read all configuration files (php files) from dir.
      */
     public function readConfig(string $dir)
     {
@@ -75,19 +76,17 @@ class Config
         $files = $this->getCleanedFiles($files);
 
         foreach ($files as $file) {
-
             $config_array = $this->getConfigArray($dir, $file);
             $filename = $this->getFilename($file);
             $this->sections[$filename] = $config_array;
             $this->variables = array_merge($this->variables, $this->getSectionByName($filename, $config_array));
-            
         }
     }
 
     /**
      * get a config section. E.g. 'SMTP' will get the configuration from the file 'config/SMTP.php'
      */
-    private function getSectionByName(string $section, array $configAry) : array
+    private function getSectionByName(string $section, array $configAry): array
     {
         $ret = [];
         foreach ($configAry as $key => $value) {
@@ -110,7 +109,7 @@ class Config
     /**
      * Get section of configuration, e.g. `Config::get('DB')`
      */
-    public function getSection(string $key) : array
+    public function getSection(string $key): array
     {
         if (isset($this->sections[$key])) {
             return $this->sections[$key];

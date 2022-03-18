@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use Pebble\Exception\NotFoundException;
 use Pebble\Router;
@@ -7,10 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
-
     public function test_noRoutes()
     {
-
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world';
 
@@ -23,7 +23,6 @@ final class RouterTest extends TestCase
 
     public function test_missingMethod()
     {
-
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world';
 
@@ -36,7 +35,6 @@ final class RouterTest extends TestCase
 
     public function test_getValidRoutes()
     {
-
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world/';
 
@@ -64,7 +62,6 @@ final class RouterTest extends TestCase
         $this->assertEquals($routes[1]['route'], '/test/hello_world');
         $this->assertEquals($routes[1]['class'], 'Pebble\Test');
         $this->assertEquals($routes[1]['method'], 'helloWorld');
-
     }
 
     /**
@@ -72,13 +69,12 @@ final class RouterTest extends TestCase
      */
     public function test_getValidRoutesFromClass()
     {
-
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world/';
 
         $router = new Router();
         $router->addClass(Pebble\Test::class);
-    
+
         $routes = $router->getValidRoutes();
 
         // 2 correct matches
@@ -92,12 +88,10 @@ final class RouterTest extends TestCase
         $this->assertEquals($routes[1]['route'], '/test/hello_world');
         $this->assertEquals($routes[1]['class'], 'Pebble\Test');
         $this->assertEquals($routes[1]['method'], 'helloWorld');
-
     }
 
     public function test_run()
     {
-
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world/';
 
@@ -115,6 +109,5 @@ final class RouterTest extends TestCase
         $router->run();
 
         $this->expectOutputString('Hello world');
-
     }
 }

@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use Pebble\ACL;
 use Pebble\Auth;
@@ -12,7 +14,8 @@ final class ACLTest extends TestCase
     public $config;
     public $db;
 
-    private function __setup() {
+    private function __setup()
+    {
         $this->config = new Config();
 
         $config_dir = __DIR__ . '/../../config';
@@ -29,34 +32,28 @@ final class ACLTest extends TestCase
 
     private function __cleanup()
     {
-
         $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
         $this->db->prepareExecute("DELETE FROM `auth_cookie`");
 
         $acl = new ACL($this->db, $this->config->getSection('Auth'));
         $acl->removeAccessRights(['entity' => 'test_entity']);
-
     }
 
 
     private function __create()
     {
-
         $res = $this->auth->create('some_email@test.dk', 'some_password');
         return $res;
     }
 
     private function __verify()
     {
-        
         $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         return $this->auth->verifyKey($row['random']);
-
     }
 
     private function __createVerifyLoginUser()
     {
-
         $this->__cleanup();
         $this->__create();
         $this->__verify();
@@ -68,19 +65,17 @@ final class ACLTest extends TestCase
     }
 
     public function test_isAuthenticatedOrThrow_throw()
-    {   
+    {
         $this->__setup();
         $this->__cleanup();
-        
+
         $this->expectException(ForbiddenException::class);
         $acl = new ACL($this->db, $this->config->getSection('Auth'));
         $acl->isAuthenticatedOrThrow();
-
     }
 
     public function test_isAuthenticatedOrThrow()
     {
-
         $this->__setup();
         $this->__createVerifyLoginUser();
 
@@ -89,12 +84,10 @@ final class ACLTest extends TestCase
         $res = $acl->isAuthenticatedOrThrow();
 
         $this->assertEquals(null, $res);
-
     }
 
     public function test_isAuthenticatedOrJSONError_throw()
     {
-
         $this->__setup();
         $this->__cleanup();
 
@@ -102,7 +95,6 @@ final class ACLTest extends TestCase
         $res = $acl->isAuthenticatedOrJSONError();
         $this->assertEquals(false, $res);
         $this->expectOutputString('{"error":"You can not access this page"}');
-
     }
 
     public function test_isAuthenticatedOrJSONError()
@@ -113,12 +105,10 @@ final class ACLTest extends TestCase
         $acl = new ACL($this->db, $this->config->getSection('Auth'));
         $res = $acl->isAuthenticatedOrJSONError();
         $this->assertEquals(true, $res);
-
     }
 
     public function test_setAccessRights_removeAccessRights()
     {
-
         $this->__setup();
         $row = $this->__createVerifyLoginUser();
 
@@ -142,16 +132,15 @@ final class ACLTest extends TestCase
 
         $this->expectException(ForbiddenException::class);
         $acl->hasAccessRightsOrThrow($rights);
-
     }
 
     public function test_hasAccessRightsOrThrow()
     {
-
         $this->__setup();
         $row = $this->__createVerifyLoginUser();
 
-        $acl = new ACL($this->db, $this->config->getSection('Auth'));;
+        $acl = new ACL($this->db, $this->config->getSection('Auth'));
+        ;
 
         $rights = [
             'entity' => 'test_entity',
@@ -171,12 +160,10 @@ final class ACLTest extends TestCase
 
         $res = $acl->hasAccessRightsOrThrow($rights);
         $this->assertEquals(null, $res);
-
     }
 
     public function test_hasAccessRightsOrThrow_throw()
     {
-
         $this->__setup();
         $row = $this->__createVerifyLoginUser();
 
@@ -200,7 +187,6 @@ final class ACLTest extends TestCase
 
         $this->expectException(ForbiddenException::class);
         $acl->hasAccessRightsOrThrow($rights);
-
     }
 
     /*

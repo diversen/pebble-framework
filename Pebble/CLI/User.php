@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble\CLI;
 
@@ -12,7 +14,8 @@ class User
 {
     private $config;
     private $db;
-    public function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
         $this->config = $config;
         $db_config = $this->config->getSection('DB');
         $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
@@ -27,14 +30,13 @@ class User
             'options' => array(
                 '--create-user' => 'Create a new user',
             ),
-            
+
         );
     }
 
 
     public function runCommand(ParseArgv $args)
     {
-        
         $auth = new Auth($this->db, $this->config->getSection('Auth'));
         $utils = new Utils();
         if ($args->getFlag('create-user')) {
@@ -53,10 +55,8 @@ class User
 
             $utils->echoStatus('Error', 'r', 'Something went wrong. Try again');
             return 128;
-
-
         }
-        
+
         return 0;
     }
 }

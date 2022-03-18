@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -7,7 +9,8 @@ class CSRF
     /**
      * Sets a SESSION token
      */
-    public function getToken () {
+    public function getToken()
+    {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         $token = $_SESSION['csrf_token'];
         return $token;
@@ -17,11 +20,11 @@ class CSRF
      * Validates the SESSION token against POST value
      * It also unsets the POST csrf_token
      */
-    public function validateToken() {
-        
+    public function validateToken()
+    {
         if (!empty($_POST)) {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-                $res = false;       
+                $res = false;
             } else {
                 $res = true;
             }

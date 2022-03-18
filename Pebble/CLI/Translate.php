@@ -10,11 +10,11 @@ use Exception;
 
 class Translate
 {
-
-    public function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
         $this->config = $config;
     }
-    
+
     // Return main commands help
     public function getCommand()
     {
@@ -31,7 +31,6 @@ class Translate
 
     private function extract(ParseArgv $args)
     {
-
         $default_lang = $this->config->get('Language.default');
         $translate_dir = $this->config->get('Language.translate_base_dir');
 
@@ -44,18 +43,17 @@ class Translate
 
     private function gtranslate(ParseArgv $args)
     {
-
         $default_lang = $this->config->get('Language.default');
         $enabled = $this->config->get('Language.enabled');
         $translate_dir = $this->config->get('Language.translate_base_dir');
 
         $translate_to = [];
-        foreach($enabled as $lang) {
+        foreach ($enabled as $lang) {
             if ($lang != $default_lang) {
                 $translate_to[] = $lang;
             }
         }
-        
+
         // Extract first
         $e = new Extractor();
         $e->defaultLanguage = $default_lang;
@@ -67,7 +65,7 @@ class Translate
         try {
             putenv("GOOGLE_APPLICATION_CREDENTIALS=$google_credentials");
             // Translate using google
-            foreach($translate_to as $lang) {
+            foreach ($translate_to as $lang) {
                 $t = new GoogleTranslate();
                 $t->source = $default_lang;
                 $t->target = $lang;
@@ -82,24 +80,25 @@ class Translate
         return 0;
     }
 
-    private function toJS () {
+    private function toJS()
+    {
         $translate_dir = $this->config->get('Language.translate_base_dir');
         $enabled = $this->config->get('Language.enabled');
 
-        foreach($enabled as $lang) {
+        foreach ($enabled as $lang) {
             $lang_base_dir = "$translate_dir/lang/$lang";
             $translation_file = "$lang_base_dir/language.php";
-            if(!file_exists($translation_file)) continue;
+            if (!file_exists($translation_file)) {
+                continue;
+            }
             include $translation_file;
             file_put_contents("$lang_base_dir/language.json", json_encode($LANG));
         }
-
     }
 
 
     public function runCommand(ParseArgv $args)
     {
-  
         if ($args->getFlag('extract')) {
             return $this->extract($args);
         }

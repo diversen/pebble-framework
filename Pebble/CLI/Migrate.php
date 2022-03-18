@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble\CLI;
 
@@ -7,13 +9,11 @@ use Pebble\Migration;
 use Pebble\DB;
 use Pebble\Config;
 
-
 class Migrate
 {
-
-    public function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
         $this->config = $config;
-
     }
 
     // Return main commands help
@@ -26,7 +26,7 @@ class Migrate
                 '--up' => 'Migrate up',
                 '--down' => 'Migrate down',
             ),
-  
+
             'arguments' => array(
                 'version' => 'Set version to migrate up to or down to',
             ),
@@ -47,16 +47,15 @@ class Migrate
         // Connect to DB and create an instance
         $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
 
-    
+
         $migrate = new Migration($db->getDbh());
-        
+
         $version = $args->getValueByKey(0);
         if ($args->getFlag('up')) {
-            
             if (!$version) {
                 $version = $migrate->getLatestVersion();
             }
-            
+
             $migrate->up($version);
         }
 
@@ -64,7 +63,7 @@ class Migrate
             if (!$version) {
                 $version = 0;
             }
-            $migrate->down( (int)$version);
+            $migrate->down((int)$version);
         }
     }
 }

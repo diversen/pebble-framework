@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use Pebble\DBCache;
 use Pebble\DB;
@@ -7,8 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 final class DBCacheTest extends TestCase
 {
-
-    private function __setup() {
+    private function __setup()
+    {
         $this->config = new Config();
 
         $config_dir = __DIR__ . '/../../config';
@@ -21,7 +23,7 @@ final class DBCacheTest extends TestCase
         $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
     }
 
-    
+
     public function test_set()
     {
         $this->__setup();
@@ -31,7 +33,6 @@ final class DBCacheTest extends TestCase
         $res = $cache->set('some_key', $to_cache);
 
         $this->assertEquals(true, $res);
-
     }
 
     public function test_get()
@@ -49,7 +50,6 @@ final class DBCacheTest extends TestCase
         // No expire
         $from_cache = $cache->get('some_key');
         $this->assertEquals($to_cache, $from_cache);
-
     }
 
     public function test_delete()

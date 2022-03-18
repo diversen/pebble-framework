@@ -2,22 +2,22 @@
 
 namespace Pebble;
 
-class Test {
-
+class Test
+{
     /**
      * @route /test/:param1
      * @verbs POST
      */
-    public function index() {
-
+    public function index()
+    {
     }
 
     /**
      * @route /test/hello_world
      * @verbs POST
      */
-    public function helloWorld() {
+    public function helloWorld()
+    {
         echo "Hello world";
     }
-
 }

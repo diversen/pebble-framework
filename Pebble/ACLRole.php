@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -8,7 +10,6 @@ use Pebble\DB;
 
 class ACLRole extends ACL
 {
-
     public function __construct(DB $db, array $settings)
     {
         parent::__construct($db, $settings);
@@ -16,11 +17,10 @@ class ACLRole extends ACL
 
     /**
      * Sets a user role ['right => 'admin', 'auth_id' => '1234']
-	 * `$aclr->setRole(['right' => 'admin', 'auth_id' => '1234'])`
+     * `$aclr->setRole(['right' => 'admin', 'auth_id' => '1234'])`
      */
     public function setRole(array $role)
     {
-
         $role['entity'] = 'ROLE';
         $role['entity_id'] = '0';
 
@@ -33,7 +33,6 @@ class ACLRole extends ACL
      */
     public function removeRole(array $role)
     {
-
         $role['entity'] = 'ROLE';
         $role['entity_id'] = '0';
 
@@ -42,11 +41,10 @@ class ACLRole extends ACL
 
     /**
      * Checks if a user has a role, e.g. ['right => 'admin', 'auth_id' => '1234']
-	 * `$aclr->hasRoleOrThrow(['right => 'admin', 'auth_id' => '1234'])`
+     * `$aclr->hasRoleOrThrow(['right => 'admin', 'auth_id' => '1234'])`
      */
     public function hasRoleOrThrow(array $role)
     {
-
         $role['entity'] = 'ROLE';
         $role['entity_id'] = '0';
 

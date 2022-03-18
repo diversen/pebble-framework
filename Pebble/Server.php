@@ -20,7 +20,6 @@ class Server
      */
     public function getSchemeAndHost(): string
     {
-
         if (!$this->isSecure()) {
             $scheme = 'http://';
         } else {

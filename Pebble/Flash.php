@@ -1,14 +1,15 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
 class Flash
 {
-
     /**
      * Set SESSION flash message
      * @param string $message
-     * @param string $type Type is one of ['info', 'success', 'warning', 'error'] or any other you may use in your app. 
+     * @param string $type Type is one of ['info', 'success', 'warning', 'error'] or any other you may use in your app.
      * @param array  $options ['flash_remove' => true] Options. E.g. set flash_remove in order to add a css class used to remove messages using js.
      */
     public static function setMessage(string $message, string $type, array $options = [])
@@ -21,9 +22,9 @@ class Flash
 
     /**
      * Get all flash messages as an array
-     * @return array $messages 
+     * @return array $messages
      */
-    public static function getMessages() : array
+    public static function getMessages(): array
     {
         $messages = [];
 
@@ -40,4 +41,3 @@ class Flash
         return $messages;
     }
 }
-

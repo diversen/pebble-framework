@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -10,7 +12,6 @@ use PDOStatement;
  */
 class DB
 {
-
     /**
      * @var PDOStatement
      */
@@ -32,7 +33,8 @@ class DB
     /**
      * Return the objects database handle.
      */
-    public function getDbh () {
+    public function getDbh()
+    {
         return $this->dbh;
     }
 
@@ -41,15 +43,13 @@ class DB
      */
     public function __construct(string $url, string $username = '', string $password = '', array $options = [])
     {
-
-            $this->dbh = new PDO(
-                $url,
-                $username,
-                $password,
-                $options
-            );
-            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-         
+        $this->dbh = new PDO(
+            $url,
+            $username,
+            $password,
+            $options
+        );
+        $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     /**
@@ -57,7 +57,7 @@ class DB
      * `$db->prepareExecute('DELETE FROM auth WHERE email = ?', ['test@mail.com']); `
      */
     public function prepareExecute(string $sql, array $values = [], array $options = []): bool
-    {   
+    {
         $this->stmt = $this->dbh->prepare($sql);
         return $this->stmt->execute($values);
     }
@@ -66,9 +66,8 @@ class DB
      * Prepare and fetch all rows, e.g
      * `$db->prepareFetchAll("SELECT * FROM invites WHERE status = ? ", [$status]);`
      */
-    public function prepareFetchAll(string $sql, array $params = [], array $options = []) : array
+    public function prepareFetchAll(string $sql, array $params = [], array $options = []): array
     {
-
         $stmt = $this->getStmt($sql, $params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -79,7 +78,6 @@ class DB
      */
     public function prepareFetch(string $sql, array $params = [], array $options = []): array
     {
-
         $stmt = $this->getStmt($sql, $params);
 
         // Fetch returns false when 0 rows. FetchAll always returns an array
@@ -94,7 +92,8 @@ class DB
      * Get PDOStatement where you can run e.g. `$stmt->fetch(PDO::FETCH_ASSOC)`;
      * @return PDOStatement
      */
-    public function getStmt(string $sql, array $params = [] ) {
+    public function getStmt(string $sql, array $params = [])
+    {
         $this->stmt = $this->dbh->prepare($sql);
         $this->stmt->execute($params);
         return $this->stmt;
@@ -144,9 +143,10 @@ class DB
      * $post['title'] = $title will be transformed into
      * $post[':title'] = $title
      */
-    private function generateNamedParams (array $values = []) {
+    private function generateNamedParams(array $values = [])
+    {
         $ret_val = [];
-        foreach($values as $key => $val) {
+        foreach ($values as $key => $val) {
             $ret_val[':' . $key] = $val;
         }
         return $ret_val;
@@ -158,23 +158,22 @@ class DB
      */
     public function insert(string $table, array $values): bool
     {
-
         $field_names = array_keys($values);
 
         $sql = "INSERT INTO $table";
 
         // Escape field names
         $field_names_escaped = [];
-        foreach($field_names as $key => $val) {
+        foreach ($field_names as $key => $val) {
             $field_names_escaped[] = "`$val`";
         }
 
-        // Insert values 
+        // Insert values
         $fields = '( ' . implode(', ', $field_names_escaped) . ' )';
-        
+
         // Variable bindings
         $bound = '(:' . implode(', :', $field_names) . ' )';
-        
+
         // SQL statement
         $sql .= $fields . ' VALUES ' . $bound;
 
@@ -186,12 +185,11 @@ class DB
     }
 
     /**
-     * UPDATE table row(s) 
+     * UPDATE table row(s)
      * `$db->update('user_table', ['user_email' => 'new_email@domain', 'user_name' => 'new name'], ['id' => 42]);`
      */
     public function update(string $table, array $values, array $where): bool
     {
-
         $sql = "UPDATE $table SET ";
 
         $final_values = [];
@@ -215,7 +213,6 @@ class DB
             if (isset($final_values[$field])) {
                 $field_key = $field . '_' . $i;
                 $i += 1;
-
             }
 
             $where_ary[] = " `$field`=" . ":$field_key ";
@@ -229,18 +226,18 @@ class DB
     }
 
     /**
-     * Generates simple where part of SQL, e.g. ['email' => 'some@email.dk', 'user' => 'some user'] 
+     * Generates simple where part of SQL, e.g. ['email' => 'some@email.dk', 'user' => 'some user']
      * returns WHERE username = :username AND user = :user
      * which then can be used in `prepareFetchAll` and `prepareFetch`
     */
-    public function getWhereSql(array $where): string {
-
-        if (empty($where)){
+    public function getWhereSql(array $where): string
+    {
+        if (empty($where)) {
             return ' ';
-        } 
+        }
 
-        foreach($where as $field => $value) {
-            $where_ary[] = " `$field`=" . ":$field ";   
+        foreach ($where as $field => $value) {
+            $where_ary[] = " `$field`=" . ":$field ";
         }
 
         $sql  = " WHERE ";
@@ -254,36 +251,33 @@ class DB
      */
     public function delete(string $table, array $where): bool
     {
-
         $sql = "DELETE FROM $table ";
         $sql.= $this->getWhereSql($where);
 
         $where = $this->generateNamedParams($where);
         $res = $this->prepareExecute($sql, $where);
         return $res;
-
     }
-    
+
     /**
      * Shortcut to get one row, e.g:
      * `$db->getOne('auth', ['verified' => 1, 'email' => $email]);`
      */
-    public function getOne(string $table, array $where) {
-
-        $sql = "SELECT * FROM `$table` ";  
+    public function getOne(string $table, array $where)
+    {
+        $sql = "SELECT * FROM `$table` ";
         $sql.= $this->getWhereSql($where);
-        
+
         $row = $this->prepareFetch($sql, $where);
         return $row;
-
     }
 
     /**
      * Shortcut to get all rows, e.g:
      * `$db->getAll('invites', ['invite_email' => $email]);`
      */
-    public function getAll(string $table, array $where) {
-
+    public function getAll(string $table, array $where)
+    {
         $sql = "SELECT * FROM `$table` ";
         $sql.= $this->getWhereSql($where);
 

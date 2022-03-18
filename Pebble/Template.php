@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -8,12 +10,11 @@ use Pebble\Exception\TemplateException;
 
 class Template
 {
-
     /**
-     * Get output from a template 
+     * Get output from a template
      */
-    public static function getOutput (string $template, array $vars = [], array $options = []): string {
-        
+    public static function getOutput(string $template, array $vars = [], array $options = []): string
+    {
         ob_start();
 
         self::render($template, $vars, $options);
@@ -25,17 +26,16 @@ class Template
 
     /**
      * Render a template using a template path and some variables
-     * Any special entity is encoded on strings and numeric values. 
+     * Any special entity is encoded on strings and numeric values.
      * Set options['raw'] and no encoding will occur
      */
-    public static function render ($template_path, $variables = [], array $options = []) {
-
+    public static function render($template_path, $variables = [], array $options = [])
+    {
         try {
-
             if (!isset($options['raw'])) {
                 $variables = Special::encodeAry($variables);
             }
-            
+
             extract($variables);
 
             require($template_path);
@@ -44,4 +44,3 @@ class Template
         }
     }
 }
-

@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -6,7 +8,6 @@ use Pebble\Exception\NotFoundException;
 
 class Router
 {
-
     /**
      * Holding routes
      */
@@ -72,7 +73,7 @@ class Router
         $method = $_SERVER['REQUEST_METHOD'];
         if (!isset($this->routes[$method])) {
             $this->routes[$method] = [];
-        }   
+        }
     }
 
     /**
@@ -83,7 +84,7 @@ class Router
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $length = count($this->getUrlParts($_SERVER['REQUEST_URI']));
-        
+
         $valid_routes = [];
         foreach ($this->routes[$method] as $key => $route) {
             $route_parts_length = count($route['parts']);
@@ -97,7 +98,6 @@ class Router
         }
 
         $this->routes[$method] = $valid_routes;
-
     }
 
     /**
@@ -110,14 +110,13 @@ class Router
 
         $valid_routes = [];
         foreach ($this->routes[$method] as $route) {
-
             $route_parts = $route['parts'];
-            
+
             if ($this->isParam($route_parts[$index])) {
 
                 // Extract value of param
                 $param = ltrim($route_parts[$index], ':');
-                $route['params'][$param] = $part; 
+                $route['params'][$param] = $part;
                 $valid_routes[] = $route;
             }
 
@@ -133,11 +132,11 @@ class Router
      * Filter routes part by part
      */
     private function filterRoutesByParts()
-    {     
-        $current_url_parts = $this->getUrlParts($_SERVER['REQUEST_URI']);       
+    {
+        $current_url_parts = $this->getUrlParts($_SERVER['REQUEST_URI']);
         foreach ($current_url_parts as $index => $part) {
             $this->filterRoutesByIndexPart($index, $part);
-        }  
+        }
     }
 
     /**
@@ -146,7 +145,6 @@ class Router
      */
     public function add(string $request_method, string $route, string $class, string $class_method)
     {
-
         $this->request_method = $request_method;
         $this->routes[$request_method][] = [
             'route' => $route,
@@ -157,9 +155,9 @@ class Router
         ];
     }
 
-    public function getValidRoutes() {
-
-        $this->filterRouteByRequestMethod();    
+    public function getValidRoutes()
+    {
+        $this->filterRouteByRequestMethod();
         $this->filterRoutesByPartsLength();
         $this->filterRoutesByParts();
 
@@ -167,33 +165,34 @@ class Router
         $routes = $this->routes[$method];
         if (empty($routes)) {
             throw new NotFoundException('The page does not exist');
-        } 
+        }
 
-        foreach($routes as $route) {
+        foreach ($routes as $route) {
             if (!method_exists($route['class'], $route['method'])) {
-                throw new NotFoundException("The page does not exist. No such method: {$route['class']}::{$route['method']} "); 
+                throw new NotFoundException("The page does not exist. No such method: {$route['class']}::{$route['method']} ");
             }
         }
-        
-        return $routes;
 
+        return $routes;
     }
 
     /**
      * Parse a doc block and return all tags as an array. We are looking for 'route' and 'verbs'
      */
-    private function parseDocBlock($doc) {
-        if (preg_match_all('/@(\w+)\s+(.*)\r?\n/m', $doc, $matches)){
+    private function parseDocBlock($doc)
+    {
+        if (preg_match_all('/@(\w+)\s+(.*)\r?\n/m', $doc, $matches)) {
             $result = array_combine($matches[1], $matches[2]);
             return $result;
-        } 
+        }
     }
 
-    private function addClassMethods(string $class, string $method_name, array $parsed_doc) {
+    private function addClassMethods(string $class, string $method_name, array $parsed_doc)
+    {
         if (isset($parsed_doc['route']) && isset($parsed_doc['verbs'])) {
             $route = $parsed_doc['route'];
             $verbs = explode(',', $parsed_doc['verbs']);
-            foreach($verbs as $verb) {
+            foreach ($verbs as $verb) {
                 $verb = trim($verb);
                 $this->add($verb, $route, $class, $method_name);
             }
@@ -203,24 +202,28 @@ class Router
     /**
      * Add class routes found in doc block. In order for a method to be added to the router
      * it needs a @route and a @verbs tag. Like the following
-     * 
+     *
      * @route /api/posts/:id
-     * @verbs GET,POST  
+     * @verbs GET,POST
      */
-    public function addClass(string $class) {
-
+    public function addClass(string $class)
+    {
         $reflector = new \ReflectionClass($class);
         $methods = $reflector->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        foreach($methods as $method) {
+        foreach ($methods as $method) {
             $method_name = $method->name;
             $doc = $reflector->getMethod($method_name)->getDocComment();
-            
-            if (!$doc) continue;
+
+            if (!$doc) {
+                continue;
+            }
 
             $parsed_doc = $this->parseDocBlock($doc);
-            
-            if (!$parsed_doc) continue;
+
+            if (!$parsed_doc) {
+                continue;
+            }
 
             $this->addClassMethods($class, $method_name, $parsed_doc);
         }
@@ -232,18 +235,15 @@ class Router
      */
     public function run()
     {
-
         $routes = $this->getValidRoutes();
-        
-        foreach($routes as $route) {
 
+        foreach ($routes as $route) {
             $params = $route['params'];
             $class_method = $route['method'];
             $class = $route['class'];
             $object = new $class();
 
-            $object->$class_method($params);                    
-            
+            $object->$class_method($params);
         }
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -6,7 +8,6 @@ use Pebble\DB;
 
 class DBCache
 {
-
     /**
      * Default database cache table name
      */
@@ -25,8 +26,8 @@ class DBCache
         }
     }
 
-    private function generateJsonKey($id) {
-
+    private function generateJsonKey($id)
+    {
         $key = null;
         if (is_string($id)) {
             $key = $id;
@@ -38,7 +39,6 @@ class DBCache
 
     private function generateHashKey($id)
     {
-
         $json_key = $this->generateJsonKey($id);
         return $this->hash($json_key);
     }
@@ -59,7 +59,6 @@ class DBCache
      */
     public function get($id, int $max_life_time = 0)
     {
-
         $query = "SELECT * FROM {$this->table} WHERE id = ? ";
         $row = $this->db->prepareFetch($query, [$this->generateHashKey($id)]);
 
@@ -84,7 +83,6 @@ class DBCache
      */
     public function set($id, $data): bool
     {
-
         $this->db->beginTransaction();
 
         $res = $this->delete($id);
@@ -111,7 +109,6 @@ class DBCache
      */
     public function delete($id): bool
     {
-
         $query = "SELECT * FROM {$this->table} WHERE id = ?";
         $row = $this->db->prepareFetch($query, [$this->generateHashKey($id)]);
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -7,14 +9,14 @@ use Gregwar\Captcha\CaptchaBuilder;
 /**
  * Wrapper around Captcha
  */
-class Captcha {
-
-
+class Captcha
+{
     /**
      * @return Gregwar\Captcha\CaptchaBuilder;
      */
-    public function getBuilder() {
-        $builder = new CaptchaBuilder;
+    public function getBuilder()
+    {
+        $builder = new CaptchaBuilder();
         $builder->build();
 
         $_SESSION['captcha_phrase'] = $builder->getPhrase(4);
@@ -25,9 +27,9 @@ class Captcha {
     /**
      * Output image
      */
-    public function outputImage () {
-
-        $builder = $this->getBuilder();        
+    public function outputImage()
+    {
+        $builder = $this->getBuilder();
         header('Content-type: image/jpeg');
 
         $builder->output();
@@ -36,11 +38,11 @@ class Captcha {
     /**
      * Check captcha
      */
-    function validate ($phrase): bool {
+    public function validate($phrase): bool
+    {
         if (mb_strtolower($phrase) != mb_strtolower($_SESSION['captcha_phrase'])) {
             return false;
         }
         return true;
-
     }
 }

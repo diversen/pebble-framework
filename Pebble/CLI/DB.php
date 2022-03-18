@@ -8,8 +8,8 @@ use Diversen\ParseArgv;
 
 class DB
 {
-
-    public function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
         $this->config = $config;
     }
 
@@ -36,7 +36,6 @@ class DB
 
     private function connect(ParseArgv $args)
     {
-
         $verbose = $args->getFlag('v');
         $db = $this->config->getSection('DB');
         $ary = Utils::parsePDOString($db['url']);
@@ -50,11 +49,9 @@ class DB
 
     private function backup(ParseArgv $args)
     {
-        
         $no_data = '';
         if ($args->getFlag('no-data')) {
             $no_data = '--no-data';
-
         }
         $db = $this->config->getSection('DB');
         $ary = Utils::parsePDOString($db['url']);
@@ -67,14 +64,13 @@ class DB
         $command = "mysqldump $no_data --column-statistics=0 -u $db[username] -p$db[password] -h$ary[host] $ary[dbname] > $dump_name ";
 
         $return_var = 0;
-        passthru ( $command, $return_var);
+        passthru($command, $return_var);
         exit($return_var);
     }
 
 
     public function runCommand(ParseArgv $args)
     {
-
         if ($args->getFlag('connect')) {
             $this->connect($args);
         }

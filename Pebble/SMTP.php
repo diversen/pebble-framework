@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -7,7 +9,6 @@ use Parsedown;
 
 class SMTP
 {
-
     /**
      * Default SMTP from (email)
      */
@@ -19,7 +20,7 @@ class SMTP
     private $fromName = '';
 
     /**
-     * Markdown safemode enabled 
+     * Markdown safemode enabled
      */
     private $safeMode = true;
 
@@ -34,7 +35,7 @@ class SMTP
 
     /**
      * Constructor take an settings array
-     * 
+     *
      * [
      * 'DefaultFrom' => 'mail@10kilobyte.com',
      * 'DefaultFromName' => 'Time Manager',
@@ -47,16 +48,15 @@ class SMTP
      * 'SMTPDebug' => 0
      * ]
      */
-    public function __construct (array $settings = []) {
-
+    public function __construct(array $settings = [])
+    {
         $this->settings = $settings;
-        if (!$settings['DefaultFrom'] || !$settings['DefaultFromName']) { 
+        if (!$settings['DefaultFrom'] || !$settings['DefaultFromName']) {
             throw new \Exception('Set DefaultFrom and DefaultFromName in config/SMTP.php');
         }
 
         $this->from = $settings['DefaultFrom'];
         $this->fromName = $settings['DefaultFromName'];
-
     }
 
     /**
@@ -66,7 +66,6 @@ class SMTP
      */
     private function getPHPMailer()
     {
-
         $mail = new PHPMailer(true);
 
         // You don't need to catch configuration settings
@@ -88,7 +87,6 @@ class SMTP
      */
     public function send(string $to, string $subject, string $text, string $html, array $attachments = [])
     {
-
         $mail = $this->getPHPMailer();
         $mail->setFrom($this->from, $this->fromName);
         $mail->addAddress($to);
@@ -106,12 +104,10 @@ class SMTP
         }
 
         $mail->send();
-        
-
     }
 
-    private function getMarkdown (string $text) {
-
+    private function getMarkdown(string $text)
+    {
         $parsedown = new Parsedown();
         $parsedown->setSafeMode($this->safeMode);
         $html = $parsedown->text($text);
@@ -123,10 +119,7 @@ class SMTP
      */
     public function sendMarkdown(string $to, string $subject, string $text, array $attachments = [])
     {
-
         $html = $this->getMarkdown($text);
         return $this->send($to, $subject, $text, $html, $attachments);
-
     }
 }
-

@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -9,7 +11,6 @@ use Pebble\DB;
  */
 class Auth
 {
-
     public $db;
 
     /**
@@ -29,7 +30,6 @@ class Auth
      */
     public function authenticate(string $email, string $password): array
     {
-
         $sql = 'SELECT * FROM auth WHERE email = ? AND verified = 1 AND locked = 0';
         $row = $this->db->prepareFetch($sql, [$email]);
 
@@ -51,7 +51,6 @@ class Auth
      */
     public function create(string $email, string $password): bool
     {
-
         $random = $this->getRandom(32);
         $options = ['cost' => 12];
         $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
@@ -66,15 +65,12 @@ class Auth
      */
     public function verifyKey(string $key): bool
     {
-
         $row = $this->getByWhere(['random' => $key]);
 
         if (!empty($row)) {
-
             $new_key = $this->getRandom(32);
             $sql = "UPDATE auth SET `verified` = 1, `random` = ? WHERE id= ? ";
             return $this->db->prepareExecute($sql, [$new_key, $row['id']]);
-
         } else {
             return false;
         }
@@ -105,14 +101,12 @@ class Auth
      */
     public function updatePassword(string $id, string $password): bool
     {
-
         $random = $this->getRandom(32);
         $options = ['cost' => 12];
         $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
 
         $sql = "UPDATE auth SET `password_hash` = ?, `random` = ? WHERE id = ?";
         return $this->db->prepareExecute($sql, [$password_hash, $random, $id]);
-
     }
 
     /**
@@ -120,9 +114,7 @@ class Auth
      */
     private function getValidCookieRow(): array
     {
-
         if (isset($_COOKIE['auth'])) {
-
             $sql = "SELECT * FROM auth_cookie WHERE cookie_id = ?";
             $row = $this->db->prepareFetch($sql, [$_COOKIE['auth']]);
             return $row;
@@ -150,7 +142,6 @@ class Auth
      */
     public function getAuthId(): string
     {
-
         $auth_cookie_row = $this->getValidCookieRow();
         if (empty($auth_cookie_row)) {
             return "0";
@@ -163,13 +154,11 @@ class Auth
      */
     public function unlinkCurrentCookie()
     {
-
         if (isset($_COOKIE['auth'])) {
 
             // Delete current cookie
             $sql = "DELETE FROM auth_cookie WHERE cookie_id = ?";
             $this->db->prepareExecute($sql, [$_COOKIE['auth']]);
-
         }
     }
 
@@ -178,10 +167,8 @@ class Auth
      */
     public function unlinkAllCookies($auth_id): bool
     {
-
         $sql = "DELETE FROM auth_cookie WHERE auth_id = ?";
         return $this->db->prepareExecute($sql, [$auth_id]);
-
     }
 
     /**
@@ -190,7 +177,6 @@ class Auth
      */
     private function setCookie(array $auth, int $expires): bool
     {
-
         $random = $this->getRandom(32);
         $res = $this->setBrowserCookie('auth', $random, $expires);
 
@@ -204,12 +190,11 @@ class Auth
     /**
      * Set session cookie. It is actualy not a session cookie, because session cookies are not
      * reliable across browsers
-     * 
+     *
      * But chances are that if set to 0 then the cookie will expire when the browser is closed
      */
     public function setSessionCookie(array $auth, int $cookie_seconds = 0): bool
     {
-        
         if ($cookie_seconds == 0) {
             $expires = 0;
         } else {
@@ -225,7 +210,6 @@ class Auth
      */
     public function setPermanentCookie(array $auth, int $cookie_seconds = 0): bool
     {
-
         $expires = time() + $cookie_seconds;
         return $this->setCookie($auth, $expires);
     }
@@ -255,6 +239,5 @@ class Auth
         }
 
         return setcookie($key, $value, $time, $path, $domain, $secure, $http_only);
-
     }
 }

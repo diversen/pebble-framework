@@ -1,13 +1,14 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use Pebble\Server;
 use PHPUnit\Framework\TestCase;
 
 final class ServerTest extends TestCase
 {
-
-    public function test_getSchemeAndHost() {
-
+    public function test_getSchemeAndHost()
+    {
         $_SERVER['SERVER_PORT'] = '8000';
         $_SERVER['SERVER_NAME'] = '10kilobyte.com';
 
@@ -29,7 +30,5 @@ final class ServerTest extends TestCase
         $scheme_host = $server->getSchemeAndHost();
 
         $this->assertEquals('https://10kilobyte.com', $scheme_host);
-
     }
-
 }

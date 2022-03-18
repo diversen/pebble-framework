@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -7,13 +9,12 @@ namespace Pebble;
  */
 class URL
 {
-
     /**
      * Get a 'link' with current URL attached as query param 'return_to'
-     * 
+     *
      * E.g you redirect a user, and when the user has done some action your can - from the 'return_to' query part -
      * redirect the user back to the 'link' specified as the method's param
-     * 
+     *
      */
     public static function returnTo(string $link): string
     {
@@ -25,7 +26,8 @@ class URL
     /**
      * Get a variable from query variable $_GET. If the query part is not set thenthe method returns null
      */
-    public static function getQueryPart(string $str) {
+    public static function getQueryPart(string $str)
+    {
         if (isset($_GET[$str])) {
             return $_GET[$str];
         }

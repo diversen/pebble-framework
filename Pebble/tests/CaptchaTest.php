@@ -5,19 +5,17 @@ use PHPUnit\Framework\TestCase;
 
 final class CaptchaTest extends TestCase
 {
-
-    public function test_outputImage() {
-
+    public function test_outputImage()
+    {
         $captcha = new Captcha();
 
         $captcha->getBuilder();
 
         $this->assertIsString($_SESSION['captcha_phrase']);
-
     }
 
-    public function test_validate () {
-
+    public function test_validate()
+    {
         $captcha = new Captcha();
 
         $captcha->getBuilder();
@@ -27,10 +25,9 @@ final class CaptchaTest extends TestCase
         $res = $captcha->validate('not correct');
 
         $this->assertEquals($res, false);
-  
+
         $res = $captcha->validate($phrase);
 
         $this->assertEquals($res, true);
-
     }
 }

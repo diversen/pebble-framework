@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 use Pebble\Config;
 use Pebble\DB;
@@ -7,12 +9,11 @@ use Pebble\Migration;
 
 final class MigrationTest extends TestCase
 {
-
     public $config;
     public $db;
-    public function __setup() {
-
-        if(!$this->db) {
+    public function __setup()
+    {
+        if (!$this->db) {
             $this->config = new Config();
 
             $config_dir = __DIR__ . '/../../config';
@@ -20,14 +21,13 @@ final class MigrationTest extends TestCase
 
             $this->config->readConfig($config_dir);
             $this->config->readConfig($config_dir_locale);
-            
         }
     }
 
 
 
-    public function test_get_up_files() {
-
+    public function test_get_up_files()
+    {
         $this->__setup();
 
         $db_config = $this->config->getSection('DB');
@@ -39,7 +39,7 @@ final class MigrationTest extends TestCase
         $db->prepareExecute('DROP TABLE IF EXISTS table_1_b');
         $db->prepareExecute('DROP TABLE IF EXISTS table_2');
         $db->prepareExecute('DROP TABLE IF EXISTS table_3');
-        
+
         $m = new Migration($pdo_handle, __DIR__ . '/migrations', __DIR__ . '/.migration');
 
         $m->setCurrentVersion(0000);
@@ -91,7 +91,7 @@ final class MigrationTest extends TestCase
 
         $version = $m->getCurrentVersion();
         $this->assertEquals(0001, $version);
-        
+
         $tables = $db->prepareFetchAll('SHOW TABLES');
         $tables = array_column($tables, 'Tables_in_pebble');
 
@@ -104,7 +104,7 @@ final class MigrationTest extends TestCase
 
         $version = $m->getCurrentVersion();
         $this->assertEquals(0001, $version);
-        
+
         $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
         $m = new Migration($pdo_handle, __DIR__ . '/migrations', __DIR__ . '/.migration');
         $m->down();
@@ -118,6 +118,5 @@ final class MigrationTest extends TestCase
 
         $this->assertNotContains('table_1_a', $tables);
         $this->assertNotContains('table_1_b', $tables);
-
     }
 }

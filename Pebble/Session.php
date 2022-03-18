@@ -1,4 +1,6 @@
-<?php declare (strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Pebble;
 
@@ -9,13 +11,11 @@ use Exception;
  */
 class Session
 {
-
     /**
      * Set SESSION defaults from Session Configuration
      */
     public static function setConfigSettings(array $session_config)
     {
-
         if ($session_config) {
             $res = session_set_cookie_params(
                 $session_config["lifetime"],
