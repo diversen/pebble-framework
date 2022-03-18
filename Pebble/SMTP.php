@@ -3,17 +3,10 @@
 namespace Pebble;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 use Parsedown;
-use Pebble\Config;
-use Pebble\LogInstance;
-use Pebble\ExceptionTrace;
-
 
 class SMTP
 {
-
-
 
     /**
      * Default SMTP from (email)
