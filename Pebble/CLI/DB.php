@@ -3,7 +3,7 @@
 namespace Pebble\CLI;
 
 use Pebble\Config;
-use Pebble\DB\Helpers;
+use Pebble\DB\Utils;
 use Diversen\ParseArgv;
 
 class DB
@@ -39,7 +39,7 @@ class DB
 
         $verbose = $args->getFlag('v');
         $db = $this->config->getSection('DB');
-        $ary = Helpers::parsePDOString($db['url']);
+        $ary = Utils::parsePDOString($db['url']);
 
         $command = "mysql -u $db[username] -p$db[password] -h$ary[host] $ary[dbname]";
         if ($verbose) {
@@ -57,7 +57,7 @@ class DB
 
         }
         $db = $this->config->getSection('DB');
-        $ary = Helpers::parsePDOString($db['url']);
+        $ary = Utils::parsePDOString($db['url']);
 
         if (!file_exists('./backup')) {
             mkdir('./backup');

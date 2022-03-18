@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-
-class App
+class Server
 {
     public function isSecure()
     {
@@ -13,21 +12,22 @@ class App
     }
 
     /**
-     * Get scheme and host from App config file
+     * Get scheme and host $_SERVER variables
+     * e.g. http://localhost:8000
      */
     public function getSchemeAndHost(): string
     {
 
-        if(!$this->isSecure()) {
+        if (!$this->isSecure()) {
             $scheme = 'http://';
         } else {
             $scheme = 'https://';
         }
 
         $url = $scheme . $_SERVER['SERVER_NAME'];
-        if($_SERVER['SERVER_PORT'] !== '80' || $_SERVER['SERVER_PORT'] !== '443') {
+        if ($_SERVER['SERVER_PORT'] !== '80' || $_SERVER['SERVER_PORT'] !== '443') {
             $url .= ':' . $_SERVER['SERVER_PORT'];
-        } 
+        }
         return $url;
     }
 }

@@ -26,7 +26,15 @@
         "gregwar/captcha": "^1.1",
         "diversen/simple-php-translation": "^2.0.2",
         "diversen/minimal-cli-framework": "^3.0",
-        "phpunit/phpunit": "^9.5",
         "monolog/monolog": "^2.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.0.x-dev"
+        }
     }
 }

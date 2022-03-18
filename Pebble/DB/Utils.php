@@ -1,7 +1,7 @@
 <?php
 namespace Pebble\DB;
 
-class Helpers {
+class Utils {
 
     public static function parsePDOString ($pdo_str): array {
         $ary = [];
