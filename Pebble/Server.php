@@ -6,9 +6,12 @@ namespace Pebble;
 
 class Server
 {
-    public function isSecure()
+    public function isSecure(): bool
     {
-        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+        if ($_SERVER['SERVER_PORT'] == 443) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -25,7 +28,7 @@ class Server
         }
 
         $url = $scheme . $_SERVER['SERVER_NAME'];
-        if ($_SERVER['SERVER_PORT'] !== '80' || $_SERVER['SERVER_PORT'] !== '443') {
+        if ($_SERVER['SERVER_PORT'] !== '80' && $_SERVER['SERVER_PORT'] !== '443') {
             $url .= ':' . $_SERVER['SERVER_PORT'];
         }
         return $url;
