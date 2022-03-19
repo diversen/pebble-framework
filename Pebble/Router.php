@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 use Pebble\Exception\NotFoundException;
+use stdClass;
 
 class Router
 {
@@ -56,13 +57,13 @@ class Router
         // Remove query string
         $route = strtok($route, '?');
         $url_parts = explode('/', $route);
-        $url_parts_filterd = [];
+        $url_parts_filtered = [];
         foreach ($url_parts as $url_part) {
             if ($url_part) {
-                $url_parts_filterd[] = $url_part;
+                $url_parts_filtered[] = $url_part;
             }
         }
-        return $url_parts_filterd;
+        return $url_parts_filtered;
     }
 
     /**
@@ -176,6 +177,10 @@ class Router
         return $routes;
     }
 
+    public function getFirstRoute() {
+        return $this->getValidRoutes()[0];
+    }
+
     /**
      * Parse a doc block and return all tags as an array. We are looking for 'route' and 'verbs'
      */
@@ -229,21 +234,57 @@ class Router
         }
     }
 
+    private $middleware = [];
+
+    public function use(callable $callable) {
+        $this->middleware[] = $callable;
+    }
+
     /**
-     * When all routes are loaded then run the application
+     * When all routes are loaded then run the first route
      * `$router->run()`
      */
     public function run()
     {
-        $routes = $this->getValidRoutes();
+        $std_obj = new stdClass(); 
+        $route = $this->getFirstRoute();
 
+        $params = $route['params'];
+
+        foreach($this->middleware as $middleware) {
+            $middleware($params, $std_obj);
+        }
+
+        $class_method = $route['method'];
+        $class = $route['class'];
+        $object = new $class();
+
+        $object->$class_method($params, $std_obj);
+
+    }
+
+    /**
+     * Runs any route found
+     * `$router->run()`
+     */
+    public function runAll() {
+        
+        $std_obj = new stdClass(); 
+        $routes = $this->getValidRoutes();
         foreach ($routes as $route) {
+
             $params = $route['params'];
+
+            foreach($this->middleware as $middleware) {
+                $middleware($params, $std_obj);
+            }
+
             $class_method = $route['method'];
             $class = $route['class'];
             $object = new $class();
 
-            $object->$class_method($params);
+            $object->$class_method($params, $std_obj);
+            
         }
-    }
+    }  
 }
