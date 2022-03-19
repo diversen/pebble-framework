@@ -177,7 +177,8 @@ class Router
         return $routes;
     }
 
-    public function getFirstRoute() {
+    public function getFirstRoute()
+    {
         return $this->getValidRoutes()[0];
     }
 
@@ -236,7 +237,8 @@ class Router
 
     private $middleware = [];
 
-    public function use(callable $callable) {
+    public function use(callable $callable)
+    {
         $this->middleware[] = $callable;
     }
 
@@ -246,12 +248,12 @@ class Router
      */
     public function run()
     {
-        $std_obj = new stdClass(); 
+        $std_obj = new stdClass();
         $route = $this->getFirstRoute();
 
         $params = $route['params'];
 
-        foreach($this->middleware as $middleware) {
+        foreach ($this->middleware as $middleware) {
             $middleware($params, $std_obj);
         }
 
@@ -260,22 +262,20 @@ class Router
         $object = new $class();
 
         $object->$class_method($params, $std_obj);
-
     }
 
     /**
      * Runs any route found
      * `$router->run()`
      */
-    public function runAll() {
-        
-        $std_obj = new stdClass(); 
+    public function runAll()
+    {
+        $std_obj = new stdClass();
         $routes = $this->getValidRoutes();
         foreach ($routes as $route) {
-
             $params = $route['params'];
 
-            foreach($this->middleware as $middleware) {
+            foreach ($this->middleware as $middleware) {
                 $middleware($params, $std_obj);
             }
 
@@ -284,7 +284,6 @@ class Router
             $object = new $class();
 
             $object->$class_method($params, $std_obj);
-            
         }
-    }  
+    }
 }
