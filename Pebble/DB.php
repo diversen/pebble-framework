@@ -246,6 +246,18 @@ class DB
     }
 
     /**
+     * Return limit sql
+     * @param array $limit index 0 is limit and index 1 is offset
+     */
+    public function getLimitSql(array $limit = []) {
+        if (empty($limit)) {
+            return '';
+        }
+
+        return "LIMIT $limit[0], $limit[1] ";
+    }
+
+    /**
      * Delete rows from a table
      * `$db->delete('project', ['id' => $id]);`
      */
