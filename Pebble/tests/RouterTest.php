@@ -90,7 +90,7 @@ final class RouterTest extends TestCase
         $this->assertEquals($routes[1]['method'], 'helloWorld');
     }
 
-    public function test_run()
+    public function test_run_all()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world/';
@@ -106,7 +106,7 @@ final class RouterTest extends TestCase
         // Exact match
         $router->add('POST', '/test/hello_world', Test::class, 'helloWorld');
 
-        $router->run();
+        $router->runAll();
 
         $this->expectOutputString('Hello world');
     }
