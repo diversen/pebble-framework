@@ -254,7 +254,10 @@ class DB
             return '';
         }
 
-        return "LIMIT $limit[0], $limit[1] ";
+        $offset = (int)$limit[0];
+        $limit = (int)$limit[1];
+
+        return "LIMIT $offset, $limit ";
     }
 
     /**
