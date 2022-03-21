@@ -10,16 +10,14 @@ namespace Pebble;
 class URL
 {
     /**
-     * Get a 'link' with current URL attached as query param 'return_to'
-     *
-     * E.g you redirect a user, and when the user has done some action your can - from the 'return_to' query part -
-     * redirect the user back to the 'link' specified as the method's param
-     *
+     * Get a 'link' with current URL attached as query param named 'return_to'
      */
-    public static function returnTo(string $link): string
-    {
-        $return_to = urlencode($_SERVER['REQUEST_URI']);
-        $url = $link . '?return_to=' . $return_to;
+    public static function returnTo(string $link, $return_to = null): string
+    {   
+        if (!$return_to) {
+            $return_to = $_SERVER['REQUEST_URI'];
+        }
+        $url = $link . '?return_to=' . urlencode($return_to);
         return $url;
     }
 
