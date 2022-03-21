@@ -249,7 +249,8 @@ class DB
      * Return limit sql
      * @param array $limit index 0 is limit and index 1 is offset
      */
-    public function getLimitSql(array $limit = []) {
+    public function getLimitSql(array $limit = [])
+    {
         if (empty($limit)) {
             return '';
         }

@@ -13,7 +13,7 @@ class URL
      * Get a 'link' with current URL attached as query param named 'return_to'
      */
     public static function returnTo(string $link, $return_to = null): string
-    {   
+    {
         if (!$return_to) {
             $return_to = $_SERVER['REQUEST_URI'];
         }
