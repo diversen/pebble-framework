@@ -16,13 +16,13 @@ You can also add a `config-locale` folder and copy the `DB.php` file into this f
 
     mkdir config-locale && cp config/DB.php config-locale/
 
-`config-locale` will not be overwritten on checkout. 
+`config-locale` is in `.gitignore`. 
 
-Edit one of the `DB.php` files and add a valid database, username, and password
+Edit one of the `DB.php` files and add a valid `database`, `username`, and `password`
 
 # Install
 
-Install dependencies:
+Install dependencies (there is only require-dev dependencies):
 
     composer install
     
@@ -37,6 +37,19 @@ Run DB migrations
 Then run the unit tests:
 
     ./Pebble/test.sh
+
+# Dependencies
+
+Most classes can be used without any other dependencies, but if you want to use
+
+`Pebble\Captcha` you will need:
+
+    composer require gregwar/captcha:^1.1
+
+`Pebble\SMTP` you will need:
+
+    composer require phpmailer/phpmailer:^6.0
+    composer require erusev/parsedown:^1.7
 
 # Docker MySQL
 
