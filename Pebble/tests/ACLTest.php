@@ -86,27 +86,6 @@ final class ACLTest extends TestCase
         $this->assertEquals(null, $res);
     }
 
-    public function test_isAuthenticatedOrJSONError_throw()
-    {
-        $this->__setup();
-        $this->__cleanup();
-
-        $acl = new ACL($this->db, $this->config->getSection('Auth'));
-        $res = $acl->isAuthenticatedOrJSONError();
-        $this->assertEquals(false, $res);
-        $this->expectOutputString('{"error":"You can not access this page"}');
-    }
-
-    public function test_isAuthenticatedOrJSONError()
-    {
-        $this->__setup();
-        $this->__createVerifyLoginUser();
-
-        $acl = new ACL($this->db, $this->config->getSection('Auth'));
-        $res = $acl->isAuthenticatedOrJSONError();
-        $this->assertEquals(true, $res);
-    }
-
     public function test_setAccessRights_removeAccessRights()
     {
         $this->__setup();

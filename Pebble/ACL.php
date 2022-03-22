@@ -34,24 +34,6 @@ class ACL extends Auth
     }
 
     /**
-     * Check if a user can access a page and output JSON error if not
-     */
-    public function isAuthenticatedOrJSONError(): bool
-    {
-        $response = [];
-
-        try {
-            $this->isAuthenticatedOrThrow();
-        } catch (ForbiddenException $e) {
-            $response['error'] = $e->getMessage();
-            echo json_encode($response);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Create access right ['entity', 'entity_id', 'right', 'auth_id'] row in `acl` table
      */
     public function setAccessRights(array $access_rights)
