@@ -35,7 +35,7 @@ final class FlashTest extends TestCase
                 'alert_option' => true,
             ]
         ];
-        $messages = getMessages();
+        $messages = $flash->getMessages();
         $this->assertEquals($expect, $messages[0]);
     }
 }
