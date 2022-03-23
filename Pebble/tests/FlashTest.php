@@ -8,7 +8,9 @@ final class FlashTest extends TestCase
     public function test_setMessage()
     {
         $_SESSION = [];
-        Flash::setMessage('Error test', 'error', ['alert_option' => true]);
+        $flash = new Flash();
+        
+        $flash->setMessage('Error test', 'error', ['alert_option' => true]);
 
         $expect = [
             'message' => 'Error test',
@@ -23,7 +25,8 @@ final class FlashTest extends TestCase
     public function test_getMessage()
     {
         $_SESSION = [];
-        Flash::setMessage('Error test', 'error', ['alert_option' => true]);
+        $flash = new Flash();
+        $flash->setMessage('Error test', 'error', ['alert_option' => true]);
 
         $expect = [
             'message' => 'Error test',
@@ -32,7 +35,7 @@ final class FlashTest extends TestCase
                 'alert_option' => true,
             ]
         ];
-        $messages = Flash::getMessages();
+        $messages = getMessages();
         $this->assertEquals($expect, $messages[0]);
     }
 }

@@ -7,12 +7,12 @@ namespace Pebble;
 class Flash
 {
     /**
-     * Set SESSION flash message
+     * Set a SESSION flash message
      * @param string $message
-     * @param string $type Type is one of ['info', 'success', 'warning', 'error'] or any other you may use in your app.
-     * @param array  $options ['flash_remove' => true] Options. E.g. set flash_remove in order to add a css class used to remove messages using js.
+     * @param string $type e.g. 'info', 'success', 'warning', 'error' or any other you may use in your app.
+     * @param array  $options ['flash_remove' => true] Options. E.g. ['flash_remove' => true] could be used to remove the message after 5 secs. 
      */
-    public static function setMessage(string $message, string $type, array $options = [])
+    public function setMessage(string $message, string $type, array $options = [])
     {
         if (!isset($_SESSION['flash'])) {
             $_SESSION['flash'] = [];
@@ -21,10 +21,10 @@ class Flash
     }
 
     /**
-     * Get all flash messages as an array
+     * Get all flash messages from SESSION as an array, and then delete the flash messages from SESSION
      * @return array $messages
      */
-    public static function getMessages(): array
+    public function getMessages(): array
     {
         $messages = [];
 
