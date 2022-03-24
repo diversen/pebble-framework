@@ -10,6 +10,8 @@ use Pebble\Exception\TemplateException;
 
 class Template
 {
+
+    public static $base_path = '../';
     /**
      * Get output from a template
      */
@@ -38,7 +40,7 @@ class Template
 
             extract($variables);
 
-            require($template_path);
+            require(self::$base_path . $template_path);
         } catch (Exception $e) {
             throw new TemplateException($e);
         }
