@@ -12,6 +12,8 @@ Known to work on:  `PHP >= 7.4.3`
 
 # Test
 
+    git clone https://github.com/diversen/pebble-framework.git && cd pebble-framework
+
 The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php`.
 
 You can also add a `config-locale` folder and copy the `DB.php` file into this folder. 
