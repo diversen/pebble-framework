@@ -17,8 +17,8 @@ final class DBTest extends TestCase
         if (!$this->db) {
             $this->config = new Config();
 
-            $config_dir = __DIR__ . '/../../config';
-            $config_dir_locale =  __DIR__ . '/../../config-locale';
+            $config_dir = __DIR__ . '/../config';
+            $config_dir_locale =  __DIR__ . '/../config-locale';
 
             $this->config->readConfig($config_dir);
             $this->config->readConfig($config_dir_locale);

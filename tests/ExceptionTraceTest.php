@@ -12,7 +12,7 @@ final class ExceptionTraceTest extends TestCase
         } catch (Exception $e) {
             $trace = ExceptionTrace::get($e);
             $this->assertStringContainsString('Message: An error', $trace);
-            $this->assertStringContainsString('Pebble/tests/ExceptionTraceTest.php', $trace);
+            $this->assertStringContainsString('tests/ExceptionTraceTest.php', $trace);
             $this->assertStringContainsString('Trace: #0', $trace);
         }
     }

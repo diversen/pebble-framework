@@ -15,10 +15,10 @@
     ],
 
     "autoload": {
-        "classmap": [
-            ""
-        ]
+        "psr-4": {"Pebble\\": "src/"}
     },
+
+
     "require": {
         "php": ">=7.4.3"
     },
