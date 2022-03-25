@@ -177,7 +177,7 @@ class Router
         return $routes;
     }
 
-    public function getFirstRoute()
+    private function getFirstRoute()
     {
         return $this->getValidRoutes()[0];
     }
@@ -206,8 +206,8 @@ class Router
     }
 
     /**
-     * Add class routes found in doc block. In order for a method to be added to the router
-     * it needs a @route and a @verbs tag. Like the following
+     * Add class routes found in a doc block. In order for a method to be added to the router
+     * it needs a @route and a @verbs tag. E.g. like in the following:
      *
      * @route /api/posts/:id
      * @verbs GET,POST
@@ -243,8 +243,7 @@ class Router
     }
 
     /**
-     * When all routes are loaded then run the first route
-     * `$router->run()`
+     * When all routes are loaded then the first route found will be executed
      */
     public function run()
     {
@@ -265,8 +264,7 @@ class Router
     }
 
     /**
-     * Runs any route found
-     * `$router->run()`
+     * Runs any route found in the router in the order they were added
      */
     public function runAll()
     {
