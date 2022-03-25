@@ -6,11 +6,11 @@ A simple, small, and fast php framework.
 
 Known to work on:  `PHP >= 7.4.3`
 
-# Install
+# Install as dependency
 
     composer require diversen/pebble-framework
 
-# Test
+# Install for test
 
     git clone https://github.com/diversen/pebble-framework.git && cd pebble-framework
 
@@ -41,6 +41,17 @@ Run DB migrations
 Then run the unit tests:
 
     ./test.sh
+
+# If setup once
+
+If you already have a database running with default `database`, `username`, and `password` as specified
+in [config/DB.php](config/DB.php)
+
+You can run the following command: 
+
+    curl -s https://raw.githubusercontent.com/diversen/pebble-framework/main/setup.sh | bash
+
+Which clones, migrates, and run all tests.
 
 # Dependencies
 
