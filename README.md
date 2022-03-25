@@ -53,6 +53,10 @@ You can run the following command:
 
 Which clones, migrates, and run all tests.
 
+You may want to change the `git` origin from `https` to `ssh`:
+
+    git remote set-url origin git@github.com:diversen/pebble-framework.git
+
 # Dependencies
 
 Most classes can be used without any other dependencies, but if you want to use
