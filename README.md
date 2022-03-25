@@ -6,7 +6,11 @@ A simple, small, and fast php framework.
 
 Known to work on:  `PHP >= 7.4.3`
 
-# Config
+# Install
+
+    composer require diversen/pebble-framework
+
+# Test
 
 The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php`.
 
@@ -34,7 +38,7 @@ Run DB migrations
 
 Then run the unit tests:
 
-    ./Pebble/test.sh
+    ./test.sh
 
 # Dependencies
 
