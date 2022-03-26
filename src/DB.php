@@ -63,20 +63,33 @@ class DB
     }
 
     /**
-     * Prepare and fetch all rows, e.g
-     * `$db->prepareFetchAll("SELECT * FROM invites WHERE status = ? ", [$status]);`
+     * Prepare and fetch all rows using `$sql` and `$params`
      */
-    public function prepareFetchAll(string $sql, array $params = [], array $options = []): array
+    public function prepareFetchAll(string $sql, array $params = []): array
     {
         $stmt = $this->getStmt($sql, $params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Prepare execute, and fetch a single row or an empty array
+     * Prepare and fetch all using params in the where clause
+     * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], ['offset' => 20, 'limit' => 10]]);`
+     */
+    public function prepareQueryAll(string $sql, array $params = [], array $order_by = [], array $limit = [] ): array
+    {   
+        $sql .= ' ';
+        $sql .= $this->getWhereSql($params);
+        $sql .= $this->getOrderBy($order_by);
+        $sql .= $this->getLimitSql($limit);
+        $stmt = $this->getStmt($sql, $params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Prepare and fetch a single row or an empty array
      * `$db->prepareFetchAll("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
      */
-    public function prepareFetch(string $sql, array $params = [], array $options = []): array
+    public function prepareFetch(string $sql, array $params = []): array
     {
         $stmt = $this->getStmt($sql, $params);
 
@@ -89,7 +102,33 @@ class DB
     }
 
     /**
-     * Get PDOStatement where you can run e.g. `$stmt->fetch(PDO::FETCH_ASSOC)`;
+     * Prepare and fetch a single row using params in the where clause
+     * Use this when you don't want to generate 'WHERE' clause from `$params`, but only prepare the params
+     */
+    public function prepareQuery(string $sql, array $params = [], array $order_by = []): array {
+        
+        $sql .= ' ';
+        $sql .= $this->getOrderBy();
+        $stmt = $this->getStmt($sql, $params);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!empty($row)) {
+            return $row;
+        }
+        return [];
+    }
+
+    /**
+     * Count number of rows in a table from a `$table` name, the `$field` to count from, and `$where` conditions
+     */
+    public function getTableNumRows(string $table, string $field, array $where = []): int {
+        $sql = "SELECT count($field) as num_rows FROM $table ";
+        $sql.= $this->getWhereSql($where);
+        $row = $this->prepareFetch($sql, $where);
+        return (int)$row['num_rows'];
+    }
+
+    /**
+     * Get a PDOStatement where you can run e.g. `$stmt->fetch(PDO::FETCH_ASSOC)`;
      * @return PDOStatement
      */
     public function getStmt(string $sql, array $params = [])
@@ -136,7 +175,6 @@ class DB
     {
         return $this->dbh->commit();
     }
-
 
     /**
      * Generate array with keys as named params
@@ -259,6 +297,26 @@ class DB
         $limit = (int)$limit[1];
 
         return "LIMIT $offset, $limit ";
+    }
+
+    /**
+     * Return ORDER BY SQL
+     * @param array an array of arrays contains order where index 0 is field and index 1 is direction
+     */
+    public function getOrderBy(array $order_by = [])
+    {
+        if (empty($order_by)) {
+            return '';
+        }
+
+        foreach($order_by as $field => $direction) {
+            $order_by_sql_ary[] = "$field $direction";
+        }
+
+        $order_by_sql = 'ORDER BY ';
+        $order_by_sql .= implode(', ', $order_by_sql_ary);
+        
+        return $order_by_sql . ' ';
     }
 
     /**

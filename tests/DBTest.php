@@ -181,6 +181,19 @@ EOF;
         $this->assertEquals(count($rows), 2);
     }
 
+    public function test_prepareQueryAll()
+    {
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
+
+        $db = $this->__getDB();
+
+        $rows = $db->prepareQueryAll("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC'], [0, 1] );
+        $this->assertIsArray($rows);
+        $this->assertEquals(count($rows), 1);
+    }
+
     public function test_prepareFetch()
     {
         $this->__cleanup();
@@ -195,6 +208,34 @@ EOF;
 
         $this->assertIsArray($row);
         $this->assertEquals(count($rows), 1);
+    }
+
+    public function test_prepareQuery()
+    {
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
+
+        $db = $this->__getDB();
+
+        $row = $db->prepareFetch("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC']);
+
+        $rows[] = $row;
+
+        $this->assertIsArray($row);
+        $this->assertEquals(count($rows), 1);
+    }
+
+    public function test_getTableNumRows()
+    {
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
+
+        $db = $this->__getDB();
+
+        $num_rows = $db->getTableNumRows('account_test', 'id', ['password' => 'secret']);
+        $this->assertEquals($num_rows, 1);
     }
 
     public function test_getStmt()
