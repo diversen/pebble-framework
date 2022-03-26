@@ -274,7 +274,7 @@ class DB
      * Return ORDER BY SQL
      * @param array an array of arrays contains order where index 0 is field and index 1 is direction
      */
-    public function getOrderBy(array $order_by = [])
+    public function getOrderBySql(array $order_by = [])
     {
         if (empty($order_by)) {
             return '';
