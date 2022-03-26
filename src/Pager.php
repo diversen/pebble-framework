@@ -8,7 +8,7 @@ class Pager
 {
 
     /**
-     * Current page in the set
+     * Current page in the set. 0 is the first page.
      */
     public int $page;
     public int $limit;
