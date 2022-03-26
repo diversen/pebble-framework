@@ -342,7 +342,7 @@ class DB
 
         $sql .= ' ';
         $sql .= $this->getWhereSql($where);
-        $sql .= $this->getOrderBy($order_by);
+        $sql .= $this->getOrderBySql($order_by);
         $stmt = $this->getStmt($sql, $params);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!empty($row)) {
@@ -362,7 +362,7 @@ class DB
 
         $sql .= ' ';
         $sql .= $this->getWhereSql($where);
-        $sql .= $this->getOrderBy($order_by);
+        $sql .= $this->getOrderBySql($order_by);
         $sql .= $this->getLimitSql($limit);
         $stmt = $this->getStmt($sql, $params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
