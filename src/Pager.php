@@ -15,6 +15,9 @@ class Pager
     public int $offset;
     public ?int $next;
     public ?int $prev;
+    public bool $has_next;
+    public bool $has_prev;
+
     public int $num_pages;
 
     public string $query_part;
@@ -29,7 +32,9 @@ class Pager
         $this->limit = $limit;
         $this->offset = $data['offset'];
         $this->next = $data['next'];
+        $this->has_next = $data['has_next'];
         $this->prev = $data['prev'];
+        $this->has_prev = $data['has_prev'];
         $this->num_pages = $data['num_pages'];
     }
 
@@ -55,13 +60,17 @@ class Pager
         }
 
         $data['next'] = null;
+        $data['has_next'] = false;
         if ($more) {
             $data['next'] = $data['page'] + 1;
+            $data['has_next'] = true;
         }
 
         $data['prev'] = null;
+        $data['has_prev'] = false;
         if ($from > 0) {
             $data['prev'] = $from - 1;
+            $data['has_prev'] = true;
         }
 
         return $data;
