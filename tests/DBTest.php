@@ -181,7 +181,7 @@ EOF;
         $this->assertEquals(count($rows), 2);
     }
 
-    public function test_prepareQueryAll()
+    public function test_getAllQuery()
     {
         $this->__cleanup();
         $this->__createTestTable();
@@ -189,7 +189,7 @@ EOF;
 
         $db = $this->__getDB();
 
-        $rows = $db->prepareQueryAll("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC'], [0, 1] );
+        $rows = $db->getAllQuery("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC'], [0, 1] );
         $this->assertIsArray($rows);
         $this->assertEquals(count($rows), 1);
     }
@@ -210,7 +210,7 @@ EOF;
         $this->assertEquals(count($rows), 1);
     }
 
-    public function test_prepareQuery()
+    public function test_getOneQuery()
     {
         $this->__cleanup();
         $this->__createTestTable();
@@ -218,7 +218,7 @@ EOF;
 
         $db = $this->__getDB();
 
-        $row = $db->prepareFetch("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC']);
+        $row = $db->getOneQuery("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC']);
 
         $rows[] = $row;
 

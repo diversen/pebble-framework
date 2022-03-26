@@ -72,20 +72,6 @@ class DB
     }
 
     /**
-     * Prepare and fetch all using params in the where clause
-     * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], ['offset' => 20, 'limit' => 10]]);`
-     */
-    public function prepareQueryAll(string $sql, array $params = [], array $order_by = [], array $limit = [] ): array
-    {   
-        $sql .= ' ';
-        $sql .= $this->getWhereSql($params);
-        $sql .= $this->getOrderBy($order_by);
-        $sql .= $this->getLimitSql($limit);
-        $stmt = $this->getStmt($sql, $params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    /**
      * Prepare and fetch a single row or an empty array
      * `$db->prepareFetchAll("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
      */
@@ -101,21 +87,6 @@ class DB
         return [];
     }
 
-    /**
-     * Prepare and fetch a single row using params in the where clause
-     * Use this when you don't want to generate 'WHERE' clause from `$params`, but only prepare the params
-     */
-    public function prepareQuery(string $sql, array $params = [], array $order_by = []): array {
-        
-        $sql .= ' ';
-        $sql .= $this->getOrderBy();
-        $stmt = $this->getStmt($sql, $params);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!empty($row)) {
-            return $row;
-        }
-        return [];
-    }
 
     /**
      * Count number of rows in a table from a `$table` name, the `$field` to count from, and `$where` conditions
@@ -346,6 +317,8 @@ class DB
         return $row;
     }
 
+
+
     /**
      * Shortcut to get all rows, e.g:
      * `$db->getAll('invites', ['invite_email' => $email]);`
@@ -357,5 +330,41 @@ class DB
 
         $rows = $this->prepareFetchAll($sql, $where);
         return $rows;
+    }
+
+    /**
+     * Prepare and fetch a single row using params in the where clause
+     * Use this when you want to generate 'WHERE' clause from `$params`
+     */
+    public function getOneQuery(string $sql, array $params = [], array $order_by = []): array {
+        
+        $where = $params;
+
+        $sql .= ' ';
+        $sql .= $this->getWhereSql($where);
+        $sql .= $this->getOrderBy($order_by);
+        $stmt = $this->getStmt($sql, $params);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!empty($row)) {
+            return $row;
+        }
+        return [];
+    }
+
+    /**
+     * Prepare and fetch all rows using `$params` in the where clause
+     * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], [20, 10]]);`
+     */
+    public function getAllQuery(string $sql, array $params = [], array $order_by = [], array $limit = [] ): array
+    {   
+
+        $where = $params;
+
+        $sql .= ' ';
+        $sql .= $this->getWhereSql($where);
+        $sql .= $this->getOrderBy($order_by);
+        $sql .= $this->getLimitSql($limit);
+        $stmt = $this->getStmt($sql, $params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
