@@ -242,6 +242,14 @@ class Router
         $this->middleware[] = $callable;
     }
 
+    private static $currentRoute = '';
+
+    /**
+     * Get current being run
+     */
+    public static function getCurrentRoute(): string {
+        return self::$currentRoute;
+    }   
     /**
      * When all routes are loaded then the first route found will be executed
      */
@@ -251,6 +259,7 @@ class Router
         $route = $this->getFirstRoute();
 
         $params = $route['params'];
+        self::$currentRoute = $route['route'];
 
         foreach ($this->middleware as $middleware) {
             $middleware($params, $std_obj);
