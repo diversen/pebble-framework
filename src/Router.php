@@ -245,7 +245,7 @@ class Router
     private static $currentRoute = '';
 
     /**
-     * Get current being run
+     * Get current route being run
      */
     public static function getCurrentRoute(): string {
         return self::$currentRoute;
