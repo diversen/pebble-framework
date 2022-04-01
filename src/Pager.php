@@ -4,6 +4,7 @@ namespace Pebble;
 
 use Pebble\URL;
 
+
 class Pager
 {
 
@@ -17,15 +18,25 @@ class Pager
     public ?int $prev;
     public bool $has_next;
     public bool $has_prev;
-
+    public bool $current;
     public int $num_pages;
 
-    public string $query_part;
+    private string $query_part;
+    private bool $zero_index;
 
-    public function __construct(int $total, int $limit, string $query_part = 'page')
+    /**
+     * Get pager that can be used for pagination and setting offset, limit in DB queries
+     * @param int $total total items in the set
+     * @param int $limit results per page
+     * @param string $query_art e.g. /index?page=1 where 'page' acts like the query part
+     * @param bool $zero_index if trye then the first 'page' is 0 - if false then the first page is 1
+     */
+    public function __construct(int $total, int $limit, string $query_part = 'page', bool $zero_index = true)
     {
 
         $this->query_part = $query_part;
+        $this->zero_index = $zero_index;
+
         $data = $this->getData($total, $limit);
 
         $this->page = $data['page'];
@@ -38,6 +49,33 @@ class Pager
         $this->num_pages = $data['num_pages'];
     }
 
+
+    private function getFrom() {
+
+        if (!URL::getQueryPart($this->query_part)) {
+            if ($this->zero_index) {
+                $from = 0;
+            } else {
+                $from = 1;
+            }
+        } else {
+            $from = (int)URL::getQueryPart($this->query_part);
+        }
+        return $from;
+            
+    }
+
+    private function getOffset($from, $limit) {
+        if($this->zero_index) {
+            $offset = $from * $limit;
+        } else {
+            $offset = ($from - 1) * $limit;
+        }
+
+        return $offset;
+
+    }
+
     public function getData(int $total, int $limit): array
     {
 
@@ -48,10 +86,10 @@ class Pager
             $data['num_pages'] = ceil($total / $limit);
         }
 
-        $from = (int)URL::getQueryPart($this->query_part) ?? 0;
+        $from = $this->getFrom();
         $data['page'] = $from;
 
-        $offset = $from * $limit;
+        $offset = $this->getOffset($from, $limit);
         $data['offset'] = $offset;
 
         $more = false;
