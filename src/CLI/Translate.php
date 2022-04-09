@@ -80,22 +80,44 @@ class Translate
         return 0;
     }
 
+    /**
+     * Create js from  $json
+     * Including an export
+     */
+    private function addJsExport(string $json) {
+        $js = "const Translation = \n\n";
+        $js.= $json . "\n\n";
+        $js.= "export {Translation}\n"; 
+        return $js;
+    }
+
+    /**
+     * Transform php translations to js files
+     */
     private function toJS()
     {
         $translate_dir = $this->config->get('Language.translate_base_dir');
+        $translate_dir_js = $this->config->get('Language.translate_base_dir_js');
         $enabled = $this->config->get('Language.enabled');
 
         foreach ($enabled as $lang) {
             $lang_base_dir = "$translate_dir/lang/$lang";
             $translation_file = "$lang_base_dir/language.php";
+            
             if (!file_exists($translation_file)) {
                 continue;
             }
             include $translation_file;
-            file_put_contents("$lang_base_dir/language.json", json_encode($LANG));
+
+            $js_lang_path = "$translate_dir_js/$lang";
+            if (!file_exists($js_lang_path)) {
+                mkdir($js_lang_path, 0777, true);
+            }
+
+            $js = $this->addJsExport(json_encode($LANG));
+            file_put_contents("$js_lang_path/language.js", $js);
         }
     }
-
 
     public function runCommand(ParseArgv $args)
     {

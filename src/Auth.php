@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 use Pebble\DB;
+use Pebble\Cookie;
 
 /**
  * A simple authentication class based on a single database table
@@ -227,17 +228,8 @@ class Auth
      */
     private function setBrowserCookie(string $key, string $value, int $time)
     {
-        $path = $this->auth_cookie_settings['cookie_path'];
-        $domain = $this->auth_cookie_settings['cookie_domain'];
-        $secure = $this->auth_cookie_settings['cookie_secure'];
-        $http_only = $this->auth_cookie_settings['cookie_http'];
 
-        // Little hack for unit testing
-        if ($this->isCli()) {
-            $_COOKIE['auth'] = $value;
-            return true;
-        }
-
-        return setcookie($key, $value, $time, $path, $domain, $secure, $http_only);
+        $cookie = new Cookie($this->auth_cookie_settings);
+        return $cookie->setCookie($key, $value, $time);
     }
 }
