@@ -25,7 +25,7 @@ class Cookie {
 
         // Little hack for unit testing
         if ($this->isCli()) {
-            $_COOKIE['auth'] = $value;
+            $_COOKIE[$key] = $value;
             return true;
         }
 
