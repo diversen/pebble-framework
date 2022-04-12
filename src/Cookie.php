@@ -12,7 +12,7 @@ class Cookie {
      * Set a cookie
      * If time is 0 then the it will be a session cookie
      */
-    public function setCookie(string $key, string $value, int $time) {
+    public function setCookie(string $key, string $value, int $time = 0) {
 
         $path = $this->settings['cookie_path'];
         $domain = $this->settings['cookie_domain'];

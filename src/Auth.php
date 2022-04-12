@@ -173,63 +173,24 @@ class Auth
     }
 
     /**
-     * Generate a random string. Set this as the auth cookie.
-     * Save the random string in database with the auth id.
+     * Set the browser cookie and store store the random cookie value in `auth_cookie`
      */
-    private function setCookie(array $auth, int $expires): bool
+    public function setCookie(array $auth, int $expires): bool
     {
         $random = $this->getRandom(32);
-        $res = $this->setBrowserCookie('auth', $random, $expires);
-
-        if ($res) {
-            $sql = "INSERT INTO auth_cookie (`cookie_id`, `auth_id`, `expires`) VALUES (?, ?, ?) ";
-            return $this->db->prepareExecute($sql, [$random, $auth['id'], $expires]);
-        }
-        return false;
-    }
-
-    /**
-     * Set session cookie. It is actualy not a session cookie, because session cookies are not
-     * reliable across browsers
-     *
-     * But chances are that if set to 0 then the cookie will expire when the browser is closed
-     */
-    public function setSessionCookie(array $auth, int $cookie_seconds = 0): bool
-    {
-        if ($cookie_seconds == 0) {
-            $expires = 0;
-        } else {
-            $expires = time() + $cookie_seconds;
-        }
-
-        return $this->setCookie($auth, $expires);
-    }
-
-    /**
-     * Set a cookie that can last over many days or years
-     * @param array $auth
-     */
-    public function setPermanentCookie(array $auth, int $cookie_seconds = 0): bool
-    {
-        $expires = time() + $cookie_seconds;
-        return $this->setCookie($auth, $expires);
-    }
-
-    private function isCli()
-    {
-        if (php_sapi_name() === 'cli') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Set a cookie with key value and expire time
-     */
-    private function setBrowserCookie(string $key, string $value, int $time)
-    {
 
         $cookie = new Cookie($this->auth_cookie_settings);
-        return $cookie->setCookie($key, $value, $time);
+        $bool = $cookie->setCookie('auth', $random, $expires);
+
+        if ($bool) {
+            return $this->setCookieDB($random, $auth['id'], $expires);
+        }
+
+        return false;
+    }
+
+    private function setCookieDB(string $random, string $auth_id, int $expires = 0): bool {
+        $sql = "INSERT INTO auth_cookie (`cookie_id`, `auth_id`, `expires`) VALUES (?, ?, ?) ";
+        return $this->db->prepareExecute($sql, [$random, $auth_id, $expires]);
     }
 }
