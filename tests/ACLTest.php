@@ -60,7 +60,7 @@ final class ACLTest extends TestCase
 
         $auth = new Auth($this->db, $this->config->getSection('Auth'));
         $row = $auth->authenticate('some_email@test.dk', 'some_password');
-        $auth->setPermanentCookie($row);
+        $auth->setCookie($row);
         return $row;
     }
 

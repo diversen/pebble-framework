@@ -134,7 +134,7 @@ final class AuthTest extends TestCase
         $this->__verify();
 
         $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
-        $this->auth->setPermanentCookie($row);
+        $this->auth->setCookie($row);
 
 
         $res = $this->auth->isAuthenticated();
@@ -149,7 +149,7 @@ final class AuthTest extends TestCase
         $this->__verify();
 
         $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
-        $this->auth->setPermanentCookie($row);
+        $this->auth->setCookie($row);
 
         $res = $this->auth->getAuthId();
         $this->assertGreaterThan(0, (int)$res);
@@ -163,7 +163,7 @@ final class AuthTest extends TestCase
         $this->__verify();
 
         $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
-        $this->auth->setPermanentCookie($row);
+        $this->auth->setCookie($row);
 
         $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);
@@ -181,7 +181,7 @@ final class AuthTest extends TestCase
         $this->__verify();
 
         $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
-        $this->auth->setPermanentCookie($row);
+        $this->auth->setCookie($row);
 
         $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);
@@ -191,7 +191,7 @@ final class AuthTest extends TestCase
         $this->assertEquals(false, $res);
     }
 
-    public function test_setSessionCookie()
+    public function test_setCookie()
     {
         $this->__setup();
         $this->__cleanup();
@@ -199,21 +199,7 @@ final class AuthTest extends TestCase
         $this->__verify();
 
         $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
-        $this->auth->setSessionCookie($row);
-
-        $res = $this->auth->isAuthenticated();
-        $this->assertEquals(true, $res);
-    }
-
-    public function test_setPermanentCookie()
-    {
-        $this->__setup();
-        $this->__cleanup();
-        $this->__create();
-        $this->__verify();
-
-        $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
-        $this->auth->setSessionCookie($row);
+        $this->auth->setCookie($row);
 
         $res = $this->auth->isAuthenticated();
         $this->assertEquals(true, $res);

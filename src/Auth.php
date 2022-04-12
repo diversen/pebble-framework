@@ -175,7 +175,7 @@ class Auth
     /**
      * Set the browser cookie and store store the random cookie value in `auth_cookie`
      */
-    public function setCookie(array $auth, int $expires): bool
+    public function setCookie(array $auth, int $expires = 0): bool
     {
         $random = $this->getRandom(32);
 

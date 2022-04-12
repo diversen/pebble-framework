@@ -59,7 +59,7 @@ final class ACLRoleTest extends TestCase
         $this->__verify();
 
         $row = $this->auth->authenticate('some_email@test.dk', 'some_password');
-        $this->auth->setPermanentCookie($row);
+        $this->auth->setCookie($row);
         return $row;
     }
 
