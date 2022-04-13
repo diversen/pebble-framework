@@ -6,8 +6,8 @@ class HTML
 {
     /**
      * Returns a html tag from 'tag' 'value', and attributes.
-     * `HTML::getTag('button', Lang::translate('Two factor authentication'), ['href' => '/2fa/enable', 'disabled' => null]);`
-     * returns <button href="/2fa/enable" disabled>To-faktor login</button>
+     * `HTML::getTag('button', '2 factor Login', ['title' => 'Click me', 'disabled' => null]);`
+     * returns `<button title="Click me" disabled>2 factor login</button>`
      * @param string $tag the html tag
      * @param string $value the html tag value
      * @param array $attrs_ary attributes
