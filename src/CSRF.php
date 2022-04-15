@@ -7,12 +7,12 @@ namespace Pebble;
 class CSRF
 {
     /**
-     * Sets a SESSION token
+     * Sets a SESSION token and returns it
      */
     public function getToken()
     {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        $token = $_SESSION['csrf_token'];
+        $token = bin2hex(random_bytes(32));
+        $_SESSION['csrf_token'] = $token;
         return $token;
     }
 
@@ -22,14 +22,17 @@ class CSRF
      */
     public function validateToken()
     {
-        if (!empty($_POST)) {
-            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-                $res = false;
-            } else {
-                $res = true;
-            }
+        $post_csrf = $_POST['csrf_token'] ?? null;
+        $session_csrf = $_SESSION['csrf_token'] ?? null;
+
+        if (!$post_csrf || !$session_csrf) {
+            return false;
         }
-        unset($_POST['csrf_token']);
-        return $res;
+
+        if (hash_equals($post_csrf, $session_csrf)) {
+            return true;
+        }
+        
+        return false;
     }
 }
