@@ -1,8 +1,8 @@
 <?php
 
-namespace Pebble;
+namespace Pebble\HTML;
 
-class HTML
+class Tag
 {
     /**
      * Returns a html tag from 'tag' 'value', and attributes.
