@@ -7,8 +7,7 @@ class AcceptLanguage {
     /**
      * Get best guess of Request language
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language
-     * Find language from:
-     * $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';
+     * Find language from e.g.: 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';
      */
     public static function getLanguage(array $options, string $default): string {
             
@@ -32,7 +31,7 @@ class AcceptLanguage {
             // Get language part. 'fr-CH', 'fr' ...
             $language = $language_ary[0] ?? null;
 
-            // Check if the language is in the form 'fr-CH'
+            // Check if language has been found, e.g. 'fr-CH', 'fr'
             if (in_array($language, $options)) {
                 return $language;
             }
@@ -40,10 +39,10 @@ class AcceptLanguage {
             // Split language by '-', 'fr-ch' 
             $language_ary = explode('-', $language);
 
-            // e.g. 'fr'
+            // e.g. 'fr', 'de'
             $language = $language_ary[0] ?? null;
 
-            // As we assume the languages are correct sorted in the HTTP_ACCEPT_LANGUAGE return first match
+            // We assume the languages are correct sorted in the HTTP_ACCEPT_LANGUAGE return first match
             if (in_array($language, $options)) {
                 return $language;
             }
