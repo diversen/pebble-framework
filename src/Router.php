@@ -129,7 +129,7 @@ class Router
      * Add a single route
      * `$router->add('GET', '/some/route/with/:param', \Some\Namespace::class, 'classMethod')`
      */
-    private function add(string $request_method, string $route, string $class, string $class_method)
+    public function add(string $request_method, string $route, string $class, string $class_method)
     {
         $this->request_method = $request_method;
         $this->routes[$request_method][] = [
@@ -141,7 +141,7 @@ class Router
         ];
     }
 
-    private function getValidRoutes()
+    public function getValidRoutes()
     {
         $this->filterRouteByRequestMethod();
         $this->filterRoutesByPartsLength();
