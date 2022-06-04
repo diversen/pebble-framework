@@ -44,4 +44,20 @@ class Template
             throw new TemplateException($e);
         }
     }
+
+    /**
+     * Shortcut to render a template raw
+     */
+    public static function renderRaw($template_path, $variables) {
+        $options = ['raw' => true];
+        self::render($template_path, $variables, $options);
+    }
+
+    /**
+     * Shortcut to get template output raw
+     */
+    public static function getOutputRaw($template_path, $variables) {
+        $options = ['raw' => true];
+        self::getOutput($template_path, $variables, $options);
+    }
 }
