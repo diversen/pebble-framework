@@ -281,7 +281,7 @@ class DB
         }
 
         foreach($order_by as $field => $direction) {
-            $order_by_sql_ary[] = "$field $direction";
+            $order_by_sql_ary[] = "`$field` $direction";
         }
 
         $order_by_sql = 'ORDER BY ';
