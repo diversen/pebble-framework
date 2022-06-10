@@ -170,9 +170,16 @@ class Migration
     /**
      * Executes up to and INCLUDING target_version
      */
-    public function up(int $target_version)
+    public function up(int $target_version = null)
     {
         $files = $this->getUpFilesToExecute($target_version);
+        if (empty($files)) return;
+
+        if (!$target_version) {
+            $version_file = array_pop($files);
+            $target_version = $this->getVersionFromFile($version_file);
+        }
+
         foreach ($files as $file) {
             $file_path = $this->migrationDir . '/up/' . $file;
             $sql_statements = $this->getSQLStatements($file_path);
