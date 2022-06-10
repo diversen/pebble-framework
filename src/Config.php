@@ -78,7 +78,13 @@ class Config
         foreach ($files as $file) {
             $config_array = $this->getConfigArray($dir, $file);
             $filename = $this->getFilename($file);
-            $this->sections[$filename] = $config_array;
+
+            if (isset($this->sections[$filename])) {
+                $this->sections[$filename] = array_merge($this->sections[$filename], $config_array);
+            } else {
+                $this->sections[$filename] = $config_array;
+            }
+            
             $this->variables = array_merge($this->variables, $this->getSectionByName($filename, $config_array));
         }
     }
