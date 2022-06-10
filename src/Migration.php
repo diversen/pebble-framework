@@ -170,7 +170,7 @@ class Migration
     /**
      * Executes up to and INCLUDING target_version
      */
-    public function up(int $target_version = null)
+    public function up(int $target_version)
     {
         $files = $this->getUpFilesToExecute($target_version);
         foreach ($files as $file) {
