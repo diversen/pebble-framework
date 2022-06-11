@@ -39,6 +39,11 @@ class ACL extends Auth
     public function setAccessRights(array $access_rights)
     {
         $this->validateAccessAry($access_rights);
+
+        // Only need to be set once
+        if ($this->hasAccessRights($access_rights)) {
+            return true;
+        }
         return $this->db->insert('acl', $access_rights);
     }
 

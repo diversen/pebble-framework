@@ -98,7 +98,7 @@ class Auth
     }
 
     /**
-     * Update 'password', actually the 'password_hash', and the random key bu auth 'id'
+     * Update 'password', actually the 'password_hash', and the random key by auth 'id'
      */
     public function updatePassword(string $id, string $password): bool
     {
