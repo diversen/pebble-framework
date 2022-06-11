@@ -20,7 +20,7 @@ You can also add a `config-locale` folder and copy the `DB.php` file into this f
 
     mkdir config-locale && cp config/DB.php config-locale/
 
-`config-locale` is in `.gitignore`. 
+`config-locale` is in `.gitignore` to make sure the folder is `locale`. 
 
 Edit one of the `DB.php` files and add a valid `database`, `username`, and `password`
 
@@ -42,21 +42,6 @@ Then run the unit tests:
 
     ./test.sh
 
-# If setup once
-
-If you already have a database running with default `database`, `username`, and `password` as specified
-in [config/DB.php](config/DB.php)
-
-You can run the following command: 
-
-    curl -s https://raw.githubusercontent.com/diversen/pebble-framework/main/setup.sh | bash
-
-Which clones, migrates, and run all tests.
-
-You may want to change the `git` origin from `https` to `ssh`:
-
-    git remote set-url origin git@github.com:diversen/pebble-framework.git
-
 # Dependencies
 
 Most classes can be used without any other dependencies, but if you want to use
@@ -72,7 +57,7 @@ Most classes can be used without any other dependencies, but if you want to use
 
 # Docker MySQL
 
-If you don't have a mysql-server it easy to setup a docker MySQL database:
+If you don't have a mysql-server it is quite easy to setup a docker MySQL database:
 
     docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
 

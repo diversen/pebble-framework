@@ -58,6 +58,6 @@ class Template
      */
     public static function getOutputRaw($template_path, $variables) {
         $options = ['raw' => true];
-        self::getOutput($template_path, $variables, $options);
+        return self::getOutput($template_path, $variables, $options);
     }
 }
