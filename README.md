@@ -55,6 +55,13 @@ Most classes can be used without any other dependencies, but if you want to use
     composer require phpmailer/phpmailer:^6.0
     composer require erusev/parsedown:^1.7
 
+## php-cs-fixer
+
+Install:
+
+    composer require --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
+    ./tools/php-cs-fixer.sh
+
 # Docker MySQL
 
 If you don't have a mysql-server it is quite easy to setup a docker MySQL database:
