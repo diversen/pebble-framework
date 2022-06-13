@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 use PDO;
+use Exception;
 
 /**
  * Quite primite migration
@@ -33,6 +34,10 @@ class Migration
         }
         if ($migration_file) {
             $this->migrationFile = $migration_file;
+        }
+
+        if (!is_dir($this->migrationDir)) {
+            throw new Exception("Specified migration dir does not exist: " . $this->migrationDir);
         }
     }
 
@@ -173,7 +178,9 @@ class Migration
     public function up(int $target_version = null)
     {
         $files = $this->getUpFilesToExecute($target_version);
-        if (empty($files)) return;
+        if (empty($files)) {
+            return;
+        }
 
         if (!$target_version) {
             $version_file = array_pop($files);

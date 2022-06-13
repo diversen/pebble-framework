@@ -8,7 +8,6 @@ use Pebble\URL;
 
 class Pager
 {
-
     public int $page;
     public int $limit;
     public int $offset;
@@ -23,14 +22,13 @@ class Pager
 
     /**
      * Get a pager that can be used for pagination and setting offset and limit in DB queries
-     * 
+     *
      * @param int $total total items in the set
      * @param int $limit results per page
      * @param string $query_part e.g. /index?page=1 where 'page' acts like the query part
      */
     public function __construct(int $total, int $limit, string $query_part = 'page')
     {
-
         $this->query_part = $query_part;
 
         $data = $this->getData($total, $limit);
@@ -46,8 +44,8 @@ class Pager
     }
 
 
-    private function getFrom() {
-
+    private function getFrom()
+    {
         if (!URL::getQueryPart($this->query_part)) {
             $from = 1;
         } else {
@@ -57,16 +55,14 @@ class Pager
         return $from;
     }
 
-    private function getOffset($from, $limit) {
-
+    private function getOffset($from, $limit)
+    {
         $offset = ($from - 1) * $limit;
         return $offset;
-
     }
 
     public function getData(int $total, int $limit): array
     {
-
         $data = [];
         if ($total === 0) {
             $data['num_pages'] = 0;

@@ -48,7 +48,8 @@ class Template
     /**
      * Shortcut to render a template raw
      */
-    public static function renderRaw($template_path, $variables) {
+    public static function renderRaw($template_path, $variables)
+    {
         $options = ['raw' => true];
         self::render($template_path, $variables, $options);
     }
@@ -56,7 +57,8 @@ class Template
     /**
      * Shortcut to get template output raw
      */
-    public static function getOutputRaw($template_path, $variables) {
+    public static function getOutputRaw($template_path, $variables)
+    {
         $options = ['raw' => true];
         return self::getOutput($template_path, $variables, $options);
     }

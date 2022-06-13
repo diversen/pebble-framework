@@ -240,7 +240,7 @@ class Router
     private $middlewareClass = null;
 
     /**
-     * Sets middleware class. If it is not set then `stdClass` will be used 
+     * Sets middleware class. If it is not set then `stdClass` will be used
      */
     public function setMiddlewareClass(string $class)
     {

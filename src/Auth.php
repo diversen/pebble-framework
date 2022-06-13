@@ -189,7 +189,8 @@ class Auth
         return false;
     }
 
-    private function setCookieDB(string $random, string $auth_id, int $expires = 0): bool {
+    private function setCookieDB(string $random, string $auth_id, int $expires = 0): bool
+    {
         $sql = "INSERT INTO auth_cookie (`cookie_id`, `auth_id`, `expires`) VALUES (?, ?, ?) ";
         return $this->db->prepareExecute($sql, [$random, $auth_id, $expires]);
     }

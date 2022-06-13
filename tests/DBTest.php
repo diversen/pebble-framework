@@ -189,7 +189,7 @@ EOF;
 
         $db = $this->__getDB();
 
-        $rows = $db->getAllQuery("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC'], [0, 1] );
+        $rows = $db->getAllQuery("SELECT * FROM account_test", ['password' => 'secret'], ['email' => 'DESC'], [0, 1]);
         $this->assertIsArray($rows);
         $this->assertEquals(count($rows), 1);
     }

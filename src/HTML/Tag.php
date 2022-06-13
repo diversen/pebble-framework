@@ -14,12 +14,11 @@ class Tag
      */
     public static function getTag(string $tag, string $value, array $attrs_ary): string
     {
-
         $html = "<$tag ";
 
         $attrs_ary_parsed = [];
         foreach ($attrs_ary as $attr => $attr_value) {
-            if (!$attr_value) {               
+            if (!$attr_value) {
                 $attrs_ary_parsed[] = $attr;
             } else {
                 $attrs_ary_parsed[] = $attr . '=' . '"' . $attr_value . '"';

@@ -64,6 +64,7 @@ class DB
 
     /**
      * Prepare and fetch all rows using `$sql` and `$params`
+     * `$db->prepareFetch("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
      */
     public function prepareFetchAll(string $sql, array $params = []): array
     {
@@ -73,7 +74,7 @@ class DB
 
     /**
      * Prepare and fetch a single row or an empty array
-     * `$db->prepareFetchAll("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
+     * `$db->prepareFetch("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
      */
     public function prepareFetch(string $sql, array $params = []): array
     {
@@ -91,7 +92,8 @@ class DB
     /**
      * Count number of rows in a table from a `$table` name, the `$field` to count from, and `$where` conditions
      */
-    public function getTableNumRows(string $table, string $field, array $where = []): int {
+    public function getTableNumRows(string $table, string $field, array $where = []): int
+    {
         $sql = "SELECT count($field) as num_rows FROM $table ";
         $sql.= $this->getWhereSql($where);
         $row = $this->prepareFetch($sql, $where);
@@ -280,7 +282,7 @@ class DB
             return '';
         }
 
-        foreach($order_by as $field => $direction) {
+        foreach ($order_by as $field => $direction) {
             $order_by_sql_ary[] = "`$field` $direction";
         }
 
@@ -336,8 +338,8 @@ class DB
      * Prepare and fetch a single row using params in the where clause
      * Use this when you want to generate 'WHERE' clause from `$params`
      */
-    public function getOneQuery(string $sql, array $params = [], array $order_by = []): array {
-        
+    public function getOneQuery(string $sql, array $params = [], array $order_by = []): array
+    {
         $where = $params;
 
         $sql .= ' ';
@@ -355,9 +357,8 @@ class DB
      * Prepare and fetch all rows using `$params` in the where clause
      * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], [20, 10]]);`
      */
-    public function getAllQuery(string $sql, array $params = [], array $order_by = [], array $limit = [] ): array
-    {   
-
+    public function getAllQuery(string $sql, array $params = [], array $order_by = [], array $limit = []): array
+    {
         $where = $params;
 
         $sql .= ' ';

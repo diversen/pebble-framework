@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-class Cookie {
-
-    public function __construct(array $settings) {
+class Cookie
+{
+    public function __construct(array $settings)
+    {
         $this->settings = $settings;
     }
 
@@ -14,8 +15,8 @@ class Cookie {
      * Set a cookie
      * If time is 0 then the it will be a session cookie
      */
-    public function setCookie(string $key, string $value, int $time = 0) {
-
+    public function setCookie(string $key, string $value, int $time = 0)
+    {
         $path = $this->settings['cookie_path'];
         $domain = $this->settings['cookie_domain'];
         $secure = $this->settings['cookie_secure'];
@@ -32,7 +33,6 @@ class Cookie {
         }
 
         return setcookie($key, $value, $time, $path, $domain, $secure, $http_only);
-    
     }
 
     private function isCli()
@@ -42,5 +42,4 @@ class Cookie {
         }
         return false;
     }
-
 }

@@ -84,10 +84,11 @@ class Translate
      * Create js from  $json
      * Including an export
      */
-    private function addJsExport(string $json) {
+    private function addJsExport(string $json)
+    {
         $js = "const Translation = \n\n";
         $js.= $json . "\n\n";
-        $js.= "export {Translation}\n"; 
+        $js.= "export {Translation}\n";
         return $js;
     }
 
