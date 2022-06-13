@@ -8,13 +8,11 @@ use Pebble\Migration;
 
 class MigrationService
 {
-
     /**
      * @return \Pebble\Migration
      */
     public function getMigration()
     {
-
         $base_path = Path::getBasePath();
 
         $db = (new DBService())->getDB();
@@ -24,7 +22,7 @@ class MigrationService
         $migration_file = $base_path . '/.migration';
 
         $migrate = new Migration($pdo_con, $path_to_migrations, $migration_file);
-        
+
         return $migrate;
     }
 }

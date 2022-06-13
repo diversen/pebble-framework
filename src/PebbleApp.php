@@ -17,7 +17,6 @@ use Pebble\Service\MigrationService;
 
 class PebbleApp
 {
-
     /**
      * The base path of your app should always be one dir above 'vendor/' dir
      */
@@ -102,7 +101,8 @@ class PebbleApp
         return $log->getLog();
     }
 
-    public function getMigration() {
+    public function getMigration()
+    {
         $migrate = new MigrationService();
         return $migrate->getMigration();
     }

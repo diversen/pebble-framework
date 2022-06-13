@@ -10,7 +10,6 @@ use Pebble\Exception\TemplateException;
 
 class Template
 {
-
     /**
      * Get output from a template
      */

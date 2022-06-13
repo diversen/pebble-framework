@@ -288,7 +288,7 @@ class DB
 
         $order_by_sql = 'ORDER BY ';
         $order_by_sql .= implode(', ', $order_by_sql_ary);
-        
+
         return $order_by_sql . ' ';
     }
 

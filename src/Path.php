@@ -1,13 +1,14 @@
 <?php
 
-namespace Pebble; 
+namespace Pebble;
 
-class Path {
-
+class Path
+{
     /**
      * return an app's base path. This is one dir above 'vendor'
      */
-    public static function getBasePath () {
+    public static function getBasePath()
+    {
         return dirname(dirname(dirname(dirname(__dir__))));
     }
 }

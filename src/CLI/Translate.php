@@ -104,7 +104,7 @@ class Translate
         foreach ($enabled as $lang) {
             $lang_base_dir = "$translate_dir/lang/$lang";
             $translation_file = "$lang_base_dir/language.php";
-            
+
             if (!file_exists($translation_file)) {
                 continue;
             }

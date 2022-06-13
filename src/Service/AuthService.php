@@ -9,7 +9,6 @@ use Pebble\Service\ConfigService;
 
 class AuthService
 {
-
     /**
      * @var Pebble\Auth
      */
@@ -21,8 +20,10 @@ class AuthService
 
     public function getAuth()
     {
-        if (self::$auth) return self::$auth;
-        
+        if (self::$auth) {
+            return self::$auth;
+        }
+
         $auth_cookie_settings = (new ConfigService())->getConfig()->getSection('Auth');
         $db = (new DBService())->getDB();
 

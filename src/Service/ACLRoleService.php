@@ -8,7 +8,6 @@ use Pebble\ACLRole;
 
 class ACLRoleService
 {
-
     public static $acl_role;
 
     /**
@@ -16,8 +15,10 @@ class ACLRoleService
      */
     public function getACLRole()
     {
-        if (self::$acl_role) return self::$acl_role;
-        
+        if (self::$acl_role) {
+            return self::$acl_role;
+        }
+
         $auth_cookie_settings = (new ConfigService())->getConfig()->getSection('Auth');
         $db = (new DBService())->getDB();
 

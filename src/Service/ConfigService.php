@@ -7,7 +7,6 @@ use Pebble\Path;
 
 class ConfigService
 {
-
     /**
      * @var \Pebble\Config
      */
@@ -23,12 +22,12 @@ class ConfigService
         }
 
         $base_path = Path::getBasePath();
-        
+
         self::$config = new Config();
 
         // Config is read from src/config
         self::$config->readConfig($base_path . '/src/config');
-        
+
         // Config is read from src/config-locale
         //
         // Any settings set in any config file here will override

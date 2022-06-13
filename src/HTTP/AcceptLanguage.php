@@ -4,7 +4,6 @@ namespace Pebble\HTTP;
 
 class AcceptLanguage
 {
-
     /**
      * Get best guess of Request language
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language
@@ -12,7 +11,7 @@ class AcceptLanguage
      */
     public static function getLanguage(array $options, string $default): string
     {
-            
+
         // Check if it isset in the request
         $http_accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null;
         if (!$http_accept_language) {
@@ -24,12 +23,12 @@ class AcceptLanguage
 
         // Split different languages
         $languages_ary = explode(',', $http_accept_language);
-        
+
         foreach ($languages_ary as $lang) {
 
             // Split language and weigt, e.g. 'fr;q=0.9'
             $language_ary = explode(';', $lang);
-            
+
             // Get language part. 'fr-CH', 'fr' ...
             $language = $language_ary[0] ?? null;
 

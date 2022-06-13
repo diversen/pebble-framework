@@ -32,7 +32,7 @@ class CSRF
         if (hash_equals($post_csrf, $session_csrf)) {
             return true;
         }
-        
+
         return false;
     }
 }

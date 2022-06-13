@@ -84,7 +84,7 @@ class Config
             } else {
                 $this->sections[$filename] = $config_array;
             }
-            
+
             $this->variables = array_merge($this->variables, $this->getSectionByName($filename, $config_array));
         }
     }

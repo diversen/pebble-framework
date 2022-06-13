@@ -7,7 +7,6 @@ use Pebble\Service\ConfigService;
 
 class DBService
 {
-
     /**
      * @var Pebble\DB
      */
@@ -21,7 +20,7 @@ class DBService
         if (self::$db) {
             return self::$db;
         }
-        
+
         $db_config = (new ConfigService())->getConfig()->getSection('DB');
         self::$db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
         return self::$db;

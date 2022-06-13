@@ -8,7 +8,6 @@ use Pebble\Service\DBService;
 
 class ACLService
 {
-
     public static $acl;
 
     /**
@@ -16,8 +15,10 @@ class ACLService
      */
     public function getACL()
     {
-        if (self::$acl) return self::$acl;
-        
+        if (self::$acl) {
+            return self::$acl;
+        }
+
         $auth_cookie_settings = (new ConfigService())->getConfig()->getSection('Auth');
         $db = (new DBService())->getDB();
 

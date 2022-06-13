@@ -18,10 +18,12 @@ class LogService
      */
     public function getLog()
     {
-        if (self::$log) return self::$log;
+        if (self::$log) {
+            return self::$log;
+        }
 
         $base_path = Path::getBasePath();
-        
+
         self::$log = new Logger('base');
         self::$log->pushHandler(new StreamHandler($base_path . '/logs/main.log', Logger::DEBUG));
         return self::$log;

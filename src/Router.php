@@ -253,7 +253,7 @@ class Router
     public function run()
     {
         if ($this->middlewareClass) {
-            $middleware_object = new $this->middleware_object;
+            $middleware_object = new $this->middleware_object();
         } else {
             $middleware_object = new stdClass();
         }
