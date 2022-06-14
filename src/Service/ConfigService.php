@@ -28,13 +28,13 @@ class ConfigService
         self::$config = new Config();
 
         // Config is read from src/config
-        self::$config->readConfig($base_path . '/src/config');
+        self::$config->readConfig($base_path . '/config');
 
         // Config is read from src/config-locale
         //
         // Any settings set in any config file here will override
         // The settings found in src/config
-        self::$config->readConfig($base_path . '/src/config-locale');
+        self::$config->readConfig($base_path . '/config-locale');
         return self::$config;
     }
 }

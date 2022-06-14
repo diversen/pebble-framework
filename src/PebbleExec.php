@@ -20,7 +20,8 @@ use Exception;
 class PebbleExec
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->log = (new LogService())->getLog();
     }
 
@@ -28,14 +29,16 @@ class PebbleExec
      * Set error controller
      */
     private $errorController = null;
-    public function setErrorController(string $class_name) {
+    public function setErrorController(string $class_name)
+    {
         $this->errorController = new $class_name();
     }
 
     /**
      * Set App
      */
-    public function setApp(string $class_name) {
+    public function setApp(string $class_name)
+    {
         $this->app = new $class_name();
     }
 
@@ -53,23 +56,16 @@ class PebbleExec
         }
 
         try {
-
             $this->app->run();
         } catch (TemplateException $e) {
-
-            $this->errorController->error($e);
-
+            $this->errorController->templateException($e);
         } catch (NotFoundException $e) {
-
-            $this->errorController->error($e);
-
+            $this->errorController->notFoundException($e);
         } catch (ForbiddenException $e) {
-
-            $this->errorController->error($e);
-
+            $this->errorController->forbiddenException($e);
         } catch (Throwable $e) {
-
-            $this->errorController->error($e);
+            // This will catch almost anything
+            $this->errorController->internalException($e);
         }
     }
 }

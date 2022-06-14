@@ -40,7 +40,7 @@ class Template
 
             require($template_path);
         } catch (Exception $e) {
-            throw new TemplateException('No such template path: ' . $template_path);
+            throw new TemplateException($e->getMessage());
         }
     }
 
