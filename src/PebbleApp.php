@@ -83,7 +83,7 @@ class PebbleApp
     }
 
 
-    private function getRequestLanguage()
+    public function getRequestLanguage()
     {
         $default = $this->getConfig()->get('Language.default');
         $supported = $this->getConfig()->get('Language.enabled');
