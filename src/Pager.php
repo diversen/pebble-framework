@@ -67,7 +67,7 @@ class Pager
         if ($total === 0) {
             $data['num_pages'] = 0;
         } else {
-            $data['num_pages'] = ceil($total / $limit);
+            $data['num_pages'] = (int)ceil($total / $limit);
         }
 
         $from = $this->getFrom();
