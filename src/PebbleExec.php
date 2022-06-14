@@ -14,7 +14,7 @@ use Throwable;
 use Exception;
 
 /**
- * Runs an application. If any exception if throw it will be caught here
+ * Runs an application. If any exception is thrown it will be caught here
  * and the error controller will handle it.
  */
 class PebbleExec

@@ -14,7 +14,11 @@ use Pebble\Service\ConfigService;
 use Pebble\Service\DBService;
 use Pebble\Service\LogService;
 use Pebble\Service\MigrationService;
+use Pebble\HTTP\AcceptLanguage;
 
+/**
+ * A baseApp with useful methods
+ */
 class PebbleApp
 {
     /**
@@ -22,18 +26,29 @@ class PebbleApp
      */
     public function __construct()
     {
-        $this->setIncludePath();
-        $this->setErrorHandler();
     }
 
 
     /**
      * Add base path to php include path. Then we always know how to include files
      */
-    public function setIncludePath()
+    public function addIncludePath(string $path_path)
     {
-        $base_path = Path::getBasePath();
-        set_include_path(get_include_path() . PATH_SEPARATOR . $base_path);
+        set_include_path(get_include_path() . PATH_SEPARATOR . $path_path);
+    }
+
+    /**
+     * Add base path `../vendor` to include_path
+     */
+    public function addBaseToIncudePath() {
+        $this->addIncludePath(Path::getBasePath());
+    }
+
+    /**
+     * Add src path `../vendor/src` to include_path
+     */
+    public function addSrcToIncludePath() {
+        $this->addIncludePath(Path::getBasePath() . '/src');
     }
 
     /**
@@ -45,6 +60,45 @@ class PebbleApp
         set_error_handler(function ($errno, $errstr, $errfile, $errline) {
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
         });
+    }
+
+    /**
+     * Start session with configuraton fra Session config
+     */
+    public function sessionStart()
+    {
+        Session::setConfigSettings($this->getConfig()->getSection('Session'));
+        session_start();
+    }
+
+    /**
+     * Force SSL
+     */
+    public function sendSSLHeaders()
+    {
+        $config = $this->getConfig();
+        if ($config->get('App.force_ssl')) {
+            Headers::redirectToHttps();
+        }
+    }
+
+
+    private function getRequestLanguage()
+    {
+        $default = $this->getConfig()->get('Language.default');
+        $supported = $this->getConfig()->get('Language.enabled');
+
+        return AcceptLanguage::getLanguage($supported, $default);
+    }
+
+    /**
+     * Set some debug
+     */
+    public function setDebug()
+    {
+        if ($this->getConfig()->get('App.env') === 'dev') {
+            JSON::$debug = true;
+        }
     }
 
     /**
