@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pebble\Service;
 
-use Pebble\DB;
 use Pebble\Auth;
 use Pebble\Service\DBService;
 use Pebble\Service\ConfigService;
