@@ -8,7 +8,7 @@ use Diversen\ParseArgv;
 use Pebble\Auth;
 use Pebble\Config;
 use Pebble\DB;
-use diversen\Cli\Utils;
+use Diversen\Cli\Utils;
 
 class User
 {
