@@ -13,7 +13,7 @@ final class ExceptionTraceTest extends TestCase
             $trace = ExceptionTrace::get($e);
             $this->assertStringContainsString('Message: An error', $trace);
             $this->assertStringContainsString('tests/ExceptionTraceTest.php', $trace);
-            $this->assertStringContainsString('Trace: #0', $trace);
+            $this->assertStringContainsString('Trace:', $trace);
         }
     }
 }

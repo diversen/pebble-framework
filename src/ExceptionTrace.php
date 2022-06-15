@@ -16,7 +16,7 @@ class ExceptionTrace
         $exception_str =
         'Message: ' . $e->getMessage() . "\n" .
         'In: ' . $e->getFile() . ' (' . $e->getLine() . ')' . "\n" .
-        'Trace: ' . $e->getTraceAsString() . "\n";
+        'Trace:' ." \n" . $e->getTraceAsString() . "\n";
 
         return $exception_str;
     }
