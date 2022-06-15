@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pebble\Pebble;
+namespace Pebble\App;
 
 use Exception;
 use Throwable;

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pebble;
+namespace Pebble\App;
 
 use Pebble\Exception\ForbiddenException;
 use Pebble\Exception\NotFoundException;
 use Pebble\Exception\TemplateException;
 use Pebble\Service\LogService;
-use Pebble\Pebble\StdErrorController;
+use Pebble\App\StdErrorController;
 
 use Throwable;
 use Exception;
@@ -17,7 +17,7 @@ use Exception;
  * Runs an application. If any exception is thrown it will be caught here
  * and the error controller will handle it.
  */
-class PebbleExec
+class AppExec
 {
 
     public function __construct()

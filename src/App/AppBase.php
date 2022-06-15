@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Pebble;
+namespace Pebble\App;
 
 use ErrorException;
 
 use Pebble\Path;
+use Pebble\Session;
+use Pebble\Headers;
+use Pebble\JSON;
 use Pebble\Service\ACLRoleService;
 use Pebble\Service\ACLService;
 use Pebble\Service\AuthService;
@@ -17,9 +20,9 @@ use Pebble\Service\MigrationService;
 use Pebble\HTTP\AcceptLanguage;
 
 /**
- * A baseApp with useful methods
+ * an app base with helpful methods
  */
-class PebbleApp
+class AppBase
 {
     /**
      * The base path of your app should always be one dir above 'vendor/' dir
