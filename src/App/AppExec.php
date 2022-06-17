@@ -19,12 +19,6 @@ use Exception;
  */
 class AppExec
 {
-
-    public function __construct()
-    {
-        $this->log = (new LogService())->getLog();
-    }
-
     /**
      * Set error controller
      */
