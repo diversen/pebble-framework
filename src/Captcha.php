@@ -14,7 +14,7 @@ class Captcha
     /**
      * @return Gregwar\Captcha\CaptchaBuilder;
      */
-    private function getBuilder()
+    public function getBuilder()
     {
         $builder = new CaptchaBuilder();
         $builder->build();
