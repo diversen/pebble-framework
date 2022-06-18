@@ -7,7 +7,7 @@ namespace Pebble;
 class Random
 {
     /**
-     * Generate a truely random string from a specified length given to random_bytes
+     * Generate a truly random string from a specified length given to random_bytes
      * It returns a hexstring that is `$length * 2` in size
      */
     public static function generateRandomString(int $length): string
