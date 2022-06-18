@@ -14,12 +14,12 @@ class Captcha
     /**
      * @return Gregwar\Captcha\CaptchaBuilder;
      */
-    public function getBuilder()
+    private function getBuilder()
     {
         $builder = new CaptchaBuilder();
         $builder->build();
 
-        $_SESSION['captcha_phrase'] = $builder->getPhrase(4);
+        $_SESSION['captcha_phrase'] = $builder->getPhrase();
 
         return $builder;
     }
