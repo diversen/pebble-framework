@@ -13,10 +13,10 @@ class JSON
     /**
      * json_encode wrapper which just add content-type header
      */
-    public static function response(array $value, int $flags = 0, int $depth= 512, $send_header = true)
+    public static function response($value, int $flags = 0, int $depth= 512, $send_header = true)
     {
         if ($send_header) {
-            header('Content-Type: application/json');
+            header('Content-Type: application/json; charset=utf-8');
         }
 
         if (self::$debug) {
