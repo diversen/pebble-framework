@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-use Exception;
-
 /**
  * Session class just sets default parameters for sessions
  */
