@@ -34,6 +34,22 @@ class SMTP
     }
 
     /**
+     * Set from
+     */
+    public function setFrom(string $from)
+    {
+        $this->from = $from;
+    }
+
+    /**
+     * Set from name
+     */
+    public function setFromName(string $from_name)
+    {
+        $this->fromName = $from_name;
+    }
+
+    /**
      * Constructor take an settings array
      *
      * [
@@ -120,6 +136,15 @@ class SMTP
     public function sendMarkdown(string $to, string $subject, string $text, array $attachments = [])
     {
         $html = $this->getMarkdown($text);
+        return $this->send($to, $subject, $text, $html, $attachments);
+    }
+
+    /**
+     * Send both text and markdown
+     */
+    public function sendTextMarkdown(string $to, string $subject, string $text, string $markdown, array $attachments = [])
+    {
+        $html = $this->getMarkdown($markdown);
         return $this->send($to, $subject, $text, $html, $attachments);
     }
 }
