@@ -17,20 +17,16 @@ use Pebble\Service\ConfigService;
 use Pebble\Service\DBService;
 use Pebble\Service\LogService;
 use Pebble\Service\MigrationService;
+use Pebble\Flash;
+use Pebble\Template;
 use Pebble\HTTP\AcceptLanguage;
+
 
 /**
  * an app base with helpful methods
  */
 class AppBase
 {
-    /**
-     * The base path of your app should always be one dir above 'vendor/' dir
-     */
-    public function __construct()
-    {
-    }
-
 
     /**
      * Add base path to php include path. Then we always know how to include files
@@ -158,9 +154,36 @@ class AppBase
         return $log->getLog();
     }
 
+    /**
+     * @return \Pebble\Migration
+     */
     public function getMigration()
     {
         $migrate = new MigrationService();
         return $migrate->getMigration();
+    }
+
+    /**
+     * @return \Pebble\Flash
+     */
+    public function getFlash() {
+        $flash = new Flash();
+        return $flash;
+    }
+
+    /**
+     * @return \Pebble\Template
+     */
+    public function getTemplate() {
+        $template = new Template();
+        return $template;
+    }
+
+    /**
+     * @return \Pebble\JSON
+     */
+    public function getJSON() {
+        $json = new JSON();
+        return $json;
     }
 }
