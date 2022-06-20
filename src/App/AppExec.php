@@ -7,7 +7,6 @@ namespace Pebble\App;
 use Pebble\Exception\ForbiddenException;
 use Pebble\Exception\NotFoundException;
 use Pebble\Exception\TemplateException;
-use Pebble\Service\LogService;
 use Pebble\App\StdErrorController;
 
 use Throwable;
@@ -51,6 +50,7 @@ class AppExec
 
         try {
             $this->app->run();
+
         } catch (TemplateException $e) {
             // 510
             $this->errorController->render($e);
@@ -61,7 +61,7 @@ class AppExec
             // 403
             $this->errorController->render($e);
         } catch (Throwable $e) {
-            // Any other number
+            // 500 (Any other exception)
             // This should catch anything else
             $this->errorController->render($e);
         }
