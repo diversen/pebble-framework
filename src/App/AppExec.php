@@ -52,14 +52,18 @@ class AppExec
         try {
             $this->app->run();
         } catch (TemplateException $e) {
-            $this->errorController->templateException($e);
+            // 510
+            $this->errorController->render($e);
         } catch (NotFoundException $e) {
-            $this->errorController->notFoundException($e);
+            // 404
+            $this->errorController->render($e);
         } catch (ForbiddenException $e) {
-            $this->errorController->forbiddenException($e);
+            // 403
+            $this->errorController->render($e);
         } catch (Throwable $e) {
-            // This will catch almost anything
-            $this->errorController->internalException($e);
+            // Any other number
+            // This should catch anything else
+            $this->errorController->render($e);
         }
     }
 }
