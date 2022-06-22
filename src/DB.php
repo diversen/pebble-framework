@@ -310,25 +310,25 @@ class DB
      * Shortcut to get one row, e.g:
      * `$db->getOne('auth', ['verified' => 1, 'email' => $email]);`
      */
-    public function getOne(string $table, array $where)
+    public function getOne(string $table, array $where, array $order_by = []): array
     {
         $sql = "SELECT * FROM `$table` ";
         $sql.= $this->getWhereSql($where);
-
+        $sql.= $this->getOrderBySql($order_by);
         $row = $this->prepareFetch($sql, $where);
         return $row;
     }
-
-
 
     /**
      * Shortcut to get all rows, e.g:
      * `$db->getAll('invites', ['invite_email' => $email]);`
      */
-    public function getAll(string $table, array $where)
+    public function getAll(string $table, array $where, array $order_by = [], array $limit = []): array
     {
         $sql = "SELECT * FROM `$table` ";
         $sql.= $this->getWhereSql($where);
+        $sql.= $this->getOrderBySql($order_by);
+        $sql.= $this->getLimitSql($limit);
 
         $rows = $this->prepareFetchAll($sql, $where);
         return $rows;
