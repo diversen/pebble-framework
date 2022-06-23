@@ -52,12 +52,11 @@ class DBCache
     }
 
     /**
-     * Get a cache result
-     * @param string $id
-     * @param int $max_life_time max life time in seconds. Set to 0 if no max_life_time
-     * @return mixed $res NULL if no result of if result is outdated. Else return the result
+     * Get a cache result by ID and max_life_time in seconds
+     * (from the time when the result was cached)
+     * If no result is found return null
      */
-    public function get($id, int $max_life_time = 0)
+    public function get($id, int $max_life_time = 0): mixed
     {
         $query = "SELECT * FROM {$this->table} WHERE id = ? ";
         $row = $this->db->prepareFetch($query, [$this->generateHashKey($id)]);
@@ -79,33 +78,20 @@ class DBCache
         }
     }
     /**
-     * Sets a string in cache
+     * Sets data in cache using ID
+     * Throws on error
      */
-    public function set($id, $data): bool
+    public function set($id, $data)
     {
-        $this->db->beginTransaction();
-
-        $res = $this->delete($id);
-        if (!$res) {
-            $this->db->rollback();
-            return false;
-        }
-
-        $query = "INSERT INTO {$this->table} (id, json_key, unix_ts, data) VALUES (?, ?, ?, ?)";
-        $res = $this->db->prepareExecute($query, [$this->generateHashKey($id), $this->generateJsonKey($id), time(), json_encode($data)]);
-
-        if (!$res) {
-            $this->db->rollback();
-            return false;
-        }
-
-        return $this->db->commit();
+        $this->db->inTransactionExec(function () use ($id, $data) {
+            $this->delete($id);
+            $query = "INSERT INTO {$this->table} (id, json_key, unix_ts, data) VALUES (?, ?, ?, ?)";
+            $this->db->prepareExecute($query, [$this->generateHashKey($id), $this->generateJsonKey($id), time(), json_encode($data)]);
+        });
     }
 
     /**
-     * Delete a string from cache
-     * @param   int     $id
-     * @return  boolean $res db result
+     * Delete a string from cache by ID
      */
     public function delete($id): bool
     {

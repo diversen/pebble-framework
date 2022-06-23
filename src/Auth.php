@@ -139,7 +139,9 @@ class Auth
     }
 
     /**
-     * Get a auth id by checking the auth_cookie table for a $_COOKIE['auth'] match
+     * Get an auth id by checking the auth_cookie table 
+     * for a $_COOKIE['auth'] match. If no row is found
+     * return "0"
      */
     public function getAuthId(): string
     {

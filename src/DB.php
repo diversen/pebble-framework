@@ -6,6 +6,7 @@ namespace Pebble;
 
 use PDO;
 use PDOStatement;
+use Throwable;
 
 /**
  * Simple database class that can do anything you need to do with a database
@@ -260,7 +261,7 @@ class DB
      * Return limit sql
      * @param array $limit index 0 is limit and index 1 is offset
      */
-    public function getLimitSql(array $limit = [])
+    public function getLimitSql(array $limit = []): string
     {
         if (empty($limit)) {
             return '';
@@ -276,7 +277,7 @@ class DB
      * Return ORDER BY SQL
      * @param array an array of arrays contains order where index 0 is field and index 1 is direction
      */
-    public function getOrderBySql(array $order_by = [])
+    public function getOrderBySql(array $order_by = []): string
     {
         if (empty($order_by)) {
             return '';
@@ -367,5 +368,26 @@ class DB
         $sql .= $this->getLimitSql($limit);
         $stmt = $this->getStmt($sql, $params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Excecute a callable inside a transaction.
+     * If an exception is thrown inside the callable, then
+     * the exception will be re-thrown
+     * 
+     * If possible the result of the callable will be
+     * returned
+     */
+    public function inTransactionExec(callable $call): mixed {
+        
+        try {
+            $this->beginTransaction();
+            $res = $call();
+            $this->commit();
+            return $res;
+        } catch (Throwable $e) {
+            $this->rollback();
+            throw $e;
+        }
     }
 }
