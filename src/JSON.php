@@ -35,7 +35,8 @@ class JSON
     /**
      * Render JSON
      */
-    public function render($value, int $flags = 0, int $depth= 512, $send_header = true) {
+    public function render($value, int $flags = 0, int $depth= 512, $send_header = true)
+    {
         echo self::response($value, $flags, $depth, $send_header);
     }
 }

@@ -21,13 +21,11 @@ use Pebble\Flash;
 use Pebble\Template;
 use Pebble\HTTP\AcceptLanguage;
 
-
 /**
  * an app base with helpful methods
  */
 class AppBase
 {
-
     /**
      * Add base path to php include path. Then we always know how to include files
      */
@@ -39,14 +37,16 @@ class AppBase
     /**
      * Add base path `../vendor` to include_path
      */
-    public function addBaseToIncudePath() {
+    public function addBaseToIncudePath()
+    {
         $this->addIncludePath(Path::getBasePath());
     }
 
     /**
      * Add src path `../vendor/src` to include_path
      */
-    public function addSrcToIncludePath() {
+    public function addSrcToIncludePath()
+    {
         $this->addIncludePath(Path::getBasePath() . '/src');
     }
 
@@ -166,7 +166,8 @@ class AppBase
     /**
      * @return \Pebble\Flash
      */
-    public function getFlash() {
+    public function getFlash()
+    {
         $flash = new Flash();
         return $flash;
     }
@@ -174,7 +175,8 @@ class AppBase
     /**
      * @return \Pebble\Template
      */
-    public function getTemplate() {
+    public function getTemplate()
+    {
         $template = new Template();
         return $template;
     }
@@ -182,7 +184,8 @@ class AppBase
     /**
      * @return \Pebble\JSON
      */
-    public function getJSON() {
+    public function getJSON()
+    {
         $json = new JSON();
         return $json;
     }

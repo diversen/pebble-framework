@@ -50,7 +50,6 @@ class AppExec
 
         try {
             $this->app->run();
-
         } catch (TemplateException $e) {
             // 510
             $this->errorController->render($e);

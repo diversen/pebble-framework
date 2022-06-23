@@ -374,12 +374,12 @@ class DB
      * Excecute a callable inside a transaction.
      * If an exception is thrown inside the callable, then
      * the exception will be re-thrown
-     * 
+     *
      * If possible the result of the callable will be
      * returned
      */
-    public function inTransactionExec(callable $call) {
-        
+    public function inTransactionExec(callable $call)
+    {
         try {
             $this->beginTransaction();
             $res = $call();

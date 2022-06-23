@@ -22,7 +22,6 @@ class CSRF
      */
     public function validateToken(string $token = null): bool
     {
-        
         if (!$token) {
             $token = $_POST['csrf_token'] ?? null;
         }

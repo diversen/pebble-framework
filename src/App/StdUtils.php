@@ -6,8 +6,8 @@ namespace Pebble\App;
 
 use Pebble\App\AppBase;
 
-class StdUtils {
-
+class StdUtils
+{
     /**
      * @var \Pebble\Auth
      */
@@ -52,10 +52,10 @@ class StdUtils {
      * @var \Pebble\JSON
      */
     protected $json;
-    
-    public function __contruct() {
 
-        $this->app_base = new AppBase(); 
+    public function __contruct()
+    {
+        $this->app_base = new AppBase();
         $this->auth = $this->app_base->getAuth();
         $this->log = $this->app_base->getLog();
         $this->db = $this->app_base->getDB();
@@ -65,6 +65,5 @@ class StdUtils {
         $this->flash = $this->app_base->getFlash();
         $this->template = $this->app_base->getTemplate();
         $this->json = $this->app_base->getJSON();
-
     }
 }
