@@ -32,7 +32,7 @@ final class DBCacheTest extends TestCase
         $to_cache = ['this is a test'];
         $res = $cache->set('some_key', $to_cache);
 
-        $this->assertEquals(true, $res);
+        $this->assertEquals(null, $res);
     }
 
     public function test_get()

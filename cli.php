@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare (strict_types = 1);
 
 require_once "vendor/autoload.php";
 
@@ -7,26 +7,22 @@ use Pebble\CLI\User;
 use Pebble\CLI\DB;
 use Pebble\CLI\Migrate;
 use Pebble\CLI\Translate;
-use Pebble\Autoloader;
 use Pebble\Config;
 
-$autoloader = new Autoloader();
-$autoloader->setPath(__DIR__);
 
 $config = new Config();
-
 // Load config settings
 $config->readConfig('./config');
-if (!file_exists('./config-locale')) {
-    mkdir('./config-locale');
-}
 
+// Load config settings
 $config->readConfig('./config-locale');
 
 $cli = new MinimalCli();
 $cli->commands = [
+    'user' => new User($config),
     'db' => new DB($config),
     'migrate' => new Migrate($config),
+    'translate' => new Translate($config),
 ];
 
 $cli->runMain();
