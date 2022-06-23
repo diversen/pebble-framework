@@ -56,7 +56,7 @@ class DBCache
      * (from the time when the result was cached)
      * If no result is found return null
      */
-    public function get($id, int $max_life_time = 0): mixed
+    public function get($id, int $max_life_time = 0)
     {
         $query = "SELECT * FROM {$this->table} WHERE id = ? ";
         $row = $this->db->prepareFetch($query, [$this->generateHashKey($id)]);

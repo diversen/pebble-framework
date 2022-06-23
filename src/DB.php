@@ -378,7 +378,7 @@ class DB
      * If possible the result of the callable will be
      * returned
      */
-    public function inTransactionExec(callable $call): mixed {
+    public function inTransactionExec(callable $call) {
         
         try {
             $this->beginTransaction();
