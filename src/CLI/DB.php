@@ -36,7 +36,7 @@ class DB
 
     private function connect(ParseArgv $args)
     {
-        $verbose = $args->getFlag('v');
+        $verbose = $args->getOption('v');
         $db = $this->config->getSection('DB');
         $ary = Utils::parsePDOString($db['url']);
 
@@ -50,7 +50,7 @@ class DB
     private function backup(ParseArgv $args)
     {
         $no_data = '';
-        if ($args->getFlag('no-data')) {
+        if ($args->getOption('no-data')) {
             $no_data = '--no-data';
         }
         $db = $this->config->getSection('DB');
@@ -71,11 +71,11 @@ class DB
 
     public function runCommand(ParseArgv $args)
     {
-        if ($args->getFlag('connect')) {
+        if ($args->getOption('connect')) {
             $this->connect($args);
         }
 
-        if ($args->getFlag('backup')) {
+        if ($args->getOption('backup')) {
             $this->backup($args);
         }
 

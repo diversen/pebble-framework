@@ -50,16 +50,16 @@ class Migrate
 
         $migrate = new Migration($db->getDbh());
 
-        $version = $args->getValueByKey(0);
-        if ($args->getFlag('up')) {
+        $version = $args->getArgument(0);
+        if ($args->getOption('up')) {
             if (!$version) {
                 $version = $migrate->getLatestVersion();
             }
 
-            $migrate->up($version);
+            $migrate->up((int)$version);
         }
 
-        if ($args->getFlag('down')) {
+        if ($args->getOption('down')) {
             if (!$version) {
                 $version = 0;
             }
