@@ -3,24 +3,14 @@
 declare(strict_types=1);
 
 use Pebble\DBCache;
-use Pebble\DB;
-use Pebble\Config;
+use Pebble\Service\DBService;
 use PHPUnit\Framework\TestCase;
 
 final class DBCacheTest extends TestCase
 {
     private function __setup()
     {
-        $this->config = new Config();
-
-        $config_dir = __DIR__ . '/../config';
-        $config_dir_locale =  __DIR__ . '/../config-locale';
-
-        $this->config->readConfig($config_dir);
-        $this->config->readConfig($config_dir_locale);
-
-        $db_config = $this->config->getSection('DB');
-        $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $this->db = (new DBService())->getDB();
     }
 
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Pebble\Config;
-use Pebble\DB;
 use PHPUnit\Framework\TestCase;
 use Pebble\Migration;
+use Pebble\DB;
+use Pebble\Service\ConfigService;
 
 final class MigrationTest extends TestCase
 {
@@ -13,18 +13,8 @@ final class MigrationTest extends TestCase
     public $db;
     public function __setup()
     {
-        if (!$this->db) {
-            $this->config = new Config();
-
-            $config_dir = __DIR__ . '/../config';
-            $config_dir_locale =  __DIR__ . '/../config-locale';
-
-            $this->config->readConfig($config_dir);
-            $this->config->readConfig($config_dir_locale);
-        }
+        $this->config = (new ConfigService())->getConfig();
     }
-
-
 
     public function test_get_up_files()
     {

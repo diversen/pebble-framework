@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use Pebble\Config;
-use Pebble\DB;
+use Pebble\Service\DBService;
 use PHPUnit\Framework\TestCase;
 
 final class DBTest extends TestCase
@@ -11,23 +10,10 @@ final class DBTest extends TestCase
     /**
      * @return \Pebble\DB
      */
-    private $db = null;
+    // private $db = null;
     private function __getDB()
     {
-        if (!$this->db) {
-            $this->config = new Config();
-
-            $config_dir = __DIR__ . '/../config';
-            $config_dir_locale =  __DIR__ . '/../config-locale';
-
-            $this->config->readConfig($config_dir);
-            $this->config->readConfig($config_dir_locale);
-
-            $db_config = $this->config->getSection('DB');
-            $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
-        }
-
-        return $this->db;
+        return (new DBService())->getDB();
     }
 
     private function __cleanup()
@@ -298,6 +284,24 @@ EOF;
         $rows = $db->prepareFetchAll("SELECT * FROM account_test");
         $num_rows = count($rows);
         $this->assertEquals($num_rows, 3);
+    }
+
+    public function test_inTransactionExec() {
+        $this->__cleanup();
+        $this->__createTestTable();
+
+        $db = $this->__getDB();
+        $res = $db->inTransactionExec(function () use ($db) {
+            return $this->__addRows();
+        });
+
+        $this->assertEquals(null, $res);
+
+        $rows = $db->prepareFetchAll("SELECT * FROM account_test");
+        $num_rows = count($rows);
+        $this->assertEquals($num_rows, 3);
+
+
     }
 
     public function test_insert()
