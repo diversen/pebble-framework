@@ -39,7 +39,7 @@ class User
     {
         $auth = new Auth($this->db, $this->config->getSection('Auth'));
         $utils = new Utils();
-        if ($args->getFlag('create-user')) {
+        if ($args->getOption('create-user')) {
             $email = trim($utils->readSingleline("Enter email: "));
             $password = trim($utils->readSingleline("Enter password: "));
 

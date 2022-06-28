@@ -23,7 +23,6 @@ class DB
                     '--connect'    => 'Connect to the database defined in DB.php config',
                     '--backup'     => "Create full backup of the database using mysqldump, which will be placed in './backup'",
                     '--no-data'    => 'Only table definitions in database dumps',
-                    '-v' => 'Output some more info',
                 ),
 
                 // //
@@ -36,7 +35,7 @@ class DB
 
     private function connect(ParseArgv $args)
     {
-        $verbose = $args->getOption('v');
+        $verbose = $args->getOption('verbose');
         $db = $this->config->getSection('DB');
         $ary = Utils::parsePDOString($db['url']);
 
