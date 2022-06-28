@@ -5,7 +5,7 @@ namespace Pebble;
 class Path
 {
     /**
-     * return an app's base path. This is one dir above 'vendor'
+     * Return an app's base path. This is at the same level as 'vendor/'
      */
     public static function getBasePath()
     {
