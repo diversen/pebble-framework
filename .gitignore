@@ -3,3 +3,4 @@ vendor
 config-locale
 .migration
 .php-cs-fixer.cache
+tools/php-cs-fixer
