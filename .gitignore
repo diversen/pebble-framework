@@ -2,5 +2,4 @@
 vendor
 config-locale
 .migration
-composer.lock
 .php-cs-fixer.cache
