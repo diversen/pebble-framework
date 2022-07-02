@@ -21,30 +21,36 @@ class DB
             array(
                 'usage' => 'MySQL DB commands used with configuration set in config/DB.php',
                 'options' => array(
-                    '--connect'    => 'Connect to the database defined in DB.php config',
-                    '--backup'     => "Create full backup of the database using mysqldump, which will be placed in './backup'",
-                    '--no-data'    => 'Only table definitions in database dumps',
+                    '--connect'            => 'Connect to the database defined in DB.php config',
+                    '--server-connect'     => 'Connect to the server. Same as connect but no database is selected',
+                    '--backup'             => "Create full backup of the database using mysqldump, which will be placed in './backup'",
+                    '--no-data'            => 'Only table definitions in database dumps',
                 ),
-
-                // //
-                // 'arguments' => array(
-                //     'File' => 'Read from a file and out put to stdout',
-                // ),
 
             );
     }
 
-    private function connect(ParseArgv $args)
+    private function connect(ParseArgv $args, $database = true)
     {
         $verbose = $args->getOption('verbose');
         $db = $this->config->getSection('DB');
         $ary = Utils::parsePDOString($db['url']);
 
-        $command = "mysql -u $db[username] -p$db[password] -h$ary[host] $ary[dbname]";
+        $command = "mysql -u $db[username] -p$db[password] -h$ary[host] ";
+        if ($database) {
+            $command .= $ary['dbname'];
+        }
+
         if ($verbose) {
             echo $command . "\n";
         }
+
         proc_close(proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes));
+    }
+
+    private function serverConnect(ParseArgv $args)
+    {
+        $this->connect($args, false);
     }
 
     private function backup(ParseArgv $args)
@@ -73,6 +79,10 @@ class DB
     {
         if ($args->getOption('connect')) {
             $this->connect($args);
+        }
+
+        if ($args->getOption('server-connect')) {
+            $this->serverConnect($args);
         }
 
         if ($args->getOption('backup')) {
