@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dd28effec9485ddebb372631cd00ddc",
+    "content-hash": "48e0eb801a76acf3058463172b25f446",
     "packages": [],
     "packages-dev": [
         {
@@ -94,6 +94,63 @@
                 "source": "https://github.com/diversen/minimal-cli-framework/tree/v3.1.0"
             },
             "time": "2022-06-18T13:37:06+00:00"
+        },
+        {
+            "name": "diversen/simple-php-translation",
+            "version": "v3.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/diversen/simple-php-translation.git",
+                "reference": "fd19890ac1c289760d3bc14bb0fd1e7ba612fe1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/diversen/simple-php-translation/zipball/fd19890ac1c289760d3bc14bb0fd1e7ba612fe1f",
+                "reference": "fd19890ac1c289760d3bc14bb0fd1e7ba612fe1f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "google/cloud-translate": "^1.12"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Diversen\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dennis Iversen",
+                    "email": "dennis.iversen@gmail.com",
+                    "homepage": "https://github.com/diversen",
+                    "role": "Developer"
+                }
+            ],
+            "description": "simple solution for doing translation, extracting translations, and doing auto translation through google",
+            "homepage": "https://github.com/diversen/simple-php-translation",
+            "keywords": [
+                "Simple",
+                "i18n",
+                "translate",
+                "translation"
+            ],
+            "support": {
+                "issues": "https://github.com/diversen/simple-php-translation/issues",
+                "source": "https://github.com/diversen/simple-php-translation/tree/v3.0.6"
+            },
+            "time": "2022-06-22T14:02:22+00:00"
         },
         {
             "name": "doctrine/instantiator",
