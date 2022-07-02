@@ -122,17 +122,17 @@ class Translate
 
     public function runCommand(ParseArgv $args)
     {
-        if ($args->getFlag('extract')) {
+        if ($args->getOption('extract')) {
             return $this->extract($args);
         }
 
-        if ($args->getFlag('gtranslate')) {
+        if ($args->getOption('gtranslate')) {
             $res = $this->gtranslate($args);
             $this->toJS();
             return $res;
         }
 
-        if ($args->getFlag('js')) {
+        if ($args->getOption('js')) {
             $this->toJS();
         }
 

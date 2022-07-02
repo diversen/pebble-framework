@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Pebble\ACLRole;
-use Pebble\Auth;
-use Pebble\DB;
-use Pebble\Config;
+use Pebble\Service\AuthService;
+use Pebble\Service\DBService;
+use Pebble\Service\ConfigService;
 
 use Pebble\Exception\ForbiddenException;
 use PHPUnit\Framework\TestCase;
@@ -14,20 +14,15 @@ final class ACLRoleTest extends TestCase
 {
     public $config;
     public $db;
+    public $auth;
 
     private function __setup()
     {
-        $this->config = new Config();
 
-        $config_dir = __DIR__ . '/../config';
-        $config_dir_locale =  __DIR__ . '/../config-locale';
-
-        $this->config->readConfig($config_dir);
-        $this->config->readConfig($config_dir_locale);
-
-        $db_config = $this->config->getSection('DB');
-        $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
-        $this->auth = new Auth($this->db, $this->config->getSection('Auth'));
+        $this->config = (new ConfigService())->getConfig();
+        $this->auth = (new AuthService())->getAuth();
+        $this->db = (new DBService())->getDB();
+        
     }
 
     private function __cleanup()

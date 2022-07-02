@@ -1,6 +1,6 @@
 # pebble-framework
 
-A simple, small, and fast php framework. 
+A simple and small php framework.
 
 # Requirements
 
@@ -10,21 +10,21 @@ Known to work on:  `PHP >= 7.4.3`
 
     composer require diversen/pebble-framework
 
-# Install for test
+# Install for testing
 
-    git clone https://github.com/diversen/pebble-framework.git && cd pebble-framework
+Clone the repo:
+
+    git clone git@github.com:diversen/pebble-framework.git && cd pebble-framework
 
 The framework is coupled against MySQL, so in order to run the tests you will need to edit `config/DB.php`.
 
-You can also add a `config-locale` folder and copy the `DB.php` file into this folder. 
+You should add a `config-locale` folder and copy the `DB.php` file into this folder. 
 
     mkdir config-locale && cp config/DB.php config-locale/
 
-`config-locale` is in `.gitignore` to make sure the folder is `locale`. 
+`config-locale` is in [.gitignore](.gitignore) to make sure the folder is not commited and stays `locale`. 
 
-Edit one of the `DB.php` files and add a valid `database`, `username`, and `password`
-
-# Install
+Edit the `config-locale/DB.php` file and add a valid `database`, `username`, and `password`
 
 Install dependencies (there is only require-dev dependencies):
 
@@ -42,20 +42,7 @@ Then run the unit tests:
 
     ./test.sh
 
-# Dependencies
-
-Most classes can be used without any other dependencies, but if you want to use
-
-`Pebble\Captcha` you will need:
-
-    composer require gregwar/captcha:^1.1
-
-`Pebble\SMTP` you will need:
-
-    composer require phpmailer/phpmailer:^6.0
-    composer require erusev/parsedown:^1.7
-
-## php-cs-fixer
+# Clean up
 
 Install:
 

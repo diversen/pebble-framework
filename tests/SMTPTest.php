@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pebble\Config;
+use Pebble\Service\ConfigService;
 use Pebble\SMTP;
 use PHPUnit\Framework\TestCase;
 
@@ -11,13 +11,7 @@ final class SMTPTest extends TestCase
     private $config;
     private function __setup()
     {
-        $this->config = new Config();
-
-        $config_dir = __DIR__ . '/../config';
-        $config_dir_locale =  __DIR__ . '/../config-locale';
-
-        $this->config->readConfig($config_dir);
-        $this->config->readConfig($config_dir_locale);
+        $this->config = (new ConfigService())->getConfig();
     }
 
     public function test_sendWithException()
