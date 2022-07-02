@@ -42,7 +42,7 @@ Then run the unit tests:
 
     ./test.sh
 
-## php-cs-fixer
+# Clean up
 
 Install:
 
