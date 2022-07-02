@@ -29,11 +29,6 @@
         "phpmailer/phpmailer": "^6.0",
         "erusev/parsedown": "^1.7",
         "diversen/minimal-cli-framework": "^3.0"
-    },
-
-    "extra": {
-        "branch-alias": {
-            "dev-main": "4.0.x-dev"
-        }
     }
+
 }
