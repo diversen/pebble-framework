@@ -7,13 +7,14 @@ namespace Pebble\CLI;
 use Diversen\ParseArgv;
 use Pebble\Migration;
 use Pebble\DB;
-use Pebble\Config;
+use Pebble\Service\ConfigService;
 
 class Migrate
 {
-    public function __construct(Config $config)
+    private $config;
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = (new ConfigService())->getConfig();
     }
 
     // Return main commands help

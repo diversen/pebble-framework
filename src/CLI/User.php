@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace Pebble\CLI;
 
 use Diversen\ParseArgv;
-use Pebble\Auth;
-use Pebble\Config;
-use Pebble\DB;
+use Pebble\Service\AuthService;
+use Pebble\Service\DBService;
 use Diversen\Cli\Utils;
 
 class User
 {
-    private $config;
-    private $db;
-    public function __construct(Config $config)
+    private $auth;
+    public function __construct()
     {
-        $this->config = $config;
-        $db_config = $this->config->getSection('DB');
-        $this->db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+        $this->auth = (new AuthService())->getAuth();
+
     }
 
     // Return main commands help
@@ -37,16 +34,15 @@ class User
 
     public function runCommand(ParseArgv $args)
     {
-        $auth = new Auth($this->db, $this->config->getSection('Auth'));
         $utils = new Utils();
         if ($args->getOption('create-user')) {
             $email = trim($utils->readSingleline("Enter email: "));
             $password = trim($utils->readSingleline("Enter password: "));
 
             if (!empty($email) && !empty($password)) {
-                $auth->create($email, $password);
-                $row = $auth->getByWhere(['email' => $email]);
-                $res = $auth->verifyKey($row['random']);
+                $this->auth->create($email, $password);
+                $row = $this->auth->getByWhere(['email' => $email]);
+                $res = $this->auth->verifyKey($row['random']);
                 if ($res) {
                     $utils->echoStatus('Success', 'g', 'User has been created');
                     return 0;

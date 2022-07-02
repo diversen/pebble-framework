@@ -2,15 +2,16 @@
 
 namespace Pebble\CLI;
 
-use Pebble\Config;
+use Pebble\Service\ConfigService;
 use Pebble\DB\Utils;
 use Diversen\ParseArgv;
 
 class DB
 {
-    public function __construct(Config $config)
+    private $config;
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = (new ConfigService())->getConfig();
     }
 
     // Return main commands help

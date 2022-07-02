@@ -2,7 +2,7 @@
 
 namespace Pebble\CLI;
 
-use Pebble\Config;
+use Pebble\Service\ConfigService;
 use Diversen\ParseArgv;
 use Diversen\Translate\GoogleTranslate;
 use Diversen\Translate\Extractor;
@@ -10,9 +10,10 @@ use Exception;
 
 class Translate
 {
-    public function __construct(Config $config)
+    private $config;
+    public function __construct()
     {
-        $this->config = $config;
+        $this->config = (new ConfigService())->getConfig();
     }
 
     // Return main commands help
@@ -122,6 +123,13 @@ class Translate
 
     public function runCommand(ParseArgv $args)
     {
+
+        $enabled = $this->config->get('Language.enabled');
+        if (empty($enabled)) {
+            echo "No languages enabled, nothing to do\n";
+            return 0;
+        }
+
         if ($args->getOption('extract')) {
             return $this->extract($args);
         }
