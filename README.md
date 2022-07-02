@@ -1,6 +1,6 @@
 # pebble-framework
 
-A simple and small php framework.
+A simple and small php framework / library.
 
 # Requirements
 
@@ -9,6 +9,10 @@ Known to work on:  `PHP >= 7.4.3`
 # Install as dependency
 
     composer require diversen/pebble-framework
+
+# Documentation: 
+
+See: [https://github.com/diversen/pebble-framework-docs)(pebble-framework-docs)
 
 # Install for testing
 
@@ -51,21 +55,22 @@ Install:
 
 # Docker MySQL
 
-If you don't have a mysql-server it is quite easy to setup a docker MySQL database:
+Install (run) a MySQL image that will work:
 
     docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
 
 Create a database:
 
-    docker exec -it mysql-server bash
-    mysql -uroot -ppassword
-    create database pebble;
-    exit; # exit from mysql-server 
-    exit; # exit from container
+    ./cli.sh db --server-connect
+    CREATE DATABASE `pebble`;
 
 # Other docker commands
 
-List conainers 
+Install (run) a MySQL image that will work:
+
+    docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
+
+List containers 
 
     docker container ls
 
@@ -77,7 +82,7 @@ Start container (mysql-server) again:
 
     docker start mysql-server
 
-Remove container (you will need run 'run' command again):
+Remove container (you will need to run the 'run' command again):
 
     docker rm mysql-server
 
