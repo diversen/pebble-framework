@@ -13,9 +13,6 @@ class LogService
 {
 
     private $debug_level = Logger::DEBUG;
-    public function __construct() {
-        
-    }
     
     /**
      * @var Monolog\Logger
