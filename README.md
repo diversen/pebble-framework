@@ -12,7 +12,7 @@ Known to work on:  `PHP >= 7.4.3`
 
 # Documentation: 
 
-See: [https://github.com/diversen/pebble-framework-docs](pebble-framework-docs)
+See: [https://github.com/diversen/pebble-framework-docs](https://github.com/diversen/pebble-framework-docs)
 
 # Install for testing
 
