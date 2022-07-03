@@ -266,9 +266,6 @@ $cookie_settings = $config-&gt;getSection('Auth');
 // Create cookie object
 $cookie = new Cookie($cookie_settings);
 
-// Session cookie
-// $cookie-&gt;setCookie('test', 'test', 0);
-
 // Cookie will last for 10 seconds
 if (isset($_COOKIE['test'])) {
     echo &quot;Value of the cookie 'test': &quot; .  $_COOKIE['test'];
@@ -381,17 +378,14 @@ $db = (new DBService())-&gt;getDB();
 
 $cache = new DBCache($db);
 
-// Try to get a result ignoreing max age
+// Try to get a result ignoring max age
 // $from_cache = $cache-&gt;get('some_key');
 
-// Get a result that is max 100 seconds old
+// Get a result that is max 10 seconds old
 $from_cache = $cache-&gt;get('some_key', 10);
 
-
-// Cache a value
-
 if (!$from_cache) {
-    echo &quot;No result&lt;br /&gt;&quot;;
+    echo &quot;No cache result&lt;br /&gt;&quot;;
     echo &quot;Add value to key 'some_key'&lt;br /&gt;&quot;;
     $to_cache = ['this is a test'];
     // Not set is inside an DB transaction

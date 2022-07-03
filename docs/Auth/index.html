@@ -134,8 +134,9 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="auth">Auth</h2>
-<p>The Auth instance is created using a <code>Pebble\DB</code> object and an array of <code>cookie settings</code>. </p>
-<p>This is what the <code>Auth</code> cookie configuration, which we will use, looks like:</p>
+<p>The <code>Auth</code> is a simple class for authenticating users using a database table - <code>auth</code>. 
+The Auth instance is created using a <code>Pebble\DB</code> object and an array of <code>cookie settings</code>. </p>
+<p>The <code>Auth</code> cookie configuration dould look something like this:</p>
 <p>(config/Auth.php) -&gt;</p>
 <pre><code class="language-php">&lt;?php
 
@@ -147,7 +148,7 @@ return
     'cookie_http' =&gt; true
 ];
 </code></pre>
-<p>And now let's use our newly created Auth object in an example: </p>
+<p>Here is all the methods of an instance of the Auth class.</p>
 <p>(examples/auth/index.php) -&gt;</p>
 <pre><code class="language-php">&lt;?php
 
