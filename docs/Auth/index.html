@@ -134,9 +134,9 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="auth">Auth</h2>
-<p>The <code>Auth</code> is a simple class for authenticating users using a database table - <code>auth</code>. 
+<p>The <code>Pebble\Auth</code> class is ued to authenticate users using the database table <code>auth</code>. 
 The Auth instance is created using a <code>Pebble\DB</code> object and an array of <code>cookie settings</code>. </p>
-<p>The <code>Auth</code> cookie configuration dould look something like this:</p>
+<p>The cookie settings could look something like this:</p>
 <p>(config/Auth.php) -&gt;</p>
 <pre><code class="language-php">&lt;?php
 
@@ -148,7 +148,7 @@ return
     'cookie_http' =&gt; true
 ];
 </code></pre>
-<p>Here is all the methods of an instance of the Auth class.</p>
+<p>The following example shows a test of all methods:</p>
 <p>(examples/auth/index.php) -&gt;</p>
 <pre><code class="language-php">&lt;?php
 
@@ -231,7 +231,7 @@ if ($auth-&gt;isVerified($email)) {
 // $auth-&gt;unlinkCurrentCookie();
 
 </code></pre>
-<p>You may run the Auth example:</p>
+<p>You may run this example:</p>
 <pre><code>php -S localhost:8000 -t examples/auth
 </code></pre>
 <p>And go to <a href="http://localhost:8000">http://localhost:8000</a></p>
