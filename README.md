@@ -2,8 +2,6 @@
 
 A simple and small php framework / library.
 
-The framework aims at being as simple as possible but no simpler than that.
-
 # Documentation 
 
 [https://diversen.github.io/pebble-framework/](https://diversen.github.io/pebble-framework/)
