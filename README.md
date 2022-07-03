@@ -2,6 +2,9 @@
 
 A simple and small php framework / library.
 
+The framework aims at being quite small with only a few classes and methods. 
+It aims at being as simple as possible but no simpler than that.
+
 # Requirements
 
 Known to work on:  `PHP >= 7.4.3`
@@ -12,7 +15,7 @@ Known to work on:  `PHP >= 7.4.3`
 
 # Documentation: 
 
-See: [https://github.com/diversen/pebble-framework-docs](https://github.com/diversen/pebble-framework-docs)
+See: [https://diversen.github.io/pebble-framework/](https://diversen.github.io/pebble-framework/)
 
 # Install for testing
 
