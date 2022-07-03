@@ -174,8 +174,8 @@ $app_exec-&gt;run();
 
 </code></pre>
 <p>You may add your own error controller.</p>
-<p>The only public method in <code>Pebble\StdErrorController</code> is <code>render</code>. 
-Your own error controller will need to have a <code>render</code> method. This method
+<p>The only public method in <code>Pebble\App\StdErrorController</code> is <code>render</code>. 
+Your error controller will need to have a <code>render</code> method. This method
 has a single <code>param</code> which is an <code>Exception</code>.   </p>
 <p>The directories <code>config</code> and <code>config-locale</code> MUST exist a the same level
 as the composer <code>vendor</code> dir. The <code>logs</code> dir will be created automatically
