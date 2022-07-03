@@ -150,10 +150,17 @@
 </code></pre>
 <h3 id="documentation-examples">Documentation examples</h3>
 <p>You may clone the <strong>pebble-framework-docs</strong>, in order to
-easily run and edit all code examples in this documentation: </p>
+easily run and edit all code examples in the documentation: </p>
 <pre><code>git clone https://github.com/diversen/pebble-framework-docs.git 
 cd pebble-framework-docs
 composer install
+</code></pre>
+<p>You may notice that all classes in <code>src</code> are autoloaded as the namespace
+<code>App</code>. This is done by setting the <code>autoload</code> setting in composer.json
+to the following:     </p>
+<pre><code>"autoload": {
+    "psr-4": {"App\\": "src/"}
+}
 </code></pre>
 <h3 id="mysql">MySQL</h3>
 <p>The documentation uses MySQL. If you want to run all code examples
