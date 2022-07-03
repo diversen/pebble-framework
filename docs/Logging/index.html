@@ -135,14 +135,14 @@
               
                 <h2 id="logging">Logging</h2>
 <p>There is no logging system built-in, but only a service that loads an instance
-of the <a href="https://github.com/Seldaek/monolog">Monolog\Logger</a> class. 
+of the <a href="https://github.com/Seldaek/monolog">Monolog\Logger</a> class.
 In order to use this service run the following composer command:</p>
 <pre><code>composer require monolog/monolog
 </code></pre>
 <p>Without any configuration, the default logger writes log messages 
 to the file <code>logs/main.log</code> file.</p>
 <p>If you want to alter the default logger, you can specify this in 
-the Log.php configuration file. </p>
+a <code>Log.php</code> configuration file. </p>
 <p>(config/Log.php) -&gt;</p>
 <pre><code class="language-php">&lt;?php
 
@@ -165,7 +165,7 @@ return [
 ];
 
 </code></pre>
-<p>The logger from the configuration file writes to the default log file, 
+<p>The logger from the above configuration file writes to the default log file, 
 but also to <code>php://stderr</code>. Let's test it:</p>
 <p>(examples/logging/index.php) -&gt;</p>
 <pre><code class="language-php">&lt;?php
@@ -177,12 +177,22 @@ use Pebble\Service\LogService;
 
 // You can get a log instance from AppBase
 $log = (new AppBase())-&gt;getLog();
-$log-&gt;debug('Some debug message');
+
+// Just a message
+$log-&gt;debug('Debug message');
+
+// Add some more info as an array
+$log-&gt;debug('Debug message', ['info' =&gt; 'Debug info', 'URL' =&gt; $_SERVER['REQUEST_URI']]);
 
 // Or you can get a log instance from LogService
 // (It is the same instance you will get)
 $log = (new LogService())-&gt;getLog();
-$log-&gt;error('Some error message');
+
+// Just a message
+$log-&gt;error('Error message');
+
+// Add some more info as an array
+$log-&gt;error('Error message', ['info' =&gt; 'Error info', 'URL' =&gt; $_SERVER['REQUEST_URI']]);
 </code></pre>
 <p>You may run this example:</p>
 <pre><code>php -S localhost:8000 -t examples/logging
@@ -191,6 +201,8 @@ $log-&gt;error('Some error message');
 <p>You will get a couple of log message in <code>logs/main.log</code>, 
 and because we use the log instance from <code>config/Log.php</code> class 
 the same messages are written to <code>php://stderr</code>.</p>
+<p>You should visit <a href="https://github.com/Seldaek/monolog">Monolog\Logger</a>
+for more information.</p>
 <hr />
 <p><a href='https://github.com/diversen/pebble-framework-docs/blob/main/src-docs/300-Logging.md'>Edit this page on GitHub</a></p>
               
