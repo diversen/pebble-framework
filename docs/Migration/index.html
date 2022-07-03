@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/Migration/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Migration - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Migration";
+        var mkdocs_page_input_path = "Migration.md";
+        var mkdocs_page_url = "/Migration/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AppExec/">AppExec</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Template/">Template</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Config/">Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DB/">DB</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Migration</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACL/">ACL</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Flash/">Flash</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Misc/">Misc</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Migration</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="migration">Migration</h2>
+<p>Migration creates or updates your database schema. 
+A <code>.migration</code> file will keep track of the current schema version, 
+so that the migration system knows what to execute.  </p>
+<p>The <code>up</code> migrations are placed in <code>migrations/up/</code>.</p>
+<p>Let's load some SQL into the database. The database statements in <code>migrations/up/0001.sql</code> 
+will make it possible to create users and to check users against an ACL system. 
+The <code>0002.sql</code> creates a <code>note</code> table.</p>
+<p>There is a corresponding <code>migrations/up/down</code> folder for migrating down. This folder
+holds all the statements that will <em>undo</em> the up migrations. </p>
+<p>Let's create a command for running the up migration: </p>
+<p>(examples/migration/up.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+include_once &quot;vendor/autoload.php&quot;;
+
+use Pebble\Service\MigrationService;
+use Pebble\App\AppBase;
+
+// Get migration instance using service class
+$migrate = (new MigrationService())-&gt;getMigration();
+
+// Or use AppBase class
+$migrate = (new AppBase())-&gt;getMigration();
+
+// This will migrate both SQL files 0001.sql and 0002.sql
+// Unless they already have been migrated
+$migrate-&gt;up(2);
+
+// This would also migrate both version up
+// $migrate-&gt;up();
+</code></pre>
+<p>Run the command from a terminal: </p>
+<pre><code>php examples/migration/up.php
+</code></pre>
+<p>You <code>.migration</code> file will now have version <code>2</code>. </p>
+<p>Let's also create a command for running the down migration: </p>
+<p>(examples/migration/down.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+include_once &quot;vendor/autoload.php&quot;;
+
+use Pebble\Service\MigrationService;
+use Pebble\App\AppBase;
+
+// Get migration instance using service class
+$migrate = (new MigrationService())-&gt;getMigration();
+
+// Or use AppBase class
+$migrate = (new AppBase())-&gt;getMigration();
+
+// This will migrate both SQL files 0001.sql and 0002.sql
+// Unless they already have been migrated
+$migrate-&gt;down();
+
+// You could also use
+// $migrate-&gt;down(0);
+
+// Migrate down to version 1. Drops tables in 0002.sql
+// $migrate-&gt;down(1);
+
+// Migrate down to version 0 Drops tables in 0001.sql
+// $migrate-&gt;down(0);
+</code></pre>
+<p>Migrate down from a terminal:</p>
+<pre><code>php examples/migration/down.php
+</code></pre>
+<p>Your <code>.migration</code> file is now removed (version 0)</p>
+<p>Migrate up again as we will use the new database schema when using the 
+<code>Pebble\Auth</code> class.  </p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../DB/" class="btn btn-neutral float-left" title="DB"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Auth/" class="btn btn-neutral float-right" title="Auth">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../DB/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Auth/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

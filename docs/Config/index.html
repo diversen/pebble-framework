@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/Config/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Config - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Config";
+        var mkdocs_page_input_path = "Config.md";
+        var mkdocs_page_url = "/Config/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AppExec/">AppExec</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Template/">Template</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Config</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DB/">DB</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Migration/">Migration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACL/">ACL</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Flash/">Flash</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Misc/">Misc</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Config</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="config">Config</h2>
+<p>All files in the <code>config/</code> folder are read first, 
+when creating the config instance. </p>
+<p>There is a couple of configuration files in this directory, but
+we will just focus on the <code>App.php</code> file. </p>
+<p>Any configuration file being used, should return an assoc array with key names and values, 
+and that is what the <code>config/App.php</code> file does. </p>
+<p>(config/App.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+return [
+    'env' =&gt; 'live',
+    'secret' =&gt; 'A secret!',
+];
+</code></pre>
+<p>Then all files in the <code>config-locale/</code> directory are read.
+Any values in these files will override the values found in <code>config</code>.</p>
+<p>(config-locale/App.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+return [
+    'env' =&gt; 'dev',
+];
+
+</code></pre>
+<p>Therefore: In the <code>config-locale</code> folder you should keep locale settings. 
+These settings will override the general settings in <code>config</code>. </p>
+<p>Let's use the <code>App.php</code> configuration in an example, where we will be reading
+some configuration values: </p>
+<p>(examples/config/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\App\AppBase;
+use Pebble\Service\ConfigService;
+
+// Get the service from the ConfigService class
+$config = (new ConfigService())-&gt;getConfig();
+
+// Or get the ConfigService instance from the AppBase class
+$config = (new AppBase())-&gt;getConfig();
+
+// Is dev. Because config-locale/ overrides config/
+if ($config-&gt;get('App.env')) {
+    echo  &quot;Env is: &quot; . $config-&gt;get('App.env') . &quot;&lt;br /&gt;&quot;;
+    // -&gt; Env is: dev
+} else {
+    echo &quot;Env is not defined!&lt;br /&gt;&quot;;
+}
+
+// No override in config-locale/ so we just get 'A secret!'
+echo &quot;What is the secret. It is: &quot; . $config-&gt;get('App.secret') . &quot;&lt;br /&gt;&quot;;
+// -&gt; What is the secret. It is: A secret!
+
+// You can get a complete configuration section like this:
+echo &quot;var_dump all settings in the section App (App.php):&lt;br /&gt;&quot;;
+var_dump($config-&gt;getSection('App'));
+// -&gt; array(2) { [&quot;env&quot;]=&gt; string(3) &quot;dev&quot; [&quot;secret&quot;]=&gt; string(9) &quot;A secret!&quot; }
+
+
+</code></pre>
+<p>You can run this example like this:</p>
+<pre><code>php -S localhost:8000 -t examples/config
+</code></pre>
+<p>And visit <a href="http://localhost:8000/">http://localhost:8000/</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Logging/" class="btn btn-neutral float-left" title="Logging"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../DB/" class="btn btn-neutral float-right" title="DB">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Logging/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../DB/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/Misc/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Misc - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Misc";
+        var mkdocs_page_input_path = "Misc.md";
+        var mkdocs_page_url = "/Misc/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AppExec/">AppExec</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Template/">Template</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Config/">Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DB/">DB</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Migration/">Migration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACL/">ACL</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Flash/">Flash</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Misc</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#captcha">Captcha</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#csrf">CSRF</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cookie">Cookie</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#session">Session</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sessiontimed">SessionTimed</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#file">File</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dbcache">DBCache</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#exceptiontrace">ExceptionTrace</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#headers">Headers</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#json">JSON</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#path">Path</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#random">Random</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#server">Server</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Misc</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="misc">Misc</h2>
+<p>This part show other small classes you can use:</p>
+<h3 id="captcha">Captcha</h3>
+<p>The <code>Pebble\Captcha</code> class uses the <a href="https://github.com/Gregwar/Captcha">gregwar/captcha</a> package.
+You need to install this package, e.g. using composer: </p>
+<pre><code>composer require gregwar/captch
+</code></pre>
+<p>Usage:</p>
+<p>(examples/captcha/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Captcha;
+
+session_start();
+$captcha = new Captcha();
+
+// Ouputs a captcha image
+// And sets $_SESSION['captcha_phrase']
+// Maybe output this image somewhere in a controller
+$captcha-&gt;outputImage();
+
+// // In another controller method you would validate this image
+// // Maybe in a form validation 
+// if ($captcha-&gt;validate($phrase)) {
+//     echo &quot;The phrase is OK&quot;;
+//     // Do something
+// } else {
+//     echo &quot;The phrase is NOT OK&quot;;
+// }
+
+</code></pre>
+<h3 id="csrf">CSRF</h3>
+<p>The <code>Pebble\CSRF</code> is a protection against <strong>Cross-site request forgery</strong>. You may read more about 
+<a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-site request forgery</a> on wikipedia.</p>
+<p>For implementation you may look at <a href="https://stackoverflow.com/a/31683058/464549">this stackoverflow answer</a> </p>
+<p>Usage:</p>
+<p>(examples/csrf/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\CSRF;
+
+session_start();
+
+$csrf = new CSRF();
+
+/** 
+ * Get a token to use in a form
+ * 
+ * Gets a token to use in a form. E.g. as a hidden input
+ * &lt;input name=&quot;csrf_token&quot; type=&quot;hidden&quot; value=&quot;&lt;?=$token?&gt;&quot; /&gt;
+ * This also sets the token value in $_SESSION['csrf_token'] 
+ */
+$token = $csrf-&gt;getToken();
+
+/**
+ * Validate the form
+ */
+
+// Explicit specify token to validate
+$res = $csrf-&gt;validateToken($_POST['csrf_token']);
+
+// If no token is set then $_POST['csrf_token'] will be used as token to validate
+$res = $csrf-&gt;validateToken();
+
+if ($res) {
+    echo &quot;Validated&quot;;
+    // Do something useful
+} else {
+    echo &quot;Not validated&quot;;
+    // Give an error
+}
+
+</code></pre>
+<h3 id="cookie">Cookie</h3>
+<p>The <code>Pebble\Cookie</code> makes it easy to set a cookie from configuration:</p>
+<p>Let's say you have some configuration for setting a cookie: </p>
+<p>(config/Auth.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+return
+[
+    'cookie_path' =&gt; '/',
+    'cookie_secure' =&gt; true,
+    'cookie_domain' =&gt; $_SERVER['SERVER_NAME'] ?? '',
+    'cookie_http' =&gt; true
+];
+</code></pre>
+<p>Now you can set a cookie like this: </p>
+<p>(examples/cookie/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Cookie;
+use Pebble\Service\ConfigService;
+
+// Read the config to use with the cookie
+$config = (new ConfigService())-&gt;getConfig();
+$cookie_settings = $config-&gt;getSection('Auth');
+
+// Create cookie object
+$cookie = new Cookie($cookie_settings);
+
+// Session cookie
+// $cookie-&gt;setCookie('test', 'test', 0);
+
+// Cookie will last for 10 seconds
+if (isset($_COOKIE['test'])) {
+    echo &quot;Value of the cookie 'test': &quot; .  $_COOKIE['test'];
+} else {
+    $cookie-&gt;setCookie('test', rand(), 10);
+    echo &quot;Random 'test' cookie value has been set. Will exist for 10 seconds&quot;;
+}
+
+</code></pre>
+<p>You may run this example: </p>
+<pre><code>php -S localhost:8000 -t examples/cookie/
+</code></pre>
+<h3 id="session">Session</h3>
+<p>The <code>Pebble\Session</code> is for setting the configuration of the session. </p>
+<p>You will need a configuration file like this: </p>
+<p>(config/SessionShort.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+return [
+    'lifetime' =&gt; 10, // Seconds
+    'path' =&gt; '/',
+    // prefix with a dot to use all domains e.g. .php.net
+    'domain' =&gt; $_SERVER['SERVER_NAME'] ?? '',
+    'secure' =&gt; true, //
+    'httponly' =&gt; true,
+];
+
+</code></pre>
+<p>Now we define our session from the configuration:</p>
+<p>(examples/session/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Service\ConfigService;
+use Pebble\Session;
+
+$config = (new ConfigService())-&gt;getConfig();
+$session_config = $config-&gt;getSection('SessionShort');
+
+Session::setConfigSettings($session_config);
+session_start();
+
+if (!isset($_SESSION['started'])) {
+    $_SESSION['started'] = random_int(0, 10); 
+    echo &quot;Session started has been set&quot;;
+} else {
+
+    echo &quot;Value of \$_SESSION['started'] = $_SESSION[started]&quot;;
+}
+
+
+
+</code></pre>
+<h3 id="sessiontimed">SessionTimed</h3>
+<p>The <code>Pebble\SessionTimed</code> will set a SESSION variable that will run out 
+after exactly <strong>a determined number of seconds</strong>, regardless of the general lifetime of the SESSION 
+cookie: </p>
+<p>(examples/session_timed/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\SessionTimed;
+
+session_start();
+
+$session_timed = new SessionTimed();
+if (!$session_timed-&gt;getValue('test')) {
+    echo &quot;Setting new random int as session variable&lt;br&gt;&quot;;
+    echo &quot;Regardless of the general session's lifetime&lt;br /&gt;&quot;;
+    echo &quot;The random value will exist for 5 seconds&quot;;
+    $session_timed-&gt;setValue('test', random_int(0, 1000000), 5);
+} else {
+    echo &quot;This is the random int: &quot; . $session_timed-&gt;getValue('test');
+}
+
+
+
+
+
+
+</code></pre>
+<h3 id="file">File</h3>
+<p>The <code>Pebble\File</code> class contains only one method which will get all files recursively 
+from a single directory (excluding '.' and '..'): </p>
+<p>(examples/file/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+include_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\File;
+use Pebble\Path;
+
+// All config/ files
+$files = File::dirToArray(Path::getBasePath() . '/config');
+var_dump($files);
+</code></pre>
+<h3 id="dbcache">DBCache</h3>
+<p>A simple key / value cache. Usage: </p>
+<p>(examples/dbcache/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;; 
+
+use Pebble\Service\DBService;
+use Pebble\DBCache;
+
+$db = (new DBService())-&gt;getDB();
+
+$cache = new DBCache($db);
+
+// Try to get a result ignoreing max age
+// $from_cache = $cache-&gt;get('some_key');
+
+// Get a result that is max 100 seconds old
+$from_cache = $cache-&gt;get('some_key', 10);
+
+
+// Cache a value
+
+if (!$from_cache) {
+    echo &quot;No result&lt;br /&gt;&quot;;
+    echo &quot;Add value to key 'some_key'&lt;br /&gt;&quot;;
+    $to_cache = ['this is a test'];
+    // Not set is inside an DB transaction
+    $cache-&gt;set('some_key', $to_cache);
+} else {
+    echo &quot;Got value from cache&lt;br /&gt;&quot;;
+    var_dump($from_cache);
+}
+
+// Delete a value
+// $cache-&gt;delete('some_key');
+</code></pre>
+<p>Run the example:</p>
+<pre><code>php -S localhost:8000 -t examples/dbcache
+</code></pre>
+<h3 id="exceptiontrace">ExceptionTrace</h3>
+<p>The <code>Pebble\ExceptionTrace</code> class gets info from an Exception as a string:</p>
+<p>(examples/exceptiontrace/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;;
+
+use Exception;
+use Pebble\ExceptionTrace;
+
+try {
+    throw new Exception('This went horrible wrong');
+} catch (Exception  $e) {
+    echo &quot;&lt;pre&gt;&quot; . ExceptionTrace::get($e) . &quot;&lt;/pre&gt;&quot;;
+}
+
+// This following message will be printed:
+//
+// Message: This went horrible wrong
+// In: /home/dennis/pebble-framework-docs/examples/exceptiontrace/index.php (9)
+// Trace: 
+// #0 {main}
+
+</code></pre>
+<h3 id="headers">Headers</h3>
+<p>The <code>Pebble\Headers</code> class has one method, that will redirect from http to https
+if the client is not already using https. </p>
+<p>(examples/headers/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Headers;
+
+// Redirect current url to https
+Headers::redirectToHttps();
+</code></pre>
+<h3 id="json">JSON</h3>
+<p>The <code>Pebble\JSON</code> class has one method which is a slightly modified version of <code>json_encode</code>. </p>
+<p>It adds the header <code>Content-Type: application/json</code>, and it throws exception on 
+encoding error. It is also possible to use a debug mode. </p>
+<p>(examples/json/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\JSON;
+
+// Add debug info to the JSON array
+JSON::$debug = false; // Default is false
+
+// Send JSON header and response
+echo JSON::response(['some value', 'some other value']);
+
+// Outputs -&gt; 
+// {&quot;0&quot;:&quot;some value&quot;,&quot;1&quot;:&quot;some other value&quot;,&quot;__POST&quot;:[],&quot;__GET&quot;:[]}
+
+// Outputs -&gt; (IF JSON::$debug is false)
+// [&quot;some value&quot;,&quot;some other value&quot;]
+</code></pre>
+<h3 id="path">Path</h3>
+<p>The <code>Pebble\Path</code> class has one method which gives you the path where <code>vendor/</code> is locatated:</p>
+<p>(examples/path/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Path;
+
+echo Path::getBasePath();
+
+// print something like: 
+// -&gt; /home/dennis/pebble-framework-docs
+</code></pre>
+<h3 id="random">Random</h3>
+<p>The <code>Pebble\Random</code> class has a single method that gives you a truly random string:</p>
+<p>(examples/random/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Random;
+
+echo Random::generateRandomString(16);
+// print something like (2*16) hex chars: 
+// -&gt; 3108769d59468a6f6507a663b2fba9a4
+</code></pre>
+<h3 id="server">Server</h3>
+<p>The <code>Pebble\Server</code> class has a single method that gives you both scheme and host of 
+your server:</p>
+<p>(examples/server/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Server;
+
+$scheme_and_host = (new Server())-&gt;getSchemeAndHost();
+echo $scheme_and_host;
+
+// Prints something like this
+// -&gt; http://localhost:8000
+
+
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../CLI/" class="btn btn-neutral float-left" title="CLI"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../CLI/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

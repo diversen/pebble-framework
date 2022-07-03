@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/ACL/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>ACL - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "ACL";
+        var mkdocs_page_input_path = "ACL.md";
+        var mkdocs_page_url = "/ACL/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AppExec/">AppExec</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Template/">Template</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Config/">Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DB/">DB</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Migration/">Migration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">ACL</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Flash/">Flash</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Misc/">Misc</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>ACL</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="acl">ACL</h2>
+<p>An access control list (ACL) is a list of rules that specifies which users or systems 
+are granted or denied access to a particular object or system resource.</p>
+<p>The ACL class extends the Auth class so it is possible to use all public
+methods found in the Auth class. </p>
+<p>An ACL right consist of an <code>entity</code>, <code>entity_id</code>, <code>right</code>, and <code>auth_id</code>. 
+The <code>entity</code> could be a database table named  <strong>note</strong>. The <code>entity_id</code> could be the primary ID
+of the note table. The <code>right</code> could be <code>read</code> or <code>write</code>, and the <code>auth_id</code> is probably a 
+logged in user's <code>auth_id</code>.   </p>
+<p>Let's test the ACL object in a controller. </p>
+<p>(src/ACLTestController.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+namespace App;
+
+use Pebble\Service\ACLService;
+use Pebble\App\AppBase;
+use Exception;
+
+class ACLTestController
+{
+
+    private $acl;
+    private $rights = [];
+    public function __construct()
+    {
+        $this-&gt;acl = (new ACLService())-&gt;getACL();
+
+        // Or
+        $this-&gt;acl = (new AppBase())-&gt;getACL();
+
+        // Under normal circumstances you would receive a auth_id 
+        // from the ACL object using `$this-&gt;acl-&gt;getAuthId();`
+        // When the user is logged in. 
+        $this-&gt;rights =
+            [
+                'entity' =&gt; 'note',
+                'entity_id' =&gt; 42,
+                'right' =&gt; 'read',
+                'auth_id' =&gt; 1,
+            ];
+    }
+
+
+    /**
+     * @route /rights/add
+     * @verbs GET
+     */
+    public function RightsAdd()
+    {
+        $this-&gt;acl-&gt;setAccessRights($this-&gt;rights);
+        echo &quot;Access rights added&quot;;
+    }
+
+    /**
+     * @route /rights/remove
+     * @verbs GET
+     */
+    public function rightsRemove()
+    {
+        $this-&gt;acl-&gt;removeAccessRights($this-&gt;rights);
+        echo &quot;Access rights removed&quot;;
+    }
+
+    /**
+     * @route /note/read/:id
+     * @verbs GET
+     */
+    public function noteRead(array $params)
+    {
+        $rights = [
+            'entity' =&gt; 'note',
+            'entity_id' =&gt; $params['id'],
+            'right' =&gt; 'read',
+            'auth_id' =&gt; 1,
+        ];
+
+        try {
+            $this-&gt;acl-&gt;hasAccessRightsOrThrow($rights);
+            echo &quot;You can see the secret note 42&quot;;
+        } catch (Exception $e) {
+            echo $e-&gt;getMessage();
+        }
+
+    }
+}
+
+</code></pre>
+<p>We execute this controller in our <code>index.php</code> file: </p>
+<p>(examples/acl/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use App\ACLTestController;
+use Pebble\App\AppBase;
+use Pebble\App\AppExec;
+use Pebble\Router;
+
+class TestApp  extends AppBase {
+    public function run() {
+        $this-&gt;setErrorHandler();
+        $router = new Router();
+        $router-&gt;addClass(ACLTestController::class);
+        $router-&gt;run();
+    }
+}
+
+$app_exec = new AppExec();
+$app_exec-&gt;setApp(TestApp::class);
+$app_exec-&gt;run();
+
+</code></pre>
+<p>Run this example using:</p>
+<pre><code>php -S localhost:8000 -t examples/acl
+</code></pre>
+<p>You can now add the access right on <a href="http://localhost:8000/rights/add">http://localhost:8000/rights/add</a></p>
+<p>You can remove it on <a href="http://localhost:8000/rights/remove">http://localhost:8000/rights/remove</a></p>
+<p>If the right exists then you may visit <a href="http://localhost:8000/note/read/42">http://localhost:8000/note/read/42</a></p>
+<p>But you can never visit <a href="http://localhost:8000/note/read/41">http://localhost:8000/note/read/41</a>
+(this ID can not be set)</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Auth/" class="btn btn-neutral float-left" title="Auth"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ACLRole/" class="btn btn-neutral float-right" title="ACLRole">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Auth/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../ACLRole/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

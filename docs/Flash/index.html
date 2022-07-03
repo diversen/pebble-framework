@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/Flash/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Flash - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Flash";
+        var mkdocs_page_input_path = "Flash.md";
+        var mkdocs_page_url = "/Flash/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AppExec/">AppExec</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Template/">Template</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Config/">Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DB/">DB</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Migration/">Migration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACL/">ACL</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Flash</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Misc/">Misc</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Flash</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="flash">Flash</h2>
+<p>Flash messages are messages that are displayed to the client -
+usually after some action has been performed. </p>
+<p>If the client has logged in, then it is normal to display 
+a message like <em>Welcome. You are now logged in</em>.</p>
+<p>In the following example we make two routes, <code>/</code> and <code>/click</code>. </p>
+<p>The <code>/</code> route just shows a link, that says <em>Click me</em>. When 
+clicking this link we navigate to <code>/click</code> which sets a flash message
+in the <code>$_SESSION['flash']</code> variable. </p>
+<p>Then we are redirected back to <code>/</code>, where the flash messages are 
+displayed and cleared.  </p>
+<p>(src/FlashTestController.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+namespace App;
+
+use Pebble\Flash;
+use App\AppBase;
+
+$app_base = new AppBase();
+$app_base-&gt;setErrorHandler();
+$app_base-&gt;setIncludePath();
+
+class FlashTestController
+{
+    private $flash;
+    function __construct()
+    {
+        $this-&gt;flash = new Flash();
+    }
+
+    /**
+     * @route /
+     * @verbs GET
+     */
+    public function index()
+    {
+        $flash_str = '';
+        $flashes = $this-&gt;flash-&gt;getMessages();
+        foreach ($flashes as $flash) {
+            $flash_str .= $flash['message'] . &quot; ($flash[type]) &quot;;
+        }
+
+        $content = '&lt;div&gt;&lt;a href=&quot;/click&quot;&gt;Click me&lt;/a&gt;&lt;/div&gt;';
+        if ($flash_str) {
+            $content .= &quot;&lt;div style='background-color: lightgreen'&gt;$flash_str&lt;/div&gt;&quot;;
+        }
+
+        echo $content;
+    }
+
+    /**
+     * @route /click
+     * @verbs GET
+     */
+    public function click(array $params, Object $object)
+    {
+        $random = rand(0, 10);
+        $message = &quot;Your clicked a link and got this random number: $random&quot;;
+        $this-&gt;flash-&gt;setMessage($message, 'info', ['flash_remove' =&gt; true]);
+        header(&quot;Location: /&quot;);
+    }
+}
+
+</code></pre>
+<p>We execute this controller in our <code>index.php</code> file: </p>
+<p>(examples/flash/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use App\FlashTestController;
+use Pebble\App\AppBase;
+use Pebble\App\AppExec;
+use Pebble\Router;
+
+class TestApp  extends AppBase {
+    public function run() {
+        $this-&gt;setErrorHandler();
+
+        // Start session as flash message uses session
+        $this-&gt;sessionStart();
+
+        $router = new Router();
+        $router-&gt;addClass(FlashTestController::class);
+        $router-&gt;run();
+    }
+}
+
+$app_exec = new AppExec();
+$app_exec-&gt;setApp(TestApp::class);
+$app_exec-&gt;run();
+
+</code></pre>
+<p>Run the example: </p>
+<pre><code>php -S localhost:8000 -t examples/flash
+</code></pre>
+<p>You may then visit <a href="http://localhost:8000">http://localhost:8000</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ACLRole/" class="btn btn-neutral float-left" title="ACLRole"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../SMTP/" class="btn btn-neutral float-right" title="SMTP">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ACLRole/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../SMTP/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

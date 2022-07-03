@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/AppExec/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>AppExec - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "AppExec";
+        var mkdocs_page_input_path = "AppExec.md";
+        var mkdocs_page_url = "/AppExec/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">AppExec</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Template/">Template</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Config/">Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DB/">DB</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Migration/">Migration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACL/">ACL</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Flash/">Flash</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Misc/">Misc</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>AppExec</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="appexec">AppExec</h2>
+<p>The above router class showed that it is quite easy to make an
+execution environment, where any errors thrown will be caught. </p>
+<p>There is such an app execution environment built-in and it is easy to
+use. Let's try and use the class <code>Pebble\AppExec</code> in the following example:</p>
+<p>(examples/app_exec/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\App\AppExec;
+use Pebble\App\AppBase;
+use Pebble\App\StdErrorController;
+use Pebble\Router;
+
+$app_exec = new AppExec();
+
+// This is the default error controller. You may set your own error controller
+// $app_exec-&gt;setErrorController(StdErrorController::class);
+
+// Create an app to be executed. It does not need to extend AppBase
+// But AppBase has some nice utility methods
+class MyApp extends AppBase {
+
+    public function run() {
+
+        // Throw on all errors and notices
+        $this-&gt;setErrorHandler();
+
+        $router = new Router();
+        $router-&gt;addClass(App\SimpleHomeController::class);
+        $router-&gt;run();
+
+    }
+}
+
+$app_exec-&gt;setApp(MyApp::class);
+$app_exec-&gt;run();
+
+</code></pre>
+<p>You may add your own error controller.</p>
+<p>The only public method in <code>Pebble\StdErrorController</code> is <code>render</code>. 
+Your own error controller will need to have a <code>render</code> method. This method
+has a single <code>param</code> which is an <code>Exception</code>.   </p>
+<p>The directories <code>config</code> and <code>config-locale</code> MUST exist a the same level
+as the composer <code>vendor</code> dir. The <code>logs</code> dir will be created automatically
+when the first log message is written. This is also created at the same level
+as the <code>vendor</code> dir. So this is the directory structure: </p>
+<pre><code>config/
+config-locale/
+vendor/
+logs/
+</code></pre>
+<p>You will need the <a href="https://github.com/Seldaek/monolog">Monolog</a> package. 
+This is used for writing the log messages:</p>
+<pre><code>composer require monolog/monolog
+</code></pre>
+<p>Run the example:</p>
+<pre><code>php -S localhost:8000 -t examples/app_exec/
+</code></pre>
+<p>You may now visit e.g. <a href="http://localhost:8000/">http://localhost:8000/</a></p>
+<p>And you will get a <code>hello world!</code>. </p>
+<p>You can also visit a route that does not exist: 
+<a href="http://localhost:8000/does/not/exists">http://localhost:8000/does/not/exists</a></p>
+<p>And you will get an error message and a stack trace. </p>
+<p>If you open the log file: </p>
+<pre><code>more logs/main.log
+</code></pre>
+<p>You will notice that a log message has been appended. </p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Router/" class="btn btn-neutral float-left" title="Router"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Special/" class="btn btn-neutral float-right" title="Special">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Router/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Special/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

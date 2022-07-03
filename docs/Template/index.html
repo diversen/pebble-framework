@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/Template/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Template - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Template";
+        var mkdocs_page_input_path = "Template.md";
+        var mkdocs_page_url = "/Template/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AppExec/">AppExec</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Template</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Config/">Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DB/">DB</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Migration/">Migration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACL/">ACL</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Flash/">Flash</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Misc/">Misc</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Template</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="template">Template</h2>
+<p>The <code>Pebble\Template</code> class is used for creating secure HTML templates. It uses the
+<code>Pebble\Special</code> class for encoding the template variables. </p>
+<p>Let's create a main page template with the variables <code>$title</code> and <code>$content</code> in the <code>src/templates</code> dir.<br />
+This is the dir where all templates are placed for this project. </p>
+<p>(src/templates/main.php) -&gt;</p>
+<pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;title&gt;&lt;?= $title ?&gt;&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;h1&gt;
+        &lt;?= $title ?&gt;
+    &lt;/h1&gt;
+
+    &lt;p&gt;
+        &lt;?= $content ?&gt;
+    &lt;/p&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+<p>We will also create a page template for showing content. We create some paragraphs
+and then we loop over each one of them.</p>
+<p>(src/templates/page.php) -&gt;</p>
+<pre><code class="language-php">&lt;h3&gt;Hi &lt;?=$username?&gt;&lt;/h3&gt;
+
+&lt;p&gt;Here is a bunch of paragraphs just for you!&lt;/p&gt;
+
+&lt;?php
+
+foreach ($paragraphs as $paragraph): ?&gt;
+&lt;p&gt;&lt;?=$paragraph?&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;?php
+
+endforeach;
+</code></pre>
+<p>We add a new controller class called <code>TemplateTest</code> in the <code>src</code> dir. </p>
+<p>(src/TemplateTest.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+namespace App;
+
+use Pebble\Template;
+
+class TemplateTest {
+
+    /**
+     * @route /user/:username
+     * @verbs GET
+     */
+    public function userGreeting(array $params, object $middle_ware) {
+
+        $variables['title'] = 'Greeting with paragraphs'; 
+        $variables['username'] = $params['username'];
+        $variables['paragraphs'] = [
+            'Hi &lt;w&gt;&lt;o&gt;&lt;o&gt; ' . $params['username'] . '&lt;o&gt;&lt;o&gt;&lt;h&gt; !', 
+            'Nice day today!', 
+            'Did they build a wall?', 
+            'No, they build a dam!'
+        ];
+
+        // All the variables with HTML specialchars will be auto-encoded, 
+        // They are safe to output to the client
+        $variables['content'] = Template::getOutput('templates/page.php', $variables);
+
+        // All variables are already encoded, 
+        // Therefor we render this template without encoding (renderRaw)
+        Template::renderRaw('templates/main.php', $variables);
+
+    } 
+}
+
+</code></pre>
+<p>Now we can tie it all together in our <code>index.php</code> file</p>
+<p>(examples/template/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\Router;
+use Pebble\App\AppBase;
+use Pebble\App\AppExec;
+
+class MyApp extends AppBase {
+
+    public function run () {
+
+        $this-&gt;setErrorHandler();
+
+        // Add src to include path 
+        // Then templates are loaded without adding 'src' to the path
+        $this-&gt;addSrcToIncludePath();
+
+        $router = new Router();
+        $router-&gt;addClass(App\TemplateTest::class);
+        $router-&gt;run();
+
+    }
+}
+
+$app_exec = new AppExec();
+$app_exec-&gt;setApp(MyApp::class);
+$app_exec-&gt;run();
+
+</code></pre>
+<p>Run the application:</p>
+<pre><code>php -S localhost:8000 -t examples/template
+</code></pre>
+<p>Visit a route that does not exist and you will get an error, e.g: 
+<a href="http://localhost:8000/does/not/exist">http://localhost:8000/does/not/exist</a></p>
+<p>Or visit a route that exists:
+<a href="http://localhost:8000/user/Helena">http://localhost:8000/user/Helena</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Special/" class="btn btn-neutral float-left" title="Special"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Logging/" class="btn btn-neutral float-right" title="Logging">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Special/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Logging/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

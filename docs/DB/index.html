@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="http://localhost:8000/DB/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>DB - Pebble Framework Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "DB";
+        var mkdocs_page_input_path = "DB.md";
+        var mkdocs_page_url = "/DB/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pebble Framework Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Setup/">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Router/">Router</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../AppExec/">AppExec</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Special/">Special</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Template/">Template</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logging/">Logging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Config/">Config</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">DB</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#docker-mysql">Docker MySQL</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#connect">Connect</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test">Test</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Migration/">Migration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Auth/">Auth</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACL/">ACL</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ACLRole/">ACLRole</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Flash/">Flash</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SMTP/">SMTP</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CLI/">CLI</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Misc/">Misc</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pebble Framework Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>DB</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="db">DB</h2>
+<p>The <code>Pebble\DB</code> class should work with any database, but in this documentation 
+we will stick with the MySQL database. If you don't have access to a MySQL database, 
+then it is quite easy to run a docker MySQL server instance. </p>
+<h3 id="docker-mysql">Docker MySQL</h3>
+<p>Install (run) a MySQL image that will work:</p>
+<pre><code>docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
+</code></pre>
+<p>List containers </p>
+<pre><code>docker container ls
+</code></pre>
+<p>Stop container (mysql-server):</p>
+<pre><code>docker stop mysql-server
+</code></pre>
+<p>Start container (mysql-server) again:</p>
+<pre><code>docker start mysql-server
+</code></pre>
+<p>Remove container (you will need to run the 'run' command again):</p>
+<pre><code>docker rm mysql-server
+</code></pre>
+<h3 id="connect">Connect</h3>
+<p>The default <code>config/DB.php</code> file should work with above docker settings, where 
+the username is <code>root</code> and the password is <code>password</code>.</p>
+<p>Check your database settings: </p>
+<p>(config-locale/DB.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+return [
+    'url' =&gt; 'mysql:host=127.0.0.1;dbname=pebble',
+    'username' =&gt; 'root',
+    'password' =&gt; 'password',
+];
+
+</code></pre>
+<p>Create the database if it does not exist:  </p>
+<pre><code>./cli.sh db --server-connect
+CREATE DATABASE `pebble`;
+</code></pre>
+<h3 id="test">Test</h3>
+<p>Now we can test all methods. Most of these methods should be self-explanatory. </p>
+<p>(examples/database/index.php) -&gt;</p>
+<pre><code class="language-php">&lt;?php
+
+require_once &quot;../../vendor/autoload.php&quot;;
+
+use Pebble\App\AppBase;
+use Pebble\Service\DBService;
+use Pebble\ExceptionTrace;
+
+$app_base = new AppBase();
+$app_base-&gt;setErrorHandler();
+
+function debug($message) {
+    echo &quot;$message&lt;br/&gt;&quot;;
+}
+
+try {
+
+    $db = (new AppBase())-&gt;getDb();
+    // You could also get the same DB instance by using the service class
+    $db = (new DBService())-&gt;getDB();
+    debug(&quot;getDb&quot;);
+
+    $db-&gt;prepareExecute('DROP TABLE IF EXISTS note');
+    debug(&quot;prepareExecute. Dropped note table&quot;);
+
+    $table = &lt;&lt;&lt;EOF
+    CREATE TABLE `note` (
+        `id` int NOT NULL AUTO_INCREMENT,
+        `entry` text COLLATE utf8mb4_general_ci,
+        `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        `auth_id` int NOT NULL,
+        `public` tinyint(1) DEFAULT '0',
+        PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+    EOF;  
+
+    $db-&gt;prepareExecute($table);
+    debug(&quot;prepareExecute. Created note table&quot;);
+
+    $db-&gt;beginTransaction();
+    $db-&gt;insert('note', ['entry' =&gt; 'This is a entry text by user id 1', 'auth_id' =&gt; 1]);
+    $db-&gt;insert('note', ['entry' =&gt; 'This is a entry text by user id 2', 'auth_id' =&gt; 2]);
+    $db-&gt;insert('note', ['entry' =&gt; 'This is another entry text by user id 1', 'auth_id' =&gt; 1]);
+    $last_insert_id = $db-&gt;lastInsertId();
+    $db-&gt;commit();
+    debug(&quot;commit. Commited 3 rows&quot;);
+    debug(&quot;lastInsertId. Last insert ID: $last_insert_id&quot;);
+
+    // inTransactionExecute() is a shortcut for beginTransaction() and prepareExecute() and commit()
+    // It throws an exception if the transaction fails.
+    $last_insert_id = $db-&gt;inTransactionExec(function () use ($db) {
+        $db-&gt;insert('note', ['entry' =&gt; 'Another entry by user id 1', 'auth_id' =&gt; 1]);
+        $db-&gt;insert('note', ['entry' =&gt; 'Another entry by user id 2', 'auth_id' =&gt; 2]);
+        $last_insert_id = $db-&gt;lastInsertId();
+        return $last_insert_id;
+    });
+
+    debug(&quot;lastInsertId. Last insert ID: $last_insert_id&quot;);
+
+    $num_rows = $db-&gt;getTableNumRows('note', 'id');
+    debug(&quot;getTableNumRows. $num_rows rows in table (counting 'id')&quot;);
+
+    $row = $db-&gt;getOne('note', ['auth_id' =&gt; '1']);
+    debug(&quot;getOne. Got row with ID '$row[id]' and entry '$row[entry]'&quot;);
+
+    $rows = $db-&gt;getAll('note', ['auth_id' =&gt; 1]);
+    foreach($rows as $row) {
+        debug(&quot;getAll. Got row with ID '$row[id]' and entry '$row[entry]'&quot;);
+    }
+
+    // This gives the same rows as above, but with option for 'order' and 'limit'
+    $rows = $db-&gt;getAllQuery('SELECT * FROM note', ['auth_id' =&gt; '1'], ['id' =&gt; 'ASC'], [0, 10]);
+    foreach($rows as $row) {
+        debug(&quot;getAllQuery. Got row with ID '$row[id]' and entry '$row[entry]'&quot;);
+    }
+
+    $db-&gt;update('note', ['entry' =&gt; 'This is the UPDATED entry text by user id 1'], ['id' =&gt; 1]);
+    debug(&quot;updated. Updated row with ID '$row[id]'&quot;);
+    $row = $db-&gt;getOneQuery('SELECT * FROM note', ['auth_id' =&gt; 1], ['updated' =&gt; 'DESC']);
+    debug(&quot;getOneQuery. Got updated row with ID '$row[id]' and updated entry '$row[entry]'&quot;);
+
+    // Use any SQL for getting a single row. Positional parameters
+    $row = $db-&gt;prepareFetch(&quot;SELECT * FROM note WHERE id = ?&quot;, [1]);
+    debug(&quot;prepareFetch (positional parameters). Got row with ID '$row[id]' and entry '$row[entry]'&quot;);
+
+    // Use any SQL for getting multiples row. Positional parameters
+    $rows = $db-&gt;prepareFetchAll(&quot;SELECT * FROM note WHERE id &gt;= ?&quot;, [1]);
+    foreach($rows as $row) {
+        debug(&quot;prepareFetchAll (positional parameters). Got row with ID '$row[id]' and entry '$row[entry]'&quot;);
+    }
+
+    // Use any SQL for getting multiples row. Named parameters
+    $rows = $db-&gt;prepareFetchAll(&quot;SELECT * FROM note WHERE id &gt;= :id&quot;, ['id' =&gt; 1]);
+    foreach($rows as $row) {
+        debug(&quot;prepareFetchAll (named parameters). Got row with ID '$row[id]' and entry '$row[entry]'&quot;);
+    }
+
+    $db-&gt;delete('note', ['id' =&gt; 1] );
+    debug(&quot;Deleted row with id = 1&quot;);
+
+    $affected_rows = $db-&gt;rowCount();
+    debug(&quot;rowCount (affected rows): $affected_rows&quot;);
+
+    // Get dbh database handle
+    $db-&gt;getDbh();
+
+    // Get LIMIT SQL string
+    $limit = $db-&gt;getLimitSql([0, 10]);
+    debug(&quot;getLimitSql. $limit&quot;);
+
+    // Get order SQL
+    $order = $db-&gt;getOrderBySql(['id' =&gt; 'ASC', 'username' =&gt; 'DESC']);
+    debug(&quot;getOrderBySql. $order&quot;);
+
+    // Get where SQL
+    $where_sql = $db-&gt;getWhereSql(['auth_id ' =&gt; 7, 'birthday' =&gt; '1972-02-25']);
+    debug(&quot;getOrderBySql. $where_sql&quot;);
+
+} catch (Exception $e) {
+    debug(&quot;Error: &quot; . $e-&gt;getMessage());
+    echo &quot;&lt;pre&gt;&quot; . ExceptionTrace::get($e) . &quot;&lt;/pre&gt;&quot;;
+
+}
+
+
+</code></pre>
+<p>You may run the example:</p>
+<pre><code>php -S localhost:8000 -t examples/database
+</code></pre>
+<p>And then visit <a href="http://localhost:8000/">http://localhost:8000/</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Config/" class="btn btn-neutral float-left" title="Config"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Migration/" class="btn btn-neutral float-right" title="Migration">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Config/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Migration/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
