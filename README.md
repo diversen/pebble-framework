@@ -2,8 +2,7 @@
 
 A simple and small php framework / library.
 
-The framework aims at being quite small with only a few classes and methods. 
-It aims at being as simple as possible but no simpler than that.
+The framework aims at being as simple as possible but no simpler than that.
 
 # Documentation 
 
