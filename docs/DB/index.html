@@ -75,11 +75,7 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">DB</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#docker-mysql">Docker MySQL</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#connect">Connect</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#test">Test</a>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
     </li>
     </ul>
                 </li>
@@ -140,44 +136,8 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="db">DB</h2>
-<p>The <code>Pebble\DB</code> class should work with any database, but in this documentation 
-we will stick with the MySQL database. If you don't have access to a MySQL database, 
-then it is quite easy to run a docker MySQL server instance. </p>
-<h3 id="docker-mysql">Docker MySQL</h3>
-<p>Install (run) a MySQL image that will work:</p>
-<pre><code>docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
-</code></pre>
-<p>List containers </p>
-<pre><code>docker container ls
-</code></pre>
-<p>Stop container (mysql-server):</p>
-<pre><code>docker stop mysql-server
-</code></pre>
-<p>Start container (mysql-server) again:</p>
-<pre><code>docker start mysql-server
-</code></pre>
-<p>Remove container (you will need to run the 'run' command again):</p>
-<pre><code>docker rm mysql-server
-</code></pre>
-<h3 id="connect">Connect</h3>
-<p>The default <code>config/DB.php</code> file should work with above docker settings, where 
-the username is <code>root</code> and the password is <code>password</code>.</p>
-<p>Check your database settings: </p>
-<p>(config-locale/DB.php) -&gt;</p>
-<pre><code class="language-php">&lt;?php
-
-return [
-    'url' =&gt; 'mysql:host=127.0.0.1;dbname=pebble',
-    'username' =&gt; 'root',
-    'password' =&gt; 'password',
-];
-
-</code></pre>
-<p>Create the database if it does not exist:  </p>
-<pre><code>./cli.sh db --server-connect
-CREATE DATABASE `pebble`;
-</code></pre>
-<h3 id="test">Test</h3>
+<p>The <code>Pebble\DB</code> class should work with any database, but in this documentation we will stick with a MySQL database. It is also the only database that has a <code>schema</code> containing tables for <code>Pebble\Auth</code>, <code>Pebble\ACL</code>, and <code>Pebble\ACLRole</code>. For instruction on running MySQL you may refer to <a href="../Setup/#mysql">Setup MySQL</a> </p>
+<h3 id="usage">Usage</h3>
 <p>Now we can test all methods. Most of these methods should be self-explanatory. </p>
 <p>(examples/database/index.php) -&gt;</p>
 <pre><code class="language-php">&lt;?php

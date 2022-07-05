@@ -47,11 +47,9 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Setup</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#as-a-dependency-in-a-project">As a dependency in a project:</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#documentation-examples">Documentation examples</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#mysql">MySQL</a>
+    <li class="toctree-l2"><a class="reference internal" href="#docker-mysql">Docker MySQL</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#other-docker-commands">Other docker commands</a>
     </li>
@@ -145,27 +143,23 @@
 <p>Requirements</p>
 <pre><code>PHP &gt;= 7.4.3
 </code></pre>
-<h3 id="as-a-dependency-in-a-project">As a dependency in a project:</h3>
+<p>Install as dependency</p>
 <pre><code>composer require diversen/pebble-framework
 </code></pre>
 <h3 id="documentation-examples">Documentation examples</h3>
-<p>You may clone the <strong>pebble-framework-docs</strong>, in order to
-easily run and edit all code examples in the documentation: </p>
+<p>You may clone the pebble-framework-docs in order to easily run and edit all code examples in this documentation: </p>
 <pre><code>git clone https://github.com/diversen/pebble-framework-docs.git 
 cd pebble-framework-docs
 composer install
 </code></pre>
-<p>Notice that all classes in <code>src</code> are autoloaded as the namespace
-<code>App</code>. This is done by setting the <code>autoload</code> setting in composer.json
-to the following:     </p>
+<p>Notice that all classes in <code>src</code> are autoloaded as the namespace <code>App</code>. This is done by setting the <code>autoload</code> setting in composer.json to the following:     </p>
 <pre><code>"autoload": {
     "psr-4": {"App\\": "src/"}
 }
 </code></pre>
-<h3 id="mysql">MySQL</h3>
-<p>The documentation uses MySQL. If you want to run all code examples
-you will need access to a MySQL database. </p>
-<p>Install (run) a MySQL image that will work:</p>
+<p>If you want to run all code examples you will need access to a MySQL database. </p>
+<h3 id="docker-mysql">Docker MySQL</h3>
+<p>If you don't have access to a MySQL database you may install a MySQL docker image that will work. The <code>root</code> user is given the password <code>password</code> in the following install:</p>
 <pre><code>docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
 </code></pre>
 <p>Create a database:</p>

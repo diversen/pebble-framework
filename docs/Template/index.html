@@ -134,10 +134,8 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="template">Template</h2>
-<p>The <code>Pebble\Template</code> class is used for creating secure HTML templates. It uses the
-<code>Pebble\Special</code> class for encoding the template variables. </p>
-<p>Let's create a main page template with the variables <code>$title</code> and <code>$content</code> in the <code>src/templates</code> dir.
-This is the dir where all templates are placed for this project. </p>
+<p>The <code>Pebble\Template</code> class is used for creating secure HTML templates. It uses the <code>Pebble\Special</code> class for encoding the template variables. </p>
+<p>Let's create a main page template with the variables <code>$title</code> and <code>$content</code> in the <code>src/templates</code> dir. This is the dir where all templates are placed for this project. </p>
 <p>(src/templates/main.php) -&gt;</p>
 <pre><code class="language-php">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -160,8 +158,7 @@ This is the dir where all templates are placed for this project. </p>
 
 &lt;/html&gt;
 </code></pre>
-<p>We will also create a page template for showing content. We create some paragraphs
-and then we loop over each one of them.</p>
+<p>We will also create a page template for showing content. We create some paragraphs and then we loop over each one of them.</p>
 <p>(src/templates/page.php) -&gt;</p>
 <pre><code class="language-php">&lt;h3&gt;Hi &lt;?=$username?&gt;&lt;/h3&gt;
 
@@ -248,10 +245,8 @@ $app_exec-&gt;run();
 <p>Run the application:</p>
 <pre><code>php -S localhost:8000 -t examples/template
 </code></pre>
-<p>Visit a route that does not exist and you will get an error, e.g: 
-<a href="http://localhost:8000/does/not/exist">http://localhost:8000/does/not/exist</a></p>
-<p>Or visit a route that exists:
-<a href="http://localhost:8000/user/Helena">http://localhost:8000/user/Helena</a></p>
+<p>Visit a route that does not exist and you will get an error, e.g: <a href="http://localhost:8000/does/not/exist">http://localhost:8000/does/not/exist</a></p>
+<p>Or visit a route that exists: <a href="http://localhost:8000/user/Helena">http://localhost:8000/user/Helena</a></p>
 <hr />
 <p><a href='https://github.com/diversen/pebble-framework-docs/blob/main/src-docs/200-Template.md'>Edit this page on GitHub</a></p>
               
