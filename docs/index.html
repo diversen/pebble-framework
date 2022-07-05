@@ -63,6 +63,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#run-documentation-examples" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -92,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Setup / Install
             
           </span>
         </div>
@@ -185,25 +190,53 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Setup / Install
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
-        Home
+        Setup / Install
       </a>
       
-    </li>
-  
+        
 
-    
-      
-      
-      
-
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
   
-    <li class="md-nav__item">
-      <a href="Setup/" class="md-nav__link">
-        Setup
-      </a>
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#run-documentation-examples" class="md-nav__link">
+    Run documentation examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-mysql" class="md-nav__link">
+    Docker MySQL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-docker-commands" class="md-nav__link">
+    Other docker commands
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -451,6 +484,35 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#run-documentation-examples" class="md-nav__link">
+    Run documentation examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-mysql" class="md-nav__link">
+    Docker MySQL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-docker-commands" class="md-nav__link">
+    Other docker commands
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -463,10 +525,57 @@
                 
 
 
-  <h1>Home</h1>
+  <h1>Setup / Install</h1>
 
-<p>The is the <strong>pebble framework</strong> documentation. </p>
-<p>The framework aims at being as simple as possible but no simpler than that. This should mean that it is a matter of hours rather than days before you are productive.</p>
+<p>Requirements</p>
+<div class="highlight"><pre><span></span><code>PHP &gt;= 7.4.3
+</code></pre></div>
+<p>Install as dependency</p>
+<div class="highlight"><pre><span></span><code>composer require diversen/pebble-framework
+</code></pre></div>
+<h3 id="run-documentation-examples">Run documentation examples</h3>
+<p>You may clone the pebble-framework-docs in order to easily run and edit all code examples in this documentation: </p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/diversen/pebble-framework-docs.git 
+cd pebble-framework-docs
+composer install
+</code></pre></div>
+<p>Notice that all classes in <code>src</code> are autoloaded as the namespace <code>App</code>. This is done by setting the <code>autoload</code> setting in composer.json to the following:     </p>
+<div class="highlight"><pre><span></span><code>&quot;autoload&quot;: {
+    &quot;psr-4&quot;: {&quot;App\\&quot;: &quot;src/&quot;}
+}
+</code></pre></div>
+<p>If you want to run all code examples you will need access to a MySQL database. </p>
+<h3 id="docker-mysql">Docker MySQL</h3>
+<p>If you don't have access to a MySQL database you may install a MySQL docker image that will work. The <code>root</code> user is given the password <code>password</code> in the following install:</p>
+<div class="highlight"><pre><span></span><code>docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
+</code></pre></div>
+<p>Create a database:</p>
+<div class="highlight"><pre><span></span><code>./cli.sh db --server-connect
+CREATE DATABASE `pebble`;
+</code></pre></div>
+<p>If you can not connect, then edit the database configuration file:</p>
+<p>(config-locale/DB.php) -&gt;</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">return</span> <span class="p">[</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s1">&#39;url&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;mysql:host=127.0.0.1;dbname=pebble&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">];</span>
+</code></pre></div>
+<h3 id="other-docker-commands">Other docker commands</h3>
+<p>List containers</p>
+<div class="highlight"><pre><span></span><code>docker container ls
+</code></pre></div>
+<p>Stop container (mysql-server):</p>
+<div class="highlight"><pre><span></span><code>docker stop mysql-server
+</code></pre></div>
+<p>Start container (mysql-server) again:</p>
+<div class="highlight"><pre><span></span><code>docker start mysql-server
+</code></pre></div>
+<p>Remove container (you will need to run the 'run' command again):</p>
+<div class="highlight"><pre><span></span><code>docker rm mysql-server
+</code></pre></div>
 <hr />
 <p><a href='https://github.com/diversen/pebble-framework-docs/blob/main/src-docs/000-index.md'>Edit this page on GitHub</a></p>
 
@@ -485,13 +594,13 @@
       
       
         
-        <a href="Setup/" class="md-footer__link md-footer__link--next" aria-label="Next: Setup" rel="next">
+        <a href="Router/" class="md-footer__link md-footer__link--next" aria-label="Next: Router" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Setup
+              Router
             </div>
           </div>
           <div class="md-footer__button md-icon">

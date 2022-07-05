@@ -71,11 +71,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://localhost:8000/Setup/</loc>
-         <lastmod>2022-07-05</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>http://localhost:8000/Special/</loc>
          <lastmod>2022-07-05</lastmod>
          <changefreq>daily</changefreq>
