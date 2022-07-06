@@ -456,7 +456,7 @@ when creating the config instance. </p>
 we will just focus on the <code>App.php</code> file. </p>
 <p>Any configuration file being used, should return an assoc array with key names and values, 
 and that is what the <code>config/App.php</code> file does. </p>
-<p>(config/App.php) -&gt;</p>
+<p><code>config/App.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">return</span> <span class="p">[</span>
@@ -466,7 +466,7 @@ and that is what the <code>config/App.php</code> file does. </p>
 </code></pre></div>
 <p>Then all files in the <code>config-locale/</code> directory are read.
 Any values in these files will override the values found in <code>config</code>.</p>
-<p>(config-locale/App.php) -&gt;</p>
+<p><code>config-locale/App.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">return</span> <span class="p">[</span>
@@ -477,7 +477,7 @@ Any values in these files will override the values found in <code>config</code>.
 These settings will override the general settings in <code>config</code>. </p>
 <p>Let's use the <code>App.php</code> configuration in an example, where we will be reading
 some configuration values: </p>
-<p>(examples/config/index.php) -&gt;</p>
+<p><code>examples/config/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>

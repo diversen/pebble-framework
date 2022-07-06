@@ -450,9 +450,16 @@
 
   <h1>Template</h1>
 
-<p>The <code>Pebble\Template</code> class is used for creating secure HTML templates. It uses the <code>Pebble\Special</code> class for encoding the template variables. </p>
-<p>Let's create a main page template with the variables <code>$title</code> and <code>$content</code> in the <code>src/templates</code> dir. This is the dir where all templates are placed for this project. </p>
-<p>(src/templates/main.php) -&gt;</p>
+<p>The <code>Pebble\Template</code> class is used for creating secure HTML templates. It uses the <code>Pebble\Special</code> class for encoding the template variables. Every HTML entity is encoded by default. </p>
+<p>The class has four methods: </p>
+<ul>
+<li><code>Template::getOutput($variables_ary, 'path/to/template.php')</code>. Return output of a template as a string</li>
+<li><code>Template::getOutputRaw($variables_ary, 'path/to/template.php')</code>. Return output of a template as a string with no encoding</li>
+<li><code>Template::render($variables_ary, 'path/to/template.php')</code>. Output the parsed templates directly to stdout (e.g. the browser).</li>
+<li><code>Template::renderRaw($variables_ary, 'path/to/template.php')</code>.  Output the parsed templates directly to stdout (e.g. the browser) with no encoding.</li>
+</ul>
+<p>Let's create a main page template with the variables <code>$title</code> and <code>$content</code> in the <code>src/templates</code> dir. This is the dir where all templates are placed for the examples. </p>
+<p><code>src/templates/main.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">&lt;!DOCTYPE html&gt;</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">&lt;html&gt;</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -475,7 +482,7 @@
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="x">&lt;/html&gt;</span>
 </code></pre></div>
 <p>We will also create a page template for showing content. We create some paragraphs and then we loop over each one of them.</p>
-<p>(src/templates/page.php) -&gt;</p>
+<p><code>src/templates/page.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">&lt;h3&gt;Hi </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$username</span><span class="cp">?&gt;</span><span class="x">&lt;/h3&gt;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="x">&lt;p&gt;Here is a bunch of paragraphs just for you!&lt;/p&gt;</span>
@@ -490,7 +497,7 @@
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="k">endforeach</span><span class="p">;</span>
 </code></pre></div>
 <p>We add a new controller class called <code>TemplateTest</code> in the <code>src</code> dir. </p>
-<p>(src/TemplateTest.php) -&gt;</p>
+<p><code>src/TemplateTest.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">namespace</span> <span class="nx">App</span><span class="p">;</span>
@@ -518,15 +525,17 @@
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>        <span class="c1">// They are safe to output to the client</span>
 <a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>        <span class="nv">$variables</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Template</span><span class="o">::</span><span class="na">getOutput</span><span class="p">(</span><span class="s1">&#39;templates/page.php&#39;</span><span class="p">,</span> <span class="nv">$variables</span><span class="p">);</span>
 <a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>        <span class="c1">// All variables are already encoded, </span>
-<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>        <span class="c1">// Therefor we render this template without encoding (renderRaw)</span>
-<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>        <span class="nx">Template</span><span class="o">::</span><span class="na">renderRaw</span><span class="p">(</span><span class="s1">&#39;templates/main.php&#39;</span><span class="p">,</span> <span class="nv">$variables</span><span class="p">);</span>
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>
-<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>    <span class="p">}</span> 
-<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="p">}</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>        <span class="c1">// All variables are already encoded, </span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>        <span class="c1">// Therefor we render this template without encoding (renderRaw)</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>        <span class="nx">Template</span><span class="o">::</span><span class="na">renderRaw</span><span class="p">(</span><span class="s1">&#39;templates/main.php&#39;</span><span class="p">,</span> <span class="nv">$variables</span><span class="p">);</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>    <span class="p">}</span> 
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="p">}</span>
 </code></pre></div>
 <p>Now we can tie it all together in our <code>index.php</code> file</p>
-<p>(examples/template/index.php) -&gt;</p>
+<p><code>examples/template/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>

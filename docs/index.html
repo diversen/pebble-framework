@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#run-documentation-examples" class="md-skip">
+        <a href="#about" class="md-skip">
           Skip to content
         </a>
       
@@ -211,6 +211,13 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about" class="md-nav__link">
+    About
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#run-documentation-examples" class="md-nav__link">
@@ -491,6 +498,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#about" class="md-nav__link">
+    About
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#run-documentation-examples" class="md-nav__link">
     Run documentation examples
   </a>
@@ -527,14 +541,16 @@
 
   <h1>Setup / Install</h1>
 
-<p>Requirements</p>
+<h3 id="about">About</h3>
+<p>The pebble-framework is a small framework for making php applications.  </p>
+<p>Requirements:</p>
 <div class="highlight"><pre><span></span><code>PHP &gt;= 7.4.3
 </code></pre></div>
-<p>Install as dependency</p>
+<p>Install as dependency:</p>
 <div class="highlight"><pre><span></span><code>composer require diversen/pebble-framework
 </code></pre></div>
 <h3 id="run-documentation-examples">Run documentation examples</h3>
-<p>You may clone the pebble-framework-docs in order to easily run and edit all code examples in this documentation: </p>
+<p>You may clone the pebble-framework-docs in order to easily run and edit all code examples: </p>
 <div class="highlight"><pre><span></span><code>git clone https://github.com/diversen/pebble-framework-docs.git 
 cd pebble-framework-docs
 composer install
@@ -553,8 +569,8 @@ composer install
 <div class="highlight"><pre><span></span><code>./cli.sh db --server-connect
 CREATE DATABASE `pebble`;
 </code></pre></div>
-<p>If you can not connect, then edit the database configuration file:</p>
-<p>(config-locale/DB.php) -&gt;</p>
+<p>If you can not connect (or you have a different user and password), then edit the database configuration file:</p>
+<p><code>config-locale/DB.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">return</span> <span class="p">[</span>

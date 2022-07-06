@@ -453,8 +453,11 @@
 <p>The above router class showed that it is quite easy to make an
 execution environment, where any errors thrown will be caught. </p>
 <p>There is such an app execution environment built-in and it is easy to
-use. Let's try and use the class <code>Pebble\AppExec</code> in the following example:</p>
-<p>(examples/app_exec/index.php) -&gt;</p>
+use, but you will need the <a href="https://github.com/Seldaek/monolog">Monolog</a> package. This is used for writing log messages:</p>
+<div class="highlight"><pre><span></span><code>composer require monolog/monolog
+</code></pre></div>
+<p>Now let's try and use the class <code>Pebble\AppExec</code> in the following example:</p>
+<p><code>examples/app_exec/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -466,33 +469,34 @@ use. Let's try and use the class <code>Pebble\AppExec</code> in the following ex
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nv">$app_exec</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AppExec</span><span class="p">();</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">// This is the default error controller. You may set your own error controller</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">// $app_exec-&gt;setErrorController(StdErrorController::class);</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1">// Create an app to be executed. It does not need to extend AppBase</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1">// But AppBase has some nice utility methods</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">class</span> <span class="nc">MyApp</span> <span class="k">extends</span> <span class="nx">AppBase</span> <span class="p">{</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="c1">// Throw on all errors and notices</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setErrorHandler</span><span class="p">();</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        <span class="nv">$router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Router</span><span class="p">();</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">addClass</span><span class="p">(</span><span class="nx">App\SimpleHomeController</span><span class="o">::</span><span class="na">class</span><span class="p">);</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="p">}</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="p">}</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="nv">$app_exec</span><span class="o">-&gt;</span><span class="na">setApp</span><span class="p">(</span><span class="nx">MyApp</span><span class="o">::</span><span class="na">class</span><span class="p">);</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="nv">$app_exec</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">// This is the default error controller. </span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">// You may set your own error controller, e.g. like this: </span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">// $app_exec-&gt;setErrorController(App\ErrorController::class);</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1">// Create an app to be executed. It does not need to extend AppBase</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1">// But AppBase has some nice utility methods</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="k">class</span> <span class="nc">MyApp</span> <span class="k">extends</span> <span class="nx">AppBase</span> <span class="p">{</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="k">public</span> <span class="k">function</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="c1">// Throw on all errors and notices</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setErrorHandler</span><span class="p">();</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="nv">$router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Router</span><span class="p">();</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">addClass</span><span class="p">(</span><span class="nx">App\SimpleHomeController</span><span class="o">::</span><span class="na">class</span><span class="p">);</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        <span class="nv">$router</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="p">}</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="p">}</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="nv">$app_exec</span><span class="o">-&gt;</span><span class="na">setApp</span><span class="p">(</span><span class="nx">MyApp</span><span class="o">::</span><span class="na">class</span><span class="p">);</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="nv">$app_exec</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
 </code></pre></div>
 <p>You may add your own error controller.</p>
 <p>The only public method in <code>Pebble\App\StdErrorController</code> is <code>render</code>. 
 Your error controller will need to have a <code>render</code> method. This method
 has a single <code>param</code> which is an <code>Exception</code>.   </p>
-<p>The directories <code>config</code> and <code>config-locale</code> MUST exist a the same level
+<p>The directories <code>config</code> and <code>config-locale</code> MUST exist at the same level
 as the composer <code>vendor</code> dir. The <code>logs</code> dir will be created automatically
 when the first log message is written. This is also created at the same level
 as the <code>vendor</code> dir. So this is the directory structure: </p>
@@ -500,10 +504,6 @@ as the <code>vendor</code> dir. So this is the directory structure: </p>
 config-locale/
 vendor/
 logs/
-</code></pre></div>
-<p>You will need the <a href="https://github.com/Seldaek/monolog">Monolog</a> package. 
-This is used for writing the log messages:</p>
-<div class="highlight"><pre><span></span><code>composer require monolog/monolog
 </code></pre></div>
 <p>Run the example:</p>
 <div class="highlight"><pre><span></span><code>php -S localhost:8000 -t examples/app_exec/

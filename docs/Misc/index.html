@@ -674,7 +674,7 @@ You need to install this package, e.g. using composer: </p>
 <div class="highlight"><pre><span></span><code>composer require gregwar/captch
 </code></pre></div>
 <p>Usage:</p>
-<p>(examples/captcha/index.php) -&gt;</p>
+<p><code>examples/captcha/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -703,7 +703,7 @@ You need to install this package, e.g. using composer: </p>
 <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-site request forgery</a> on wikipedia.</p>
 <p>For implementation you may look at <a href="https://stackoverflow.com/a/31683058/464549">this stackoverflow answer</a> </p>
 <p>Usage:</p>
-<p>(examples/csrf/index.php) -&gt;</p>
+<p><code>examples/csrf/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -744,7 +744,7 @@ You need to install this package, e.g. using composer: </p>
 <h3 id="cookie">Cookie</h3>
 <p>The <code>Pebble\Cookie</code> makes it easy to set a cookie from configuration:</p>
 <p>Let's say you have some configuration for setting a cookie: </p>
-<p>(config/Auth.php) -&gt;</p>
+<p><code>config/Auth.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">return</span>
@@ -756,7 +756,7 @@ You need to install this package, e.g. using composer: </p>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">];</span>
 </code></pre></div>
 <p>Now you can set a cookie like this: </p>
-<p>(examples/cookie/index.php) -&gt;</p>
+<p><code>examples/cookie/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -785,7 +785,7 @@ You need to install this package, e.g. using composer: </p>
 <h3 id="session">Session</h3>
 <p>The <code>Pebble\Session</code> is for setting the configuration of the session. </p>
 <p>You will need a configuration file like this: </p>
-<p>(config/SessionShort.php) -&gt;</p>
+<p><code>config/SessionShort.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">return</span> <span class="p">[</span>
@@ -798,7 +798,7 @@ You need to install this package, e.g. using composer: </p>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">];</span>
 </code></pre></div>
 <p>Now we define our session from the configuration:</p>
-<p>(examples/session/index.php) -&gt;</p>
+<p><code>examples/session/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -824,7 +824,7 @@ You need to install this package, e.g. using composer: </p>
 <p>The <code>Pebble\SessionTimed</code> will set a SESSION variable that will run out 
 after exactly <strong>a determined number of seconds</strong>, regardless of the general lifetime of the SESSION 
 cookie: </p>
-<p>(examples/session_timed/index.php) -&gt;</p>
+<p><code>examples/session_timed/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -846,7 +846,7 @@ cookie: </p>
 <h3 id="file">File</h3>
 <p>The <code>Pebble\File</code> class contains only one method which will get all files recursively 
 from a single directory (excluding '.' and '..'): </p>
-<p>(examples/file/index.php) -&gt;</p>
+<p><code>examples/file/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">include_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -860,7 +860,7 @@ from a single directory (excluding '.' and '..'): </p>
 </code></pre></div>
 <h3 id="dbcache">DBCache</h3>
 <p>A simple key / value cache. Usage: </p>
-<p>(examples/dbcache/index.php) -&gt;</p>
+<p><code>examples/dbcache/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span> 
@@ -897,7 +897,7 @@ from a single directory (excluding '.' and '..'): </p>
 </code></pre></div>
 <h3 id="exceptiontrace">ExceptionTrace</h3>
 <p>The <code>Pebble\ExceptionTrace</code> class gets info from an Exception as a string:</p>
-<p>(examples/exceptiontrace/index.php) -&gt;</p>
+<p><code>examples/exceptiontrace/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -921,7 +921,7 @@ from a single directory (excluding '.' and '..'): </p>
 <h3 id="headers">Headers</h3>
 <p>The <code>Pebble\Headers</code> class has one method, that will redirect from http to https
 if the client is not already using https. </p>
-<p>(examples/headers/index.php) -&gt;</p>
+<p><code>examples/headers/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -935,7 +935,7 @@ if the client is not already using https. </p>
 <p>The <code>Pebble\JSON</code> class has one method which is a slightly modified version of <code>json_encode</code>. </p>
 <p>It adds the header <code>Content-Type: application/json</code>, and it throws exception on 
 encoding error. It is also possible to use a debug mode. </p>
-<p>(examples/json/index.php) -&gt;</p>
+<p><code>examples/json/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -956,7 +956,7 @@ encoding error. It is also possible to use a debug mode. </p>
 </code></pre></div>
 <h3 id="path">Path</h3>
 <p>The <code>Pebble\Path</code> class has one method which gives you the path where <code>vendor/</code> is locatated:</p>
-<p>(examples/path/index.php) -&gt;</p>
+<p><code>examples/path/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -970,7 +970,7 @@ encoding error. It is also possible to use a debug mode. </p>
 </code></pre></div>
 <h3 id="random">Random</h3>
 <p>The <code>Pebble\Random</code> class has a single method that gives you a truly random string:</p>
-<p>(examples/random/index.php) -&gt;</p>
+<p><code>examples/random/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -984,7 +984,7 @@ encoding error. It is also possible to use a debug mode. </p>
 <h3 id="server">Server</h3>
 <p>The <code>Pebble\Server</code> class has a single method that gives you both scheme and host of 
 your server:</p>
-<p>(examples/server/index.php) -&gt;</p>
+<p><code>examples/server/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">require</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>

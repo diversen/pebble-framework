@@ -531,14 +531,12 @@
 <p>Routes are defined in controller classes, which are then connected to the router.
 There are two methods you will need to know: </p>
 <ul>
-<li><code>Router::addClass(Some\Controller::class)</code></li>
-<li><code>Router::run</code></li>
+<li><code>Router::addClass(App\HomeController::class)</code></li>
+<li><code>Router::run()</code></li>
 </ul>
-<p>The first method sets up some application endpoints and the latter method runs the application. An 
-<code>Exception</code> is thrown if no valid endpoint was found. </p>
-<p>The router is looking for the tags <code>route</code> and <code>verbs</code> in the comments 
-of the controller classes. A simple controller example could look like this:</p>
-<p>(src/SimpleHomeController.php) -&gt;</p>
+<p>The first method sets up some application endpoints and the latter method runs the application. An <code>Exception</code> is thrown if no valid endpoint is found. </p>
+<p>The router instance is looking for the tags <code>route</code> and <code>verbs</code> in the comments of the controller classes. A simple controller example could look like this:</p>
+<p><code>src/SimpleHomeController.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">namespace</span> <span class="nx">App</span><span class="p">;</span>
@@ -562,15 +560,11 @@ of the controller classes. A simple controller example could look like this:</p>
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="p">}</span> 
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="p">}</span>
 </code></pre></div>
-<p>The above route <code>/</code> will accept the verbs GET and POST and the route <code>/</code>
-will dispatch the method <code>index</code>.</p>
-<p>The second route <code>/user/:username</code> will dispatch the method <code>userGreeting</code>. 
-This method transforms the second URL segment into a string parameter, 
-which the controller method may use. This route only accepts GET requests.  </p>
-<p>The routes can also be made a bit more complex, like <code>@route /user/:username/actions/:action</code>
-If this route is matched, then the <code>$params</code> array will contain the keys <code>username</code> and <code>action</code>.</p>
+<p>The above route <code>/</code> will accept the verbs GET and POST and the route <code>/</code> will dispatch the method <code>index</code>.</p>
+<p>The second route <code>/user/:username</code> will dispatch the method <code>userGreeting</code>. This method transforms the second URL segment into a string parameter, which the controller method may use. This route only accepts GET requests.  </p>
+<p>The routes can also be made a bit more complex, like <code>@route /user/:username/actions/:action</code>. If this route is matched, then the <code>$params</code> array will contain both <code>username</code> and <code>action</code> keys and values.</p>
 <p>Let's connect the above <code>SimpleHomeController</code> class to a router instance in an index.php file: </p>
-<p>(examples/router_simple/index.php) -&gt;</p>
+<p><code>examples/router_simple/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -589,16 +583,12 @@ If this route is matched, then the <code>$params</code> array will contain the k
 <p>Run the above example:</p>
 <div class="highlight"><pre><span></span><code>php -S localhost:8000 -t examples/router_simple
 </code></pre></div>
-<p>If you visit <a href="http://localhost:8000">http://localhost:8000</a>,
-you should receive a response from the server saying <code>hello world!</code></p>
-<p>If you visit <a href="http://localhost:8000/user/helen">http://localhost:8000/user/helen</a>,
-you should receive a response saying <code>Hello world helen!</code></p>
+<p>If you visit <a href="http://localhost:8000">http://localhost:8000</a>, you should receive a response from the server saying <code>hello world!</code></p>
+<p>If you visit <a href="http://localhost:8000/user/helen">http://localhost:8000/user/helen</a>, you should receive a response saying <code>Hello world helen!</code></p>
 <h3 id="error-handling">Error handling</h3>
-<p>If you visit a route that is not defined, you may get a 500 error without any useful message
-(This depends on your server configuration). </p>
-<p>We will make a setup in order to catch all errors. This will also 
-deliver a better user experience:</p>
-<p>(examples/router_error/index.php) -&gt;</p>
+<p>If you visit a route that is not defined, you may get a 500 error without any useful message, but this depends on your server configuration. </p>
+<p>We will make a setup in order to catch all errors. This will also deliver a better user experience:</p>
+<p><code>examples/router_error/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -635,20 +625,14 @@ deliver a better user experience:</p>
 <p>You may run this example:</p>
 <div class="highlight"><pre><span></span><code>php -S localhost:8000 -t examples/router_error
 </code></pre></div>
-<p>If you visit <a href="http://localhost:8000/does/not/exists">http://localhost:8000/does/not/exists</a> 
-you will get a message saying <code>The page does not exist</code></p>
+<p>If you visit <a href="http://localhost:8000/does/not/exists">http://localhost:8000/does/not/exists</a>, you will get a message saying <code>The page does not exist</code></p>
 <p>You will also get a better trace of the error. </p>
 <h3 id="middleware">Middleware</h3>
-<p>You can add middleware to you application. Middleware are just <code>callables</code> 
-which will be called before hitting the controller method. 
-You may specify multiple middleware callables. </p>
-<p>Middleware are called in the order that they are added to your <code>Router</code> instance. 
-And the middleware callables will receive the same parameters as your controller.</p>
-<p>The second parameter of a callable is an <code>object</code>, which is passed from middleware to middleware.
-And finally it will be sent to the controller method. In the controller method 
-the middleware object is also the second parameter.</p>
+<p>You may add middleware to you application. Middleware are just <code>callables</code> which will be called before hitting the controller method. You may specify multiple middleware callables. </p>
+<p>Middleware are called in the order that they are added to your <code>Router</code> instance. And the middleware callables will receive the same parameters as your controller.</p>
+<p>The second parameter of a callable is an <code>object</code>, which is passed from middleware to middleware. And finally it will be sent to the controller method. In the controller method the middleware object is also the second parameter.</p>
 <p>Here is a controller where both <code>$params</code> and <code>$middleware_object</code> are used: </p>
-<p>(src/HomeController.php) -&gt;</p>
+<p><code>src/HomeController.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">namespace</span> <span class="nx">App</span><span class="p">;</span>
@@ -669,7 +653,7 @@ the middleware object is also the second parameter.</p>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="p">}</span>
 </code></pre></div>
 <p>Create an application like this: </p>
-<p>(examples/router_middleware/index.php) -&gt;</p>
+<p><code>examples/router_middleware/index.php -&gt;</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">require_once</span> <span class="s2">&quot;../../vendor/autoload.php&quot;</span><span class="p">;</span>
@@ -713,11 +697,10 @@ the middleware object is also the second parameter.</p>
 <a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>    <span class="k">echo</span> <span class="s2">&quot;&lt;pre&gt;&quot;</span> <span class="o">.</span> <span class="nx">ExceptionTrace</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="nv">$e</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;&lt;/pre&gt;&quot;</span><span class="p">;</span>
 <a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a><span class="p">}</span>
 </code></pre></div>
-<p>Run this example using:</p>
+<p>Run the example:</p>
 <div class="highlight"><pre><span></span><code>php -S localhost:8000 -t examples/router_middleware
 </code></pre></div>
-<p>If you visit <a href="http://localhost:8000/user/helen">http://localhost:8000/user/helen</a>
-you should get the following response: </p>
+<p>If you visit <a href="http://localhost:8000/user/helen">http://localhost:8000/user/helen</a>, you should get the following response: </p>
 <div class="highlight"><pre><span></span><code>Hello world helen!
 From middle_ware_2
 Current route is: /user/:username
