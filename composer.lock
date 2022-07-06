@@ -4,32 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48e0eb801a76acf3058463172b25f446",
+    "content-hash": "015c3c8497505bc1a08f868416c00246",
     "packages": [],
     "packages-dev": [
         {
             "name": "diversen/console-padding",
-            "version": "v1.0.1",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/diversen/console-padding.git",
-                "reference": "06c157d9a2d4525838b745f95549806d2f0ded7d"
+                "reference": "6b6bf84d6f6e41e5b54efd44b05af70ac84f9edf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/diversen/console-padding/zipball/06c157d9a2d4525838b745f95549806d2f0ded7d",
-                "reference": "06c157d9a2d4525838b745f95549806d2f0ded7d",
+                "url": "https://api.github.com/repos/diversen/console-padding/zipball/6b6bf84d6f6e41e5b54efd44b05af70ac84f9edf",
+                "reference": "6b6bf84d6f6e41e5b54efd44b05af70ac84f9edf",
                 "shasum": ""
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "diversen\\": ""
+                    "Diversen\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -50,26 +45,27 @@
             ],
             "support": {
                 "issues": "https://github.com/diversen/console-padding/issues",
-                "source": "https://github.com/diversen/console-padding/tree/master"
+                "source": "https://github.com/diversen/console-padding/tree/v2.0.0"
             },
-            "time": "2016-12-12T19:55:34+00:00"
+            "time": "2022-06-25T10:47:48+00:00"
         },
         {
             "name": "diversen/minimal-cli-framework",
-            "version": "v3.1.0",
+            "version": "v6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/diversen/minimal-cli-framework.git",
-                "reference": "0baae7ebe060668e17db972e685272b4d4b63067"
+                "reference": "a8ad090cf8be1c9342ed1566c8b99974021f32d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/diversen/minimal-cli-framework/zipball/0baae7ebe060668e17db972e685272b4d4b63067",
-                "reference": "0baae7ebe060668e17db972e685272b4d4b63067",
+                "url": "https://api.github.com/repos/diversen/minimal-cli-framework/zipball/a8ad090cf8be1c9342ed1566c8b99974021f32d0",
+                "reference": "a8ad090cf8be1c9342ed1566c8b99974021f32d0",
                 "shasum": ""
             },
             "require": {
-                "diversen/console-padding": "^1.0",
+                "diversen/console-padding": "^2.0",
+                "diversen/parse-argv": "^3.0",
                 "php-parallel-lint/php-console-color": "^1.0"
             },
             "type": "library",
@@ -91,9 +87,57 @@
             "description": "A very fast and simple CLI framework",
             "support": {
                 "issues": "https://github.com/diversen/minimal-cli-framework/issues",
-                "source": "https://github.com/diversen/minimal-cli-framework/tree/v3.1.0"
+                "source": "https://github.com/diversen/minimal-cli-framework/tree/v6.0.0"
             },
-            "time": "2022-06-18T13:37:06+00:00"
+            "time": "2022-07-06T14:10:38+00:00"
+        },
+        {
+            "name": "diversen/parse-argv",
+            "version": "v3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/diversen/parse-argv.git",
+                "reference": "87dfac35cce1ec86d289a603c25ede5623f896a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/diversen/parse-argv/zipball/87dfac35cce1ec86d289a603c25ede5623f896a2",
+                "reference": "87dfac35cce1ec86d289a603c25ede5623f896a2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Diversen\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dennis Iversen",
+                    "email": "dennis.iversen@gmail.com",
+                    "homepage": "https://github.com/diversen",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Parse argv and get options and arguments",
+            "homepage": "http://github.com/diversen/parse-argv",
+            "keywords": [
+                "argv",
+                "cli",
+                "console"
+            ],
+            "support": {
+                "issues": "https://github.com/diversen/parse-argv/issues",
+                "source": "https://github.com/diversen/parse-argv/tree/v3.0.4"
+            },
+            "time": "2022-07-04T15:44:20+00:00"
         },
         {
             "name": "diversen/simple-php-translation",
