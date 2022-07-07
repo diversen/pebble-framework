@@ -4,7 +4,7 @@ A simple and small php framework / library.
 
 # Documentation 
 
-[https://diversen.github.io/pebble-framework/](https://diversen.github.io/pebble-framework/)
+[https://diversen.github.io/pebble-framework-docs/](https://diversen.github.io/pebble-framework-docs/)
 
 # Requirements
 
