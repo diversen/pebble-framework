@@ -47,7 +47,7 @@ class User
                 $row = $this->auth->getByWhere(['email' => $email]);
                 $res = $this->auth->verifyKey($row['random']);
                 if ($res) {
-                    $utils->echoStatus('Success', 'g', 'User has been created');
+                    $utils->echoStatus('Success', 'notice', 'User has been created');
                     return 0;
                 }
             }
