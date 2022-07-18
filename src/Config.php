@@ -69,7 +69,7 @@ class Config
     public function readConfig(string $dir)
     {
         if (!file_exists($dir)) {
-            throw new Exception('Before reading a config dir, you need to make sure the dir exist: ' . $dir);
+            throw new Exception('Config exception. Before reading a config dir, you need to make sure the dir exist: ' . $dir);
         }
 
         $files = File::dirToArray($dir);
@@ -77,6 +77,10 @@ class Config
 
         foreach ($files as $file) {
             $config_array = $this->getConfigArray($dir, $file);
+            if (!is_array($config_array)) {
+                throw new Exception("Config exception. The file $dir/$file needs to return an array. Return type is " . gettype($config_array));
+            }
+
             $filename = $this->getFilename($file);
 
             if (isset($this->sections[$filename])) {
@@ -90,12 +94,12 @@ class Config
     }
 
     /**
-     * get a config section. E.g. 'SMTP' will get the configuration from the file 'config/SMTP.php'
+     * Get a config section. E.g. 'SMTP' will get the configuration from the file 'config/SMTP.php'
      */
-    private function getSectionByName(string $section, array $configAry): array
+    private function getSectionByName(string $section, array $config_array): array
     {
         $ret = [];
-        foreach ($configAry as $key => $value) {
+        foreach ($config_array as $key => $value) {
             $ret[$section . '.' . $key] = $value;
         }
         return $ret;
