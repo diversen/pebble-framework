@@ -124,11 +124,6 @@ class Translate
     public function runCommand(ParseArgv $args)
     {
 
-        if (!class_exists('Extractor')) {
-            echo "Extractor class not found. Run: composer diversen/simple.php-translate\n";
-            return 1;
-        }
-
         $enabled = $this->config->get('Language.enabled');
         if (empty($enabled)) {
             echo "No languages enabled, nothing to do\n";
