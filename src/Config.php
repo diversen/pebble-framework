@@ -20,12 +20,12 @@ class Config
     /**
      * Var holding all config variables
      */
-    public $variables = [];
+    private $variables = [];
 
     /**
      * Var holding all sections
      */
-    public $sections = [];
+    private $sections = [];
 
     /**
      * Get filename without extension
