@@ -57,6 +57,7 @@ class User
                     $acl_role = (new ACLRoleService())->getACLRole();
                     $acl_role->setRole(['right' => 'admin', 'auth_id' => $row['id']]);
                 }
+                
                 if ($res) {
                     $utils->echoStatus('Success', 'notice', 'User has been created');
                     return 0;
