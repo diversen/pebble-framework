@@ -10,6 +10,13 @@ use Pebble\Exception\TemplateException;
 
 class Template
 {
+
+    protected static $path;
+
+    public static function setPath(string $path)
+    {
+        self::$path = $path;
+    }
     /**
      * Get output from a template
      */
@@ -22,6 +29,17 @@ class Template
         $content = ob_get_clean();
 
         return $content;
+    }
+
+    private static function getTemplatePath($path)
+    {
+        if (self::$path) {
+            $try_path = self::$path . '/' . $path;
+            if (file_exists($try_path)) {
+                return $try_path;
+            }
+        }
+        return $path;
     }
 
     /**
@@ -38,7 +56,9 @@ class Template
 
             extract($variables);
 
+            $template_path = self::getTemplatePath($template_path);
             require($template_path);
+
         } catch (Exception $e) {
             throw new TemplateException($e->getMessage());
         }
