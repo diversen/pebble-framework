@@ -61,7 +61,7 @@ class StdUtils
         $this->db = $this->app_base->getDB();
         $this->config = $this->app_base->getConfig();
         $this->acl = $this->app_base->getACL();
-        $this->acl_role = $this->app_base->getACL();
+        $this->acl_role = $this->app_base->getACLRole();
         $this->flash = $this->app_base->getFlash();
         $this->template = $this->app_base->getTemplate();
         $this->json = $this->app_base->getJSON();
