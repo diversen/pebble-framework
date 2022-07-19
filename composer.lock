@@ -51,16 +51,16 @@
         },
         {
             "name": "diversen/minimal-cli-framework",
-            "version": "v6.0.0",
+            "version": "v6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/diversen/minimal-cli-framework.git",
-                "reference": "a8ad090cf8be1c9342ed1566c8b99974021f32d0"
+                "reference": "d7ad425ed3dc3bfd2be6f20e81d46dc7309eb89b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/diversen/minimal-cli-framework/zipball/a8ad090cf8be1c9342ed1566c8b99974021f32d0",
-                "reference": "a8ad090cf8be1c9342ed1566c8b99974021f32d0",
+                "url": "https://api.github.com/repos/diversen/minimal-cli-framework/zipball/d7ad425ed3dc3bfd2be6f20e81d46dc7309eb89b",
+                "reference": "d7ad425ed3dc3bfd2be6f20e81d46dc7309eb89b",
                 "shasum": ""
             },
             "require": {
@@ -87,9 +87,9 @@
             "description": "A very fast and simple CLI framework",
             "support": {
                 "issues": "https://github.com/diversen/minimal-cli-framework/issues",
-                "source": "https://github.com/diversen/minimal-cli-framework/tree/v6.0.0"
+                "source": "https://github.com/diversen/minimal-cli-framework/tree/v6.0.2"
             },
-            "time": "2022-07-06T14:10:38+00:00"
+            "time": "2022-07-19T10:17:07+00:00"
         },
         {
             "name": "diversen/parse-argv",
