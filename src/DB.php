@@ -53,8 +53,8 @@ class DB
         $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Change in 8.1
-        // Integers and floats in result sets will now be returned using native PHP types 
-        // instead of strings when using emulated prepared statements. 
+        // Integers and floats in result sets will now be returned using native PHP types
+        // instead of strings when using emulated prepared statements.
         $this->dbh->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
     }
 

@@ -10,7 +10,6 @@ use Pebble\Service\ConfigService;
 
 class DBService extends Container
 {
-
     /**
      * @return \Pebble\DB
      */
@@ -19,7 +18,7 @@ class DBService extends Container
         if (!$this->has('db')) {
             $db_config = (new ConfigService())->getConfig()->getSection('DB');
             $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
-            $this->set('db', $db);    
+            $this->set('db', $db);
         }
 
         return $this->get('db');

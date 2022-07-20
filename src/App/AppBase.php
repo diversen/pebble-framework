@@ -90,7 +90,8 @@ class AppBase
         return AcceptLanguage::getLanguage($supported, $default);
     }
 
-    public function setTemplateOverridePath(string $path) {
+    public function setTemplateOverridePath(string $path)
+    {
         Template::setPath(Path::getBasePath() . "/src/$path");
     }
 

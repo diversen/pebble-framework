@@ -10,7 +10,6 @@ use Pebble\Exception\TemplateException;
 
 class Template
 {
-
     protected static $path;
 
     public static function setPath(string $path)
@@ -58,7 +57,6 @@ class Template
 
             $template_path = self::getTemplatePath($template_path);
             require($template_path);
-
         } catch (Exception $e) {
             throw new TemplateException($e->getMessage());
         }

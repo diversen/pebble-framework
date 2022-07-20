@@ -12,7 +12,6 @@ use Pebble\Service\ConfigService;
 
 class LogService extends Container
 {
-
     private $debug_level = Logger::DEBUG;
 
     /**
@@ -24,8 +23,7 @@ class LogService extends Container
      */
     public function getLog()
     {
-        
-        if (!$this->has('log')){
+        if (!$this->has('log')) {
             // Get log from config
             $log = $this->getLogFromConfig();
             if ($log) {
@@ -36,13 +34,13 @@ class LogService extends Container
         }
 
         return $this->get('log');
-
     }
 
     /**
      * Get a log instance from `config/Log.php`
      */
-    private function getLogFromConfig() {
+    private function getLogFromConfig()
+    {
         $config = (new ConfigService())->getConfig();
         if ($config->get('Log.logger')) {
             return $config->get('Log.logger');
@@ -52,8 +50,8 @@ class LogService extends Container
     /**
      * The default logger logs to the file logs/main.log
      */
-    private function getDefaultLogger() {
-
+    private function getDefaultLogger()
+    {
         $config = (new ConfigService())->getConfig();
         if ($config->get('Log.level')) {
             $this->debug_level = $config->get('Log.level');

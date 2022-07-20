@@ -38,7 +38,7 @@ class User
             echo "Auth could not be initiated. Maybe there is no database connection?\n";
             return 1;
         }
-        
+
         $utils = new Utils();
         if ($args->getOption('create-user')) {
             $email = trim($utils->readSingleline("Enter email: "));
@@ -58,7 +58,7 @@ class User
                     $acl_role = (new ACLRoleService())->getACLRole();
                     $acl_role->setRole(['right' => 'admin', 'auth_id' => $row['id']]);
                 }
-                
+
                 if ($res) {
                     $utils->echoStatus('Success', 'notice', 'User has been created');
                     return 0;

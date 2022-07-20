@@ -10,7 +10,6 @@ use Pebble\DBCache;
 
 class DBCacheService extends Container
 {
-
     /**
      * @return \Pebble\DBCache
      */

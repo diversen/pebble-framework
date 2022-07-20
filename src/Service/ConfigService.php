@@ -10,13 +10,11 @@ use Pebble\Path;
 
 class ConfigService extends Container
 {
-
     /**
      * @return \Pebble\Config
      */
     public function getConfig()
     {
-
         if (!$this->has('config')) {
             $base_path = Path::getBasePath();
             $config = new Config();

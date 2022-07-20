@@ -11,13 +11,12 @@ use Pebble\Service\ConfigService;
 
 class AuthService extends Container
 {
-
     /**
      * @return \Pebble\Auth
      */
     public function getAuth()
     {
-        if(!$this->has('auth')){
+        if (!$this->has('auth')) {
             $auth_cookie_settings = (new ConfigService())->getConfig()->getSection('Auth');
             $db = (new DBService())->getDB();
 
@@ -26,6 +25,5 @@ class AuthService extends Container
         }
 
         return $this->get('auth');
-        
     }
 }

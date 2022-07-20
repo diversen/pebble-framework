@@ -9,35 +9,36 @@ use Exception;
 /**
  * Class Container - Container for services
  */
-class Container {
-
+class Container
+{
     /**
      * @var array
      */
     public static $services = [];
-    
+
     /**
      * @param string $name
      * @param string $class
      */
-    public function set(string $name, $service) {
+    public function set(string $name, $service)
+    {
         self::$services[$name] = $service;
     }
 
-    public function has(string $name) {
+    public function has(string $name)
+    {
         return isset(self::$services[$name]);
     }
-    
+
     /**
      * @param string $name
      * @return mixed
      * @throws Exception
      */
-    public function get(string $name) {
+    public function get(string $name)
+    {
         if (isset(self::$services[$name])) {
-            return self::$services[$name];    
+            return self::$services[$name];
         }
-        
     }
-
 }

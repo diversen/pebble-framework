@@ -123,7 +123,6 @@ class Translate
 
     public function runCommand(ParseArgv $args)
     {
-
         $enabled = $this->config->get('Language.enabled');
         if (empty($enabled)) {
             echo "No languages enabled, nothing to do\n";
