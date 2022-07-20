@@ -16,7 +16,7 @@ class ACLRole extends ACL
     }
 
     /**
-     * Sets a user role ['right => 'admin', 'auth_id' => '1234']
+     * Sets a user role ['right' => 'admin', 'auth_id' => '1234']
      * `$aclr->setRole(['right' => 'admin', 'auth_id' => '1234'])`
      */
     public function setRole(array $role)
@@ -29,7 +29,7 @@ class ACLRole extends ACL
 
     /**
      * Remove a role
-     * `$aclr->removeRole(['right => 'admin', 'auth_id' => '1234'])`
+     * `$aclr->removeRole(['right' => 'admin', 'auth_id' => '1234'])`
      */
     public function removeRole(array $role)
     {
@@ -40,8 +40,8 @@ class ACLRole extends ACL
     }
 
     /**
-     * Checks if a user has a role, e.g. ['right => 'admin', 'auth_id' => '1234']
-     * `$aclr->hasRoleOrThrow(['right => 'admin', 'auth_id' => '1234'])`
+     * Checks if a user has a role, e.g. ['right' => 'admin', 'auth_id' => '1234']
+     * `$aclr->hasRoleOrThrow(['right' => 'admin', 'auth_id' => '1234'])`
      */
     public function hasRoleOrThrow(array $role)
     {
