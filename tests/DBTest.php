@@ -11,7 +11,6 @@ final class DBTest extends TestCase
     /**
      * @return \Pebble\DB
      */
-    // private $db = null;
     private function __getDB()
     {
         return (new DBService())->getDB();
@@ -31,7 +30,7 @@ CREATE TABLE `account_test` (
     `password` varchar(255) NOT NULL,
     `email` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 EOF;
 
         $db = $this->__getDB();
@@ -71,7 +70,7 @@ EOF;
     }
 
     /**
-     * Execute a prepared statement with an array of named values
+     * Execute a prepared statement with an array of bound values
      */
     public function test_prepareExecute_WithBoundVariables()
     {
