@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Pebble\ACL;
 use Pebble\Auth;
+use Pebble\Service\Container;
+use Pebble\Service\ACLService;
 use Pebble\Service\AuthService;
 use Pebble\Service\DBService;
 use Pebble\Service\ConfigService;
@@ -57,6 +59,17 @@ final class ACLTest extends TestCase
         $auth->setCookie($row);
         return $row;
     }
+
+    public function test_can_get_service_instance()
+    {
+
+        $container = new Container();
+        $container->unsetAll();
+
+        $acl = (new ACLService())->getACL();
+        $this->assertInstanceOf(Pebble\ACL::class, $acl);
+    }
+
 
     public function test_isAuthenticatedOrThrow_throw()
     {

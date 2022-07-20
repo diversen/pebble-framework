@@ -24,7 +24,6 @@ class MigrationService
         $migration_file = $base_path . '/.migration';
 
         $migrate = new Migration($pdo_con, $path_to_migrations, $migration_file);
-
         return $migrate;
     }
 }

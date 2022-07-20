@@ -2,22 +2,33 @@
 
 declare(strict_types=1);
 
-use Pebble\DBCache;
-use Pebble\Service\DBService;
+use Pebble\Service\Container;
+use Pebble\Service\DBCacheService;
 use PHPUnit\Framework\TestCase;
 
 final class DBCacheTest extends TestCase
 {
     private function __setup()
     {
-        $this->db = (new DBService())->getDB();
+        $container = new Container();
+        $container->unsetAll();
+
+    }
+
+    public function test_can_get_instance() {
+
+        $container = new Container();
+        $container->unsetAll();
+        
+        $db_cache = (new DBCacheService())->getDBCache();
+        $this->assertInstanceOf(Pebble\DBCache::class, $db_cache);
     }
 
 
     public function test_set()
     {
         $this->__setup();
-        $cache = new DBCache($this->db);
+        $cache = (new DBCacheService())->getDBCache();
 
         $to_cache = ['this is a test'];
         $res = $cache->set('some_key', $to_cache);
@@ -28,7 +39,7 @@ final class DBCacheTest extends TestCase
     public function test_get()
     {
         $this->__setup();
-        $cache = new DBCache($this->db);
+        $cache = (new DBCacheService())->getDBCache();
 
         $to_cache = ['this is a test'];
         $cache->set('some_key', $to_cache);
@@ -45,7 +56,7 @@ final class DBCacheTest extends TestCase
     public function test_delete()
     {
         $this->__setup();
-        $cache = new DBCache($this->db);
+        $cache = (new DBCacheService())->getDBCache();
 
         $to_cache = ['this is a test'];
         $cache->set('some_key', $to_cache);

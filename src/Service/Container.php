@@ -41,4 +41,9 @@ class Container
             return self::$services[$name];
         }
     }
+
+    public function unsetAll()
+    {
+        self::$services = [];
+    }
 }

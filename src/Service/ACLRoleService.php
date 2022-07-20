@@ -16,7 +16,7 @@ class ACLRoleService extends Container
      */
     public function getACLRole()
     {
-        if ($this->get('acl_role')) {
+        if (!$this->has('acl_role')) {
             $auth_cookie_settings = (new ConfigService())->getConfig()->getSection('Auth');
             $db = (new DBService())->getDB();
 

@@ -6,6 +6,8 @@ use Pebble\ACLRole;
 use Pebble\Service\AuthService;
 use Pebble\Service\DBService;
 use Pebble\Service\ConfigService;
+use Pebble\Service\ACLRoleService;
+use Pebble\Service\Container;
 
 use Pebble\Exception\ForbiddenException;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +24,16 @@ final class ACLRoleTest extends TestCase
         $this->config = (new ConfigService())->getConfig();
         $this->auth = (new AuthService())->getAuth();
         $this->db = (new DBService())->getDB();
-        
+    }
+
+    public function test_can_get_instance()
+    {
+
+        $container = new Container();
+        $container->unsetAll();
+
+        $acl = (new ACLRoleService())->getACLRole();
+        $this->assertInstanceOf(Pebble\ACLRole::class, $acl);
     }
 
     private function __cleanup()
@@ -30,7 +41,7 @@ final class ACLRoleTest extends TestCase
         $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
         $this->db->prepareExecute("DELETE FROM `auth_cookie`");
 
-        $acl = new ACLRole($this->db, $this->config->getSection('Auth'));
+        $acl = (new ACLRoleService())->getACLRole();
         $acl->removeAccessRights(['entity' => 'test_entity']);
     }
 
@@ -122,12 +133,4 @@ final class ACLRoleTest extends TestCase
         $this->expectException(ForbiddenException::class);
         $acl->hasRoleOrThrow($role);
     }
-
-    /*
-    public static function tearDownAfterClass(): void
-    {
-
-
-    }
-    */
 }

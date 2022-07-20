@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Pebble\Service\Container;
 use Pebble\Service\AuthService;
 use Pebble\Service\DBService;
 use Pebble\Service\ConfigService;
@@ -32,6 +33,16 @@ final class AuthTest extends TestCase
     {
         $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         return $this->auth->verifyKey($row['random']);
+    }
+
+    public function test_can_get_service_instance()
+    {
+
+        $container = new Container();
+        $container->unsetAll();
+
+        $auth = (new AuthService())->getAuth();
+        $this->assertInstanceOf(Pebble\Auth::class, $auth);
     }
 
     public function test_authenticate()

@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Pebble\Service\Container;
+use Pebble\Service\MigrationService;
 use Pebble\Migration;
 use Pebble\DB;
 use Pebble\Service\ConfigService;
@@ -16,7 +18,16 @@ final class MigrationTest extends TestCase
         $this->config = (new ConfigService())->getConfig();
     }
 
-    public function test_get_up_files()
+    public function test_can_get_instance() {
+
+        $container = new Container();
+        $container->unsetAll();
+        
+        $migration = (new MigrationService())->getMigration();
+        $this->assertInstanceOf(Pebble\Migration::class, $migration);
+    }
+
+    public function test_migration_up_and_down()
     {
         $this->__setup();
 

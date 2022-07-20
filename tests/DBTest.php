@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Pebble\Service\Container;
 use Pebble\Service\DBService;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +38,15 @@ EOF;
 
         $res = $db->prepareExecute($sql);
         return $res;
+    }
+
+    public function test_can_get_instance() {
+
+        $container = new Container();
+        $container->unsetAll();
+        
+        $db = (new DBService())->getDB();
+        $this->assertInstanceOf(Pebble\DB::class, $db);
     }
 
     public function test_prepareExecuteBadSQL()

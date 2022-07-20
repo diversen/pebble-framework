@@ -1,10 +1,22 @@
 <?php
 
+use Pebble\Service\Container;
+use Pebble\Service\ConfigService;
 use Pebble\Config;
 use PHPUnit\Framework\TestCase;
 
 final class ConfigTest extends TestCase
 {
+
+    public function test_can_get_service_instance()
+    {
+        $container = new Container();
+        $container->unsetAll();
+
+        $config = (new ConfigService())->getConfig();
+        $this->assertInstanceOf(Pebble\Config::class, $config);
+    }
+
     public function test_readConfig()
     {
         $config = new Config();
@@ -31,4 +43,5 @@ final class ConfigTest extends TestCase
         $test_config = $config->get('Test.username');
         $this->assertEquals('Test username', $test_config);
     }
+    
 }

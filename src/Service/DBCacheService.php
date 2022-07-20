@@ -15,7 +15,7 @@ class DBCacheService extends Container
      */
     public function getDBCache()
     {
-        if (!$this->get('config')) {
+        if (!$this->get('db_cache')) {
             $db_service = (new DBService())->getDB();
             $db_cache = (new DBCache($db_service));
             $this->set('db_cache', $db_cache);
