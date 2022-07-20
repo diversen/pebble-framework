@@ -21,7 +21,7 @@ class ACLService extends Container
             $db = (new DBService())->getDB();
 
             $acl = new ACL($db, $auth_cookie_settings);
-            return $this->set('acl', $acl);
+            $this->set('acl', $acl);
         }
 
         return $this->get('acl');
