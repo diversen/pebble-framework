@@ -4,37 +4,27 @@ declare(strict_types=1);
 
 namespace Pebble\Service;
 
+use Pebble\Service\Container;
 use Pebble\Config;
 use Pebble\Path;
 
-class ConfigService
+class ConfigService extends Container
 {
-    /**
-     * @var \Pebble\Config
-     */
-    public static $config;
 
     /**
      * @return \Pebble\Config
      */
     public function getConfig()
     {
-        if (self::$config) {
-            return self::$config;
+
+        if (!$this->has('config')) {
+            $base_path = Path::getBasePath();
+            $config = new Config();
+            $config->readConfig($base_path . '/config');
+            $config->readConfig($base_path . '/config-locale');
+            $this->set('config', $config);
         }
 
-        $base_path = Path::getBasePath();
-
-        self::$config = new Config();
-
-        // Config is read from src/config
-        self::$config->readConfig($base_path . '/config');
-
-        // Config is read from src/config-locale
-        //
-        // Any settings set in any config file here will override
-        // The settings found in src/config
-        self::$config->readConfig($base_path . '/config-locale');
-        return self::$config;
+        return $this->get('config');
     }
 }

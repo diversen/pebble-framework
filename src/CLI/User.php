@@ -48,6 +48,7 @@ class User
             if ($utils->readlineConfirm('Should user be given the role as admin?')) {
                 $admin = true;
             }
+
             if (!empty($email) && !empty($password)) {
                 $this->auth->create($email, $password);
                 $row = $this->auth->getByWhere(['email' => $email]);
@@ -62,8 +63,6 @@ class User
                     $utils->echoStatus('Success', 'notice', 'User has been created');
                     return 0;
                 }
-
-
             }
 
             $utils->echoStatus('Error', 'r', 'Something went wrong. Try again');

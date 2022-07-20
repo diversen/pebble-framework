@@ -6,18 +6,14 @@ namespace Pebble\Service;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Pebble\Service\Container;
 use Pebble\Path;
 use Pebble\Service\ConfigService;
 
-class LogService
+class LogService extends Container
 {
 
     private $debug_level = Logger::DEBUG;
-    
-    /**
-     * @var Monolog\Logger
-     */
-    public static $log;
 
     /**
      * Returns a logger that will log to logs/main.log
@@ -28,23 +24,23 @@ class LogService
      */
     public function getLog()
     {
-        if (self::$log) {
-            return self::$log;
+        
+        if (!$this->has('log')){
+            // Get log from config
+            $log = $this->getLogFromConfig();
+            if ($log) {
+                $this->set('log', $log);
+            } else {
+                $this->set('log', $this->getDefaultLogger());
+            }
         }
 
-        // Get log from config
-        self::$log = $this->getLogFromConfig();
-        if (self::$log) {
-            return self::$log;
-        }
+        return $this->get('log');
 
-        // Get default log
-        self::$log = $this->getDefaultLogger();
-        return self::$log;
     }
 
     /**
-     * Get a log instance from `config/Log.php`. 'logger' key 
+     * Get a log instance from `config/Log.php`
      */
     private function getLogFromConfig() {
         $config = (new ConfigService())->getConfig();

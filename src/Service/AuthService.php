@@ -5,30 +5,27 @@ declare(strict_types=1);
 namespace Pebble\Service;
 
 use Pebble\Auth;
+use Pebble\Service\Container;
 use Pebble\Service\DBService;
 use Pebble\Service\ConfigService;
 
-class AuthService
+class AuthService extends Container
 {
-    /**
-     * @var Pebble\Auth
-     */
-    public static $auth;
 
     /**
      * @return \Pebble\Auth
      */
-
     public function getAuth()
     {
-        if (self::$auth) {
-            return self::$auth;
+        if(!$this->has('auth')){
+            $auth_cookie_settings = (new ConfigService())->getConfig()->getSection('Auth');
+            $db = (new DBService())->getDB();
+
+            $auth = new Auth($db, $auth_cookie_settings);
+            $this->set('auth', $auth);
         }
 
-        $auth_cookie_settings = (new ConfigService())->getConfig()->getSection('Auth');
-        $db = (new DBService())->getDB();
-
-        self::$auth = new Auth($db, $auth_cookie_settings);
-        return self::$auth;
+        return $this->get('auth');
+        
     }
 }

@@ -5,26 +5,23 @@ declare(strict_types=1);
 namespace Pebble\Service;
 
 use Pebble\DB;
+use Pebble\Service\Container;
 use Pebble\Service\ConfigService;
 
-class DBService
+class DBService extends Container
 {
-    /**
-     * @var Pebble\DB
-     */
-    public static $db;
 
     /**
      * @return \Pebble\DB
      */
     public function getDB()
     {
-        if (self::$db) {
-            return self::$db;
+        if (!$this->has('db')) {
+            $db_config = (new ConfigService())->getConfig()->getSection('DB');
+            $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+            $this->set('db', $db);    
         }
 
-        $db_config = (new ConfigService())->getConfig()->getSection('DB');
-        self::$db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
-        return self::$db;
+        return $this->get('db');
     }
 }
