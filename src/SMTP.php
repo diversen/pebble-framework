@@ -82,7 +82,7 @@ class SMTP
     /**
      * Get PHPMailer object
      * Initialized from SMTP in Config folder
-     * @return PHPMailer\PHPMailer\PHPMailer
+     * @return \PHPMailer\PHPMailer\PHPMailer
      */
     private function getPHPMailer()
     {

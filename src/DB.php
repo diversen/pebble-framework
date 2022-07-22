@@ -210,6 +210,8 @@ class DB
         $sql = "UPDATE $table SET ";
 
         $final_values = [];
+        $update_ary = [];
+        $where_ary = [];
 
         // Generate named update parameters from insert value keys
         foreach ($values as $field => $value) {
@@ -280,7 +282,7 @@ class DB
 
     /**
      * Return ORDER BY SQL
-     * @param array an array of arrays contains order where index 0 is field and index 1 is direction
+     * @param array $order_by an array of arrays contains order where index 0 is field and index 1 is direction
      */
     public function getOrderBySql(array $order_by = []): string
     {

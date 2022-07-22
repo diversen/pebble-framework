@@ -18,7 +18,7 @@ class Container
 
     /**
      * @param string $name
-     * @param string $class
+     * @param object $service
      */
     public function set(string $name, $service)
     {

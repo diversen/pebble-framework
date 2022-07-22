@@ -300,7 +300,7 @@ EOF;
         $this->__createTestTable();
 
         $db = $this->__getDB();
-        $res = $db->inTransactionExec(function () use ($db) {
+        $res = $db->inTransactionExec(function () {
             return $this->__addRows();
         });
 

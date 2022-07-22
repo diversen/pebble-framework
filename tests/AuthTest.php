@@ -5,17 +5,14 @@ declare(strict_types=1);
 use Pebble\Service\Container;
 use Pebble\Service\AuthService;
 use Pebble\Service\DBService;
-use Pebble\Service\ConfigService;
 use PHPUnit\Framework\TestCase;
 
 final class AuthTest extends TestCase
 {
     private $auth;
-    private $config;
     private $db;
     private function __setup()
     {
-        $this->config = (new ConfigService())->getConfig();
         $this->auth = (new AuthService())->getAuth();
         $this->db = (new DBService())->getDB();
     }

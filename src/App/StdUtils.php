@@ -28,7 +28,7 @@ class StdUtils
     protected $db;
 
     /**
-     * @var \Pebble\Log
+     * @var \Monolog\Logger
      */
     protected $log;
 

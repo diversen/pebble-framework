@@ -46,7 +46,7 @@ class StdErrorController
         return $error_code;
     }
 
-    public function render(Throwable $e)
+    public function render(Exception $e)
     {
         $error_code = $this->getErrorCode($e);
         http_response_code($error_code);

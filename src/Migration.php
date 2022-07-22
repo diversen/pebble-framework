@@ -23,9 +23,10 @@ class Migration
     private $migrationDir = 'migrations';
 
     /**
-     * @var PDOStatement
+     * @var \PDO
      */
     private $dbh;
+    
     public function __construct(PDO $dbh, string $migration_dir = null, string $migration_file = null)
     {
         $this->dbh = $dbh;

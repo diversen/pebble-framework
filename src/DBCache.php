@@ -17,8 +17,8 @@ class DBCache
     private $db;
 
     /**
-     * @param   object $conn PDO connection
-     * @param   string $table database table
+     * @param string $table
+     * @param \Pebble\DB $db
      */
     public function __construct(\Pebble\DB $db, $table = null)
     {
