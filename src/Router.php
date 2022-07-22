@@ -17,6 +17,21 @@ class Router
     private $routes = [];
 
     /**
+     * Array middleware, callables
+     */
+    private $middleware = [];
+
+    /**
+     * Current route being executed
+     */
+    private static $current_route = '';
+
+    /**
+     * Class to create middleware transport object from
+     */
+    private $middleware_class = null;
+
+    /**
      * Check if a string starts with a neddle, ':param'
      */
     private function startsWith($haystack, $needle)
@@ -131,7 +146,6 @@ class Router
      */
     public function add(string $request_method, string $route, string $class, string $class_method)
     {
-        $this->request_method = $request_method;
         $this->routes[$request_method][] = [
             'route' => $route,
             'class' => $class,
@@ -220,31 +234,33 @@ class Router
         }
     }
 
-    private $middleware = [];
+    /**
+     * Sets a middleawre callable
+     */
 
     public function use(callable $callable)
     {
         $this->middleware[] = $callable;
     }
 
-    private static $currentRoute = '';
+    
 
     /**
      * Get current route being run
      */
     public static function getCurrentRoute(): string
     {
-        return self::$currentRoute;
+        return self::$current_route;
     }
 
-    private $middlewareClass = null;
+    
 
     /**
      * Sets middleware class. If it is not set then `stdClass` will be used
      */
     public function setMiddlewareClass(string $class)
     {
-        $this->middlewareClass = $class;
+        $this->middleware_class = $class;
     }
 
     /**
@@ -252,8 +268,8 @@ class Router
      */
     public function run()
     {
-        if ($this->middlewareClass) {
-            $middleware_object = new $this->middleware_object();
+        if ($this->middleware_class) {
+            $middleware_object = new $this->middleware_class;
         } else {
             $middleware_object = new stdClass();
         }
@@ -261,7 +277,7 @@ class Router
         $route = $this->getFirstRoute();
 
         $params = $route['params'];
-        self::$currentRoute = $route['route'];
+        self::$current_route = $route['route'];
 
         foreach ($this->middleware as $middleware) {
             $middleware($params, $middleware_object);

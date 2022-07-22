@@ -102,6 +102,8 @@ class Translate
         $translate_dir_js = $this->config->get('Language.translate_base_dir_js');
         $enabled = $this->config->get('Language.enabled');
 
+        $LANG = [];
+
         foreach ($enabled as $lang) {
             $lang_base_dir = "$translate_dir/lang/$lang";
             $translation_file = "$lang_base_dir/language.php";

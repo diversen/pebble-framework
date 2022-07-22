@@ -13,6 +13,7 @@ use Pebble\Cookie;
 class Auth
 {
     public $db;
+    public $auth_cookie_settings;
 
     /**
      * Auth cookie settings

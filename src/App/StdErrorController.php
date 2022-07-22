@@ -16,6 +16,8 @@ use Pebble\Service\LogService;
 class StdErrorController
 {
     private $config;
+    private $log;
+    private $env;
 
     public function __construct()
     {

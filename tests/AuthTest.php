@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 final class AuthTest extends TestCase
 {
+    private $auth;
+    private $config;
+    private $db;
     private function __setup()
     {
         $this->config = (new ConfigService())->getConfig();

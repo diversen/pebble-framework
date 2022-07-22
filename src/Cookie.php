@@ -6,6 +6,7 @@ namespace Pebble;
 
 class Cookie
 {
+    private $settings;
     public function __construct(array $settings)
     {
         $this->settings = $settings;

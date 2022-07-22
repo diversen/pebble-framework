@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-use Pebble\DB;
-
 class DBCache
 {
     /**
@@ -14,11 +12,15 @@ class DBCache
     private $table = 'cache_system';
 
     /**
-     * constructor
+     * @var \Pebble\DB
+     */
+    private $db;
+
+    /**
      * @param   object $conn PDO connection
      * @param   string $table database table
      */
-    public function __construct(DB $db, $table = null)
+    public function __construct(\Pebble\DB $db, $table = null)
     {
         $this->db = $db;
         if ($table) {

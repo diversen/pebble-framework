@@ -8,6 +8,11 @@ use Pebble\App\AppBase;
 
 class StdUtils
 {
+
+    /**
+     * @var \Pebble\App\AppBase
+     */
+    protected $app_base;
     /**
      * @var \Pebble\Auth
      */

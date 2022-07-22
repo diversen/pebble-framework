@@ -24,6 +24,10 @@ class SMTP
      */
     private $safeMode = true;
 
+    /**
+     * Settings
+     */
+    private $settings = [];
 
     /**
      * Set safemode if sending markdown emails

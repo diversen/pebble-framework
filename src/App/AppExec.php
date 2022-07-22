@@ -18,6 +18,7 @@ use Exception;
  */
 class AppExec
 {
+    private $app;
     /**
      * Set error controller
      */
