@@ -8,7 +8,6 @@ use Pebble\App\AppBase;
 
 class StdUtils
 {
-
     /**
      * @var \Pebble\App\AppBase
      */

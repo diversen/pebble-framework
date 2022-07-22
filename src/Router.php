@@ -235,7 +235,7 @@ class Router
     }
 
     /**
-     * Sets a middleawre callable
+     * Sets a middleware callable
      */
 
     public function use(callable $callable)
@@ -243,7 +243,7 @@ class Router
         $this->middleware[] = $callable;
     }
 
-    
+
 
     /**
      * Get current route being run
@@ -253,7 +253,7 @@ class Router
         return self::$current_route;
     }
 
-    
+
 
     /**
      * Sets middleware class. If it is not set then `stdClass` will be used
@@ -269,7 +269,7 @@ class Router
     public function run()
     {
         if ($this->middleware_class) {
-            $middleware_object = new $this->middleware_class;
+            $middleware_object = new $this->middleware_class();
         } else {
             $middleware_object = new stdClass();
         }
