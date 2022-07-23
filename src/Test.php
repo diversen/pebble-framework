@@ -10,7 +10,7 @@ class Test
      * @route /test/:param1
      * @verbs POST
      */
-    public function index()
+    public function index(): void
     {
     }
 
@@ -18,7 +18,7 @@ class Test
      * @route /test/hello_world
      * @verbs POST
      */
-    public function helloWorld()
+    public function helloWorld(): void
     {
         echo "Hello world";
     }

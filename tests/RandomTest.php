@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RandomTest extends TestCase
 {
-    public function test_generateRandomString()
+    public function test_generateRandomString(): void
     {
         $str = Random::generateRandomString(16);
         $this->assertIsString($str);

@@ -18,6 +18,10 @@ use Pebble\DB;
  */
 class ACL extends Auth
 {
+    /**
+     * @param \Pebble\DB $db
+     * @param array<mixed> $auth_cookie_settings 
+     */
     public function __construct(DB $db, array $auth_cookie_settings)
     {
         parent::__construct($db, $auth_cookie_settings);
@@ -26,7 +30,7 @@ class ACL extends Auth
     /**
      * Check if user is authenticated or throw a ForbiddenException
      */
-    public function isAuthenticatedOrThrow()
+    public function isAuthenticatedOrThrow(): void
     {
         if (!$this->isAuthenticated()) {
             throw new ForbiddenException('You can not access this page');
@@ -36,7 +40,7 @@ class ACL extends Auth
     /**
      * Create access right ['entity', 'entity_id', 'right', 'auth_id'] row in `acl` table
      */
-    public function setAccessRights(array $access_rights)
+    public function setAccessRights(array $access_rights): bool
     {
         $this->validateAccessAry($access_rights);
 
@@ -51,7 +55,7 @@ class ACL extends Auth
      * Remove access right ['entity', 'entity_id', 'right', 'auth_id'] from `acl` table
      * But it could also just be ['entity' => 'blog']
      */
-    public function removeAccessRights(array $where_access_rights)
+    public function removeAccessRights(array $where_access_rights): bool
     {
         return $this->db->delete('acl', $where_access_rights);
     }
@@ -59,7 +63,7 @@ class ACL extends Auth
     /**
      * Check for a valid access rights ary
      */
-    protected function validateAccessAry(array $ary)
+    protected function validateAccessAry(array $ary): void
     {
         if (!isset($ary['entity'], $ary['entity_id'], $ary['right'], $ary['auth_id'])) {
             throw new InvalidArgumentException('Invalid data for ACL::validateAccessAry');
@@ -80,6 +84,7 @@ class ACL extends Auth
 
     /**
      * Get rights as an array from a list, e.g. the string 'owner, user' returns ['owner', 'user']
+     * @return array<string>
      */
     private function getRightsArray(string $rights_str): array
     {
@@ -96,7 +101,7 @@ class ACL extends Auth
      * then he will be allowed. He just needs one 'right' in a list of rights.
      * Checks array consisting of ['entity', 'entity_id', 'right', 'auth_id']
      */
-    protected function hasAccessRights(array $ary)
+    protected function hasAccessRights(array $ary): bool
     {
         $this->validateAccessAry($ary);
         $rights_ary = $this->getRightsArray($ary['right']);
@@ -115,7 +120,7 @@ class ACL extends Auth
      * then he will be allowed. He just needs one 'right' in a list of rights.
      * Checks array consisting of ['entity', 'entity_id', 'right', 'auth_id']
      */
-    public function hasAccessRightsOrThrow(array $ary, string $error_message = null)
+    public function hasAccessRightsOrThrow(array $ary, string $error_message = null): void
     {
         $has_access_rights = $this->hasAccessRights($ary);
         if (!$has_access_rights) {

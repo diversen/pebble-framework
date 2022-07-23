@@ -12,7 +12,7 @@ class URL
     /**
      * Get a 'link' with current URL attached as query param named 'return_to'
      */
-    public static function returnTo(string $link, $return_to = null): string
+    public static function returnTo(string $link, ?string $return_to = null): string
     {
         if (!$return_to) {
             $return_to = $_SERVER['REQUEST_URI'];
@@ -24,21 +24,23 @@ class URL
     /**
      * Get a variable from $_GET. If the query part is not set thenthe method returns null
      */
-    public static function getQueryPart(string $str)
+    public static function getQueryPart(string $str): ?string
     {
         if (isset($_GET[$str])) {
             return $_GET[$str];
         }
+        return null;
     }
 
     /**
      * Get a elem from url path: /some/path
      */
-    public static function getUrlPath(int $num_elem): string
+    public static function getUrlPath(int $num_elem): ?string
     {
         $route = $_SERVER['REQUEST_URI'];
 
         $route = strtok($route, '?');
+        if (!$route) return null;
         $url_parts = explode('/', $route);
         $url_parts_filtered = [];
         foreach ($url_parts as $url_part) {

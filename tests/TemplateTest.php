@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class TemplateTest extends TestCase
 {
-    public function test_render()
+    public function test_render(): void
     {
         $variables = ['escape_this' => '<p>Test</p>'];
 
@@ -17,7 +17,7 @@ final class TemplateTest extends TestCase
         $this->expectOutputString('<p>&lt;p&gt;Test&lt;/p&gt;</p>');
     }
 
-    public function test_getOutput()
+    public function test_getOutput(): void
     {
         $variables = ['escape_this' => '<p>Test</p>'];
 
@@ -27,7 +27,7 @@ final class TemplateTest extends TestCase
         $this->assertEquals('<p>&lt;p&gt;Test&lt;/p&gt;</p>', $str);
     }
 
-    public function test_getOutput_raw()
+    public function test_getOutput_raw(): void
     {
         $variables = ['escape_this' => '<pre>Test</pre>'];
 

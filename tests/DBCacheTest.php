@@ -8,24 +8,24 @@ use PHPUnit\Framework\TestCase;
 
 final class DBCacheTest extends TestCase
 {
-    private function __setup()
+    private function __setup(): void
     {
         $container = new Container();
         $container->unsetAll();
-
     }
 
-    public function test_can_get_instance() {
+    public function test_can_get_instance(): void
+    {
 
         $container = new Container();
         $container->unsetAll();
-        
+
         $db_cache = (new DBCacheService())->getDBCache();
         $this->assertInstanceOf(Pebble\DBCache::class, $db_cache);
     }
 
 
-    public function test_set()
+    public function test_set(): void
     {
         $this->__setup();
         $cache = (new DBCacheService())->getDBCache();
@@ -36,7 +36,7 @@ final class DBCacheTest extends TestCase
         $this->assertEquals(null, $res);
     }
 
-    public function test_get()
+    public function test_get(): void
     {
         $this->__setup();
         $cache = (new DBCacheService())->getDBCache();
@@ -53,7 +53,7 @@ final class DBCacheTest extends TestCase
         $this->assertEquals($to_cache, $from_cache);
     }
 
-    public function test_delete()
+    public function test_delete(): void
     {
         $this->__setup();
         $cache = (new DBCacheService())->getDBCache();

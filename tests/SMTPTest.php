@@ -8,13 +8,16 @@ use PHPUnit\Framework\TestCase;
 
 final class SMTPTest extends TestCase
 {
+    /**
+     * @var \Pebble\Config
+     */
     private $config;
-    private function __setup()
+    private function __setup(): void
     {
         $this->config = (new ConfigService())->getConfig();
     }
 
-    public function test_sendWithException()
+    public function test_sendWithException(): void
     {
         $this->__setup();
         $this->expectException(PHPMailer\PHPMailer\Exception::class);

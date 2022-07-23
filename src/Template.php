@@ -10,27 +10,41 @@ use Pebble\Exception\TemplateException;
 
 class Template
 {
-    protected static $path;
+    /**
+     * @var string $path
+     */
+    protected static string $path = '';
 
-    public static function setPath(string $path)
+    /**
+     * @param string $path
+     */
+    public static function setPath(string $path): void
     {
         self::$path = $path;
     }
+
     /**
      * Get output from a template
+     * @param string $template
+     * @param array<mixed> $vars
+     * @param array<mixed> $options
      */
-    public static function getOutput(string $template, array $vars = [], array $options = []): string
+    public static function getOutput(string $template, array $vars = [], array $options = []): ?string
     {
         ob_start();
 
         self::render($template, $vars, $options);
 
         $content = ob_get_clean();
+        if (!$content) return null;
 
         return $content;
     }
 
-    private static function getTemplatePath($path)
+    /**
+     * @param string $path
+     */
+    private static function getTemplatePath(string $path): string
     {
         if (self::$path) {
             $try_path = self::$path . '/' . $path;
@@ -42,41 +56,46 @@ class Template
     }
 
     /**
-     * Render a template using a template path and some variables
-     * Any special entity is encoded on strings and numeric values.
-     * Set options['raw'] and no encoding will occur
+     * Get output from a template
+     * @param string $template
+     * @param array<mixed> $vars
+     * @param array<mixed> $options
      */
-    public static function render($template_path, $variables = [], array $options = [])
+    public static function render(string $template, $vars = [], array $options = []): void
     {
         try {
             if (!isset($options['raw'])) {
-                $variables = Special::encodeAry($variables);
+                $vars = Special::encodeAry($vars);
             }
 
-            extract($variables);
+            extract($vars);
 
-            $template_path = self::getTemplatePath($template_path);
-            require($template_path);
+            $template = self::getTemplatePath($template);
+            require($template);
         } catch (Exception $e) {
             throw new TemplateException($e->getMessage());
         }
     }
 
     /**
-     * Shortcut to render a template raw
+     * Get output from a template
+     * @param string $template
+     * @param array<mixed> $vars
      */
-    public static function renderRaw($template_path, $variables)
+    public static function renderRaw(string $template, array $vars = []): void
     {
         $options = ['raw' => true];
-        self::render($template_path, $variables, $options);
+        self::render($template, $vars, $options);
     }
 
     /**
-     * Shortcut to get template output raw
+     * Get output from a template
+     * @param string $template
+     * @param array<mixed> $vars
      */
-    public static function getOutputRaw($template_path, $variables)
+    public static function getOutputRaw($template, $vars): ?string
     {
         $options = ['raw' => true];
-        return self::getOutput($template_path, $variables, $options);
+        return self::getOutput($template, $vars, $options);
     }
 }

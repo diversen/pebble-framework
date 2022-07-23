@@ -7,13 +7,13 @@ use PHPUnit\Framework\TestCase;
 
 final class CSRFTest extends TestCase
 {
-    public function test_getToken()
+    public function test_getToken(): void
     {
         $token = (new CSRF())->getToken();
         $this->assertEquals($token, $_SESSION['csrf_token']);
     }
 
-    public function test_validateToken()
+    public function test_validateToken(): void
     {
         $csrf = new CSRF();
         $token = $csrf->getToken();

@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ExceptionTraceTest extends TestCase
 {
-    public function test_get()
+    public function test_get(): void
     {
         try {
             throw new Exception('An error');

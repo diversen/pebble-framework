@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class SpecialTest extends TestCase
 {
-    public function test_encodeStr()
+    public function test_encodeStr(): void
     {
 
         // Ints to strings
@@ -31,20 +31,22 @@ final class SpecialTest extends TestCase
         $this->assertEquals('&lt;p&gt;Test&lt;/p&gt;', $res);
     }
 
-    public function test_encodeAry()
+    public function test_encodeAry(): void
     {
         $ary = [
-            'test' => false,
+            'number' => 9.723458,
+            'bool' => false,
             'ary' => ['inner_key' => '<p>test</p>']
         ];
 
         $res = Special::encodeAry($ary);
 
-        $this->assertEquals(false, $res['test']);
+        $this->assertEquals("9.723458", $res['number']);
+        $this->assertEquals(false, $res['bool']);
         $this->assertEquals('&lt;p&gt;test&lt;/p&gt;', $res['ary']['inner_key']);
     }
 
-    public function test_decodeStr()
+    public function test_decodeStr(): void
     {
         $res = Special::decodeStr('&lt;p&gt;Test&lt;/p&gt;');
         $this->assertEquals('<p>Test</p>', $res);

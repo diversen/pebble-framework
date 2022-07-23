@@ -11,23 +11,31 @@ use Pebble\Service\ConfigService;
 
 final class MigrationTest extends TestCase
 {
+    /**
+     * @var \Pebble\Config
+     */
     public $config;
+
+    /**
+     * @var \Pebble\DB
+     */
     public $db;
-    public function __setup()
+    public function __setup(): void
     {
         $this->config = (new ConfigService())->getConfig();
     }
 
-    public function test_can_get_instance() {
+    public function test_can_get_instance(): void
+    {
 
         $container = new Container();
         $container->unsetAll();
-        
+
         $migration = (new MigrationService())->getMigration();
         $this->assertInstanceOf(Pebble\Migration::class, $migration);
     }
 
-    public function test_migration_up_and_down()
+    public function test_migration_up_and_down(): void
     {
         $this->__setup();
 

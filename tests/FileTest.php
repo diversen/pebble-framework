@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FileTest extends TestCase
 {
-    public function test_dirToArray()
+    public function test_dirToArray(): void
     {
         $files = File::dirToArray(__DIR__ . '/file_test_files');
         $expect = ['a_file.txt'];

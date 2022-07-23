@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 final class HeadersTest extends TestCase
 {
-    public function test_redirectToHttps()
+    public function test_redirectToHttps(): void
     {
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['REQUEST_URI'] = '/some/url';

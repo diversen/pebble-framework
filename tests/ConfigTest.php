@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 final class ConfigTest extends TestCase
 {
 
-    public function test_can_get_service_instance()
+    public function test_can_get_service_instance(): void
     {
         $container = new Container();
         $container->unsetAll();
@@ -17,7 +17,7 @@ final class ConfigTest extends TestCase
         $this->assertInstanceOf(Pebble\Config::class, $config);
     }
 
-    public function test_readConfig()
+    public function test_readConfig(): void
     {
         $config = new Config();
         $config_dir = dirname(__FILE__) . '/../config-test';
@@ -26,7 +26,7 @@ final class ConfigTest extends TestCase
         $this->assertEquals('Test username', $test_config['username']);
     }
 
-    public function test_getSection()
+    public function test_getSection(): void
     {
         $config = new Config();
         $config_dir = dirname(__FILE__) . '/../config-test';
@@ -35,7 +35,7 @@ final class ConfigTest extends TestCase
         $this->assertEquals('Test username', $test_config['username']);
     }
 
-    public function test_get()
+    public function test_get(): void
     {
         $config = new Config();
         $config_dir = dirname(__FILE__) . '/../config-test';

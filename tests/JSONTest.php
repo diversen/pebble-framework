@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 final class JSONTest extends TestCase
 {
-    public function test_response()
+    public function test_response(): void
     {
         $json = JSON::response(['hello world'], 0, 512, false);
         $this->assertEquals('["hello world"]', $json);

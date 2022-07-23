@@ -9,33 +9,40 @@ use PHPUnit\Framework\TestCase;
 
 final class AuthTest extends TestCase
 {
+    /**
+     * @var \Pebble\Auth
+     */
     private $auth;
+    
+    /**
+     * @var \Pebble\DB
+     */
     private $db;
-    private function __setup()
+    private function __setup(): void
     {
         $this->auth = (new AuthService())->getAuth();
         $this->db = (new DBService())->getDB();
     }
 
-    private function __cleanup()
+    private function __cleanup(): void
     {
         $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
         $this->db->prepareExecute("DELETE FROM `auth_cookie`");
     }
 
-    private function __create()
+    private function __create(): bool
     {
         $res = $this->auth->create('some_email@test.dk', 'some_password');
         return $res;
     }
 
-    private function __verify()
+    private function __verify(): bool
     {
         $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         return $this->auth->verifyKey($row['random']);
     }
 
-    public function test_can_get_service_instance()
+    public function test_can_get_service_instance(): void
     {
 
         $container = new Container();
@@ -45,7 +52,7 @@ final class AuthTest extends TestCase
         $this->assertInstanceOf(Pebble\Auth::class, $auth);
     }
 
-    public function test_authenticate()
+    public function test_authenticate(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -58,7 +65,7 @@ final class AuthTest extends TestCase
         $this->assertEquals(1, count($rows));
     }
 
-    public function test_verify()
+    public function test_verify(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -77,7 +84,7 @@ final class AuthTest extends TestCase
         $this->assertEquals("1", $row['verified']);
     }
 
-    public function test_create()
+    public function test_create(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -85,7 +92,7 @@ final class AuthTest extends TestCase
         $this->assertEquals($this->__create(), true);
     }
 
-    public function test_create_unique_email()
+    public function test_create_unique_email(): void
     {
         $this->expectException(PDOException::class);
 
@@ -98,7 +105,7 @@ final class AuthTest extends TestCase
 
 
 
-    public function test_getByWhere()
+    public function test_getByWhere(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -110,7 +117,7 @@ final class AuthTest extends TestCase
         $this->assertEquals(1, count($rows));
     }
 
-    public function test_updatePassword()
+    public function test_updatePassword(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -127,7 +134,7 @@ final class AuthTest extends TestCase
         $this->assertEquals(1, count($rows));
     }
 
-    public function test_isAuthenticated()
+    public function test_isAuthenticated(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -142,7 +149,7 @@ final class AuthTest extends TestCase
         $this->assertEquals(true, $res);
     }
 
-    public function test_getAuthId()
+    public function test_getAuthId(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -156,7 +163,7 @@ final class AuthTest extends TestCase
         $this->assertGreaterThan(0, (int)$res);
     }
 
-    public function test_unlinkCurrentCookie()
+    public function test_unlinkCurrentCookie(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -174,7 +181,7 @@ final class AuthTest extends TestCase
         $this->assertEquals(false, $res);
     }
 
-    public function test_unlinkAllCookies()
+    public function test_unlinkAllCookies(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -192,7 +199,7 @@ final class AuthTest extends TestCase
         $this->assertEquals(false, $res);
     }
 
-    public function test_setCookie()
+    public function test_setCookie(): void
     {
         $this->__setup();
         $this->__cleanup();

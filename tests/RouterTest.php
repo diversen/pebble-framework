@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
-    public function test_noRoutes()
+    public function test_noRoutes(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world';
@@ -21,7 +21,7 @@ final class RouterTest extends TestCase
         $router->getValidRoutes();
     }
 
-    public function test_missingMethod()
+    public function test_missingMethod(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world';
@@ -33,7 +33,7 @@ final class RouterTest extends TestCase
         $router->getValidRoutes();
     }
 
-    public function test_getValidRoutes()
+    public function test_getValidRoutes(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world/';
@@ -67,7 +67,7 @@ final class RouterTest extends TestCase
     /**
      * Same as above we just use annotations for the same routes
      */
-    public function test_getValidRoutesFromClass()
+    public function test_getValidRoutesFromClass(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world/';
@@ -90,7 +90,7 @@ final class RouterTest extends TestCase
         $this->assertEquals($routes[1]['method'], 'helloWorld');
     }
 
-    public function test_run_all()
+    public function test_run_all(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/test/hello_world/';

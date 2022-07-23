@@ -14,11 +14,22 @@ use PHPUnit\Framework\TestCase;
 
 final class ACLTest extends TestCase
 {
+    /**
+     * @var \Pebble\Config
+     */
     public $config;
+
+    /**
+     * @var \Pebble\DB
+     */
     public $db;
+    
+    /**
+     * @var \Pebble\Auth
+     */
     public $auth;
 
-    private function __setup()
+    private function __setup(): void
     {
         $this->config = (new ConfigService())->getConfig();
         $this->auth = (new AuthService())->getAuth();
@@ -26,7 +37,7 @@ final class ACLTest extends TestCase
     }
 
 
-    private function __cleanup()
+    private function __cleanup(): void
     {
         $this->db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
         $this->db->prepareExecute("DELETE FROM `auth_cookie`");
@@ -36,19 +47,22 @@ final class ACLTest extends TestCase
     }
 
 
-    private function __create()
+    private function __create(): bool
     {
         $res = $this->auth->create('some_email@test.dk', 'some_password');
         return $res;
     }
 
-    private function __verify()
+    private function __verify(): bool
     {
         $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         return $this->auth->verifyKey($row['random']);
     }
 
-    private function __createVerifyLoginUser()
+    /**
+     * @return array<string>
+     */
+    private function __createVerifyLoginUser(): array
     {
         $this->__cleanup();
         $this->__create();
@@ -60,7 +74,7 @@ final class ACLTest extends TestCase
         return $row;
     }
 
-    public function test_can_get_service_instance()
+    public function test_can_get_service_instance(): void
     {
 
         $container = new Container();
@@ -71,7 +85,7 @@ final class ACLTest extends TestCase
     }
 
 
-    public function test_isAuthenticatedOrThrow_throw()
+    public function test_isAuthenticatedOrThrow_throw(): void
     {
         $this->__setup();
         $this->__cleanup();
@@ -81,19 +95,8 @@ final class ACLTest extends TestCase
         $acl->isAuthenticatedOrThrow();
     }
 
-    public function test_isAuthenticatedOrThrow()
-    {
-        $this->__setup();
-        $this->__createVerifyLoginUser();
 
-        $acl = new ACL($this->db, $this->config->getSection('Auth'));
-
-        $res = $acl->isAuthenticatedOrThrow();
-
-        $this->assertEquals(null, $res);
-    }
-
-    public function test_setAccessRights_removeAccessRights()
+    public function test_setAccessRights_removeAccessRights(): void
     {
         $this->__setup();
         $row = $this->__createVerifyLoginUser();
@@ -110,9 +113,6 @@ final class ACLTest extends TestCase
         $res = $acl->setAccessRights($rights);
         $this->assertEquals(true, $res);
 
-        $res = $acl->hasAccessRightsOrThrow($rights);
-        $this->assertEquals(null, $res);
-
         $res = $acl->removeAccessRights(['auth_id' => $row['id']]);
         $this->assertEquals(true, $res);
 
@@ -120,35 +120,7 @@ final class ACLTest extends TestCase
         $acl->hasAccessRightsOrThrow($rights);
     }
 
-    public function test_hasAccessRightsOrThrow()
-    {
-        $this->__setup();
-        $row = $this->__createVerifyLoginUser();
-
-        $acl = new ACL($this->db, $this->config->getSection('Auth'));
-        ;
-
-        $rights = [
-            'entity' => 'test_entity',
-            'entity_id' => 42,
-            'right' => 'read',
-            'auth_id' => $row['id'],
-        ];
-
-        $acl->setAccessRights($rights);
-
-        $rights = [
-            'entity' => 'test_entity',
-            'entity_id' => 42,
-            'right' => 'read,write', // It has read among others, so it is ok.
-            'auth_id' => $row['id'],
-        ];
-
-        $res = $acl->hasAccessRightsOrThrow($rights);
-        $this->assertEquals(null, $res);
-    }
-
-    public function test_hasAccessRightsOrThrow_throw()
+    public function test_hasAccessRightsOrThrow_throw(): void
     {
         $this->__setup();
         $row = $this->__createVerifyLoginUser();
@@ -174,15 +146,4 @@ final class ACLTest extends TestCase
         $this->expectException(ForbiddenException::class);
         $acl->hasAccessRightsOrThrow($rights);
     }
-
-    /*
-    public static function tearDownAfterClass(): void
-    {
-        $db = DBInstance::get();
-        $db->prepareExecute("DELETE FROM `auth` WHERE `email` = :email", ['email' => 'some_email@test.dk']);
-        $db->prepareExecute("DELETE FROM `auth_cookie`");
-
-        $acl = new ACL();
-        $acl->removeAccessRights(['entity' => 'test_entity']);
-    }*/
 }

@@ -7,15 +7,18 @@ use PHPUnit\Framework\TestCase;
 
 final class URLTest extends TestCase
 {
-    public function test_returnTo()
+    public function test_returnTo(): void
     {
         $_SERVER['REQUEST_URI'] = '/here/is/a/path?param=test';
 
         $str = URL::returnTo('/some/url');
         $this->assertEquals('/some/url?return_to=%2Fhere%2Fis%2Fa%2Fpath%3Fparam%3Dtest', $str);
+
     }
 
-    public function test_getQueryPart()
+
+
+    public function test_getQueryPart(): void
     {
         $_GET['param1'] = 'test1';
         $param1 = URL::getQueryPart('param1');

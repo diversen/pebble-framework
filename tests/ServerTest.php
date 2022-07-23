@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ServerTest extends TestCase
 {
-    public function test_getSchemeAndHost()
+    public function test_getSchemeAndHost(): void
     {
         $_SERVER['SERVER_PORT'] = '8000';
         $_SERVER['SERVER_NAME'] = '10kilobyte.com';

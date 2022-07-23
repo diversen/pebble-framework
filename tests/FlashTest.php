@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FlashTest extends TestCase
 {
-    public function test_setMessage()
+    public function test_setMessage(): void
     {
         $_SESSION = [];
         $flash = new Flash();
@@ -22,7 +22,7 @@ final class FlashTest extends TestCase
         $this->assertEquals($expect, $_SESSION['flash'][0]);
     }
 
-    public function test_getMessage()
+    public function test_getMessage(): void
     {
         $_SESSION = [];
         $flash = new Flash();

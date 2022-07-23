@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 final class CaptchaTest extends TestCase
 {
-    public function test_outputImage()
+    public function test_outputImage(): void
     {
         $captcha = new Captcha();
 
@@ -14,7 +14,7 @@ final class CaptchaTest extends TestCase
         $this->assertIsString($_SESSION['captcha_phrase']);
     }
 
-    public function test_validate()
+    public function test_validate(): void
     {
         $captcha = new Captcha();
 

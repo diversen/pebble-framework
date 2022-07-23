@@ -10,6 +10,8 @@ class Special
      * Encode html special char on an array
      * It will only encode strings and numeric values
      * Objects will keep value
+     * @param array<mixed> $values
+     * @return array<mixed> $values
      */
     public static function encodeAry(array $values): array
     {
@@ -25,29 +27,29 @@ class Special
     }
 
     /**
-     * htmlspecialchars on strings
+     * htmlspecialchars.
      * Any other values will just be returned
      */
-    public static function encodeStr($str)
+    public static function encodeStr($value)
     {
 
         // Convert numeric values to strings
-        if (is_numeric($str)) {
-            $str = strval($str);
+        if (is_numeric($value)) {
+            $value = strval($value);
         }
 
 
-        if (is_string($str)) {
-            return htmlspecialchars($str, ENT_COMPAT, 'UTF-8');
+        if (is_string($value)) {
+            return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
         }
 
-        return $str;
+        return $value;
     }
 
     /**
      * Decode a string
      */
-    public static function decodeStr($str): string
+    public static function decodeStr(string $str): string
     {
         return htmlspecialchars_decode($str, ENT_COMPAT);
     }

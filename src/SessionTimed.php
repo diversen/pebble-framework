@@ -11,7 +11,7 @@ class SessionTimed
     /**
      * Set as session value with key, value, and a max time that the session value will exist
      */
-    public function setValue($key, $value, $max_time)
+    public function setValue(string $key, $value, $max_time)
     {
         $_SESSION[$this->sessionKey][$key] = ['time' => time() + $max_time, 'value' => $value];
     }
@@ -19,7 +19,7 @@ class SessionTimed
     /**
      * Get a session value på key
      */
-    public function getValue($key)
+    public function getValue(string $key)
     {
         $value = $_SESSION[$this->sessionKey][$key] ?? null;
         if ($value) {
