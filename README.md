@@ -6,13 +6,10 @@ A simple and small php framework / library.
 
 [https://diversen.github.io/pebble-framework-docs/](https://diversen.github.io/pebble-framework-docs/)
 
-# Requirements
 
-Known to work on:  `PHP >= 7.4.3`
+# Install
 
-# Install as dependency
-
-PHP >= 7.4 AND PHP < 8.1
+PHP >= 7.4 and PHP < 8.1
 
     composer require diversen/pebble-framework:^6.0
 
