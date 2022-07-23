@@ -29,9 +29,9 @@
         "gregwar/captcha": "^1.1",
         "phpmailer/phpmailer": "^6.0",
         "erusev/parsedown": "^1.7",
-        "diversen/minimal-cli-framework": "^6.0",
         "diversen/simple-php-translation": "^3.0",
-        "phpstan/phpstan": "^1.8"
+        "phpstan/phpstan": "^1.8",
+        "diversen/minimal-cli-framework": "^6.0"
     }
 
 }
