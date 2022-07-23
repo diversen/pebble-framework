@@ -12,7 +12,14 @@ Known to work on:  `PHP >= 7.4.3`
 
 # Install as dependency
 
-    composer require diversen/pebble-framework
+PHP >= 7.4 AND PHP < 8.1
+
+    composer require diversen/pebble-framework:^6.0
+
+
+PHP > 8.1
+
+    composer require diversen/pebble-framework:^7.0
 
 # Install for testing
 
