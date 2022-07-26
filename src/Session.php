@@ -11,7 +11,7 @@ class Session
 {
     /**
      * Set SESSION defaults from Session Configuration
-     * @param array $session_config
+     * @param array<mixed> $session_config
      */
     public static function setConfigSettings(array $session_config): bool
     {

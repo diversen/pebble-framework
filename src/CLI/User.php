@@ -12,12 +12,18 @@ use Exception;
 use Pebble\ACLRole;
 
 class User
-{
+{   
+    /**
+     * @var \Pebble\Auth
+     */
     private $auth;
 
 
-    // Return main commands help
-    public function getCommand()
+    /**
+     * Return command definition
+     * @return array<mixed>
+     */
+    public function getCommand(): array
     {
         return
         array(
@@ -30,7 +36,7 @@ class User
     }
 
 
-    public function runCommand(ParseArgv $args)
+    public function runCommand(ParseArgv $args): int
     {
         try {
             $this->auth = (new AuthService())->getAuth();

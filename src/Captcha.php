@@ -14,7 +14,7 @@ class Captcha
     /**
      * @return \Gregwar\Captcha\CaptchaBuilder;
      */
-    public function getBuilder()
+    public function getBuilder(): \Gregwar\Captcha\CaptchaBuilder
     {
         $builder = new CaptchaBuilder();
         $builder->build();
@@ -27,7 +27,7 @@ class Captcha
     /**
      * Output image
      */
-    public function outputImage()
+    public function outputImage(): void
     {
         $builder = $this->getBuilder();
         header('Content-type: image/jpeg');
@@ -38,7 +38,7 @@ class Captcha
     /**
      * Check captcha
      */
-    public function validate($phrase): bool
+    public function validate(string $phrase): bool
     {
         if (mb_strtolower($phrase) != mb_strtolower($_SESSION['captcha_phrase'])) {
             return false;

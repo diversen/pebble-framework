@@ -6,7 +6,14 @@ namespace Pebble;
 
 class Cookie
 {
-    private $settings;
+    /**
+     * @var array<mixed> $settings
+     */
+    private array $settings;
+
+    /**
+     * @param array<mixed> $settings
+     */
     public function __construct(array $settings)
     {
         $this->settings = $settings;
@@ -16,7 +23,7 @@ class Cookie
      * Set a cookie
      * If time is 0 then the it will be a session cookie
      */
-    public function setCookie(string $key, string $value, int $time = 0)
+    public function setCookie(string $key, string $value, int $time = 0): bool
     {
         $path = $this->settings['cookie_path'];
         $domain = $this->settings['cookie_domain'];
@@ -36,7 +43,7 @@ class Cookie
         return setcookie($key, $value, $time, $path, $domain, $secure, $http_only);
     }
 
-    private function isCli()
+    private function isCli(): bool
     {
         if (php_sapi_name() === 'cli') {
             return true;

@@ -4,7 +4,10 @@ namespace Pebble\DB;
 
 class Utils
 {
-    public static function parsePDOString($pdo_str): array
+    /**
+     * @return array<string>
+     */
+    public static function parsePDOString(string $pdo_str): array
     {
         $ary = [];
 

@@ -8,6 +8,7 @@ class AcceptLanguage
      * Get best guess of Request language
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language
      * Find language from e.g.: 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';
+     * @param array<string> $options
      */
     public static function getLanguage(array $options, string $default): string
     {

@@ -16,17 +16,17 @@ class DB
     /**
      * @var PDOStatement
      */
-    private $stmt = null;
+    private PDOStatement $stmt;
 
     /**
      * @var PDO
      */
-    private $dbh = null;
+    private PDO $dbh;
 
     /**
      * Set database handle direct
      */
-    public function setDbh(PDO $dbh)
+    public function setDbh(PDO $dbh): void
     {
         $this->dbh = $dbh;
     }
@@ -34,13 +34,14 @@ class DB
     /**
      * Return the objects database handle.
      */
-    public function getDbh()
+    public function getDbh(): PDO
     {
         return $this->dbh;
     }
 
     /**
      * Create a database handle in the constructor
+     * @param array<mixed> $options
      */
     public function __construct(string $url, string $username = '', string $password = '', array $options = [])
     {
@@ -61,8 +62,10 @@ class DB
     /**
      * Prepare and execute an arbitrary string of SQL
      * `$db->prepareExecute('DELETE FROM auth WHERE email = ?', ['test@mail.com']); `
+     * @param string $sql
+     * @param array<mixed> $values
      */
-    public function prepareExecute(string $sql, array $values = [], array $options = []): bool
+    public function prepareExecute(string $sql, array $values = []): bool
     {
         $this->stmt = $this->dbh->prepare($sql);
         return $this->stmt->execute($values);
@@ -71,6 +74,9 @@ class DB
     /**
      * Prepare and fetch all rows using `$sql` and `$params`
      * `$db->prepareFetch("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
+     * @param string $sql
+     * @param array<mixed> $params
+     * @return array<mixed>
      */
     public function prepareFetchAll(string $sql, array $params = []): array
     {
@@ -81,6 +87,9 @@ class DB
     /**
      * Prepare and fetch a single row or an empty array
      * `$db->prepareFetch("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
+     * @param string $sql
+     * @param array<mixed> $params
+     * @return array<mixed>
      */
     public function prepareFetch(string $sql, array $params = []): array
     {
@@ -97,20 +106,25 @@ class DB
 
     /**
      * Count number of rows in a table from a `$table` name, the `$field` to count from, and `$where` conditions
+     * @param string $table
+     * @param string $field
+     * @param array<string> $where
      */
     public function getTableNumRows(string $table, string $field, array $where = []): int
     {
         $sql = "SELECT count($field) as num_rows FROM $table ";
-        $sql.= $this->getWhereSql($where);
+        $sql .= $this->getWhereSql($where);
         $row = $this->prepareFetch($sql, $where);
         return (int)$row['num_rows'];
     }
 
     /**
-     * Get a PDOStatement where you can run e.g. `$stmt->fetch(PDO::FETCH_ASSOC)`;
-     * @return PDOStatement
+     * Prepare SQL with params and return stmt
+     * Then run e.g. `$stmt->fetch(PDO::FETCH_ASSOC)`;
+     * @param string $sql
+     * @param array<mixed> $params
      */
-    public function getStmt(string $sql, array $params = [])
+    public function getStmt(string $sql, array $params = []): PDOStatement
     {
         $this->stmt = $this->dbh->prepare($sql);
         $this->stmt->execute($params);
@@ -156,11 +170,15 @@ class DB
     }
 
     /**
-     * Generate array with keys as named params
+     * Generate array with keys as named params =>
+     * 
      * $post['title'] = $title will be transformed into
      * $post[':title'] = $title
+     * 
+     * @param array<mixed> $values
+     * @return array<mixed>
      */
-    private function generateNamedParams(array $values = [])
+    private function generateNamedParams(array $values = []): array
     {
         $ret_val = [];
         foreach ($values as $key => $val) {
@@ -172,6 +190,8 @@ class DB
     /**
      * Insert into $table a new row generated from $values:
      * `$db->insert('users_table', ['user_email' => 'test@test.com', 'user_name' => 'John Doe']);`
+     * 
+     * @param array<mixed> $values
      */
     public function insert(string $table, array $values): bool
     {
@@ -204,6 +224,9 @@ class DB
     /**
      * UPDATE table row(s)
      * `$db->update('user_table', ['user_email' => 'new_email@domain', 'user_name' => 'new name'], ['id' => 42]);`
+     * 
+     * @param array<mixed> $values
+     * @param array<mixed> $where
      */
     public function update(string $table, array $values, array $where): bool
     {
@@ -245,10 +268,11 @@ class DB
     }
 
     /**
-     * Generates simple where part of SQL, e.g. ['email' => 'some@email.dk', 'user' => 'some user']
-     * returns WHERE username = :username AND user = :user
-     * which then can be used in `prepareFetchAll` and `prepareFetch`
-    */
+     * Generates simple where part of SQL, e.g. `['email' => 'some@email.dk', 'user' => 'some user']` =>
+     * `WHERE username = :username AND user = :user`
+     * 
+     * @param array<mixed> $where
+     */
     public function getWhereSql(array $where): string
     {
         if (empty($where)) {
@@ -265,8 +289,9 @@ class DB
     }
 
     /**
-     * Return limit sql
-     * @param array $limit index 0 is limit and index 1 is offset
+     * Return limit SQL
+     * 
+     * @param array<int> $limit index 0 is limit and index 1 is offset
      */
     public function getLimitSql(array $limit = []): string
     {
@@ -281,8 +306,8 @@ class DB
     }
 
     /**
-     * Return ORDER BY SQL
-     * @param array $order_by an array of arrays contains order where index 0 is field and index 1 is direction
+     * Return `order by ... ` SQL string from an array
+     * @param array<mixed> $order_by `An array of arrays contains order where index 0 is field and index 1 is direction`
      */
     public function getOrderBySql(array $order_by = []): string
     {
@@ -301,13 +326,15 @@ class DB
     }
 
     /**
-     * Delete rows from a table
+     * Delete from rows from a table
      * `$db->delete('project', ['id' => $id]);`
+     * 
+     * @param array<mixed> $where
      */
     public function delete(string $table, array $where): bool
     {
         $sql = "DELETE FROM $table ";
-        $sql.= $this->getWhereSql($where);
+        $sql .= $this->getWhereSql($where);
 
         $where = $this->generateNamedParams($where);
         $res = $this->prepareExecute($sql, $where);
@@ -317,12 +344,16 @@ class DB
     /**
      * Shortcut to get one row, e.g:
      * `$db->getOne('auth', ['verified' => 1, 'email' => $email]);`
+     * 
+     * @param array<mixed> $where
+     * @param array<mixed> $order_by
+     * @return array<mixed>
      */
     public function getOne(string $table, array $where, array $order_by = []): array
     {
         $sql = "SELECT * FROM `$table` ";
-        $sql.= $this->getWhereSql($where);
-        $sql.= $this->getOrderBySql($order_by);
+        $sql .= $this->getWhereSql($where);
+        $sql .= $this->getOrderBySql($order_by);
         $row = $this->prepareFetch($sql, $where);
         return $row;
     }
@@ -330,13 +361,18 @@ class DB
     /**
      * Shortcut to get all rows, e.g:
      * `$db->getAll('invites', ['invite_email' => $email]);`
+     * 
+     * @param array<mixed> $where
+     * @param array<mixed> $order_by
+     * @param array<mixed> $limit
+     * @return array<mixed>
      */
     public function getAll(string $table, array $where, array $order_by = [], array $limit = []): array
     {
         $sql = "SELECT * FROM `$table` ";
-        $sql.= $this->getWhereSql($where);
-        $sql.= $this->getOrderBySql($order_by);
-        $sql.= $this->getLimitSql($limit);
+        $sql .= $this->getWhereSql($where);
+        $sql .= $this->getOrderBySql($order_by);
+        $sql .= $this->getLimitSql($limit);
 
         $rows = $this->prepareFetchAll($sql, $where);
         return $rows;
@@ -345,6 +381,10 @@ class DB
     /**
      * Prepare and fetch a single row using params in the where clause
      * Use this when you want to generate 'WHERE' clause from `$params`
+     * 
+     * @param array<mixed> $params
+     * @param array<mixed> $order_by
+     * @return array<mixed>
      */
     public function getOneQuery(string $sql, array $params = [], array $order_by = []): array
     {
@@ -364,6 +404,11 @@ class DB
     /**
      * Prepare and fetch all rows using `$params` in the where clause
      * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], [20, 10]]);`
+     * 
+     * @param array<mixed> $params
+     * @param array<mixed> $order_by
+     * @param array<mixed> $limit
+     * @return array<mixed>
      */
     public function getAllQuery(string $sql, array $params = [], array $order_by = [], array $limit = []): array
     {
@@ -384,7 +429,10 @@ class DB
      *
      * If possible the result of the callable will be
      * returned
+     * 
+     * @return mixed
      */
+
     public function inTransactionExec(callable $call)
     {
         try {

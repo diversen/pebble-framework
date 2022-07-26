@@ -7,7 +7,7 @@ class Memory
     /**
      * Get peak memory usage in KB
      */
-    public static function getPeak()
+    public static function getPeak(): float
     {
         $mem_peak = memory_get_peak_usage();
         return round($mem_peak / 1024);

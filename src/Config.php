@@ -10,6 +10,9 @@ use Exception;
 
 class Config
 {
+    /**
+     * @param array<string> $config_files
+     */
     public function __construct(array $config_files = [])
     {
         foreach ($config_files as $file) {
@@ -19,13 +22,16 @@ class Config
 
     /**
      * Var holding all config variables
+     * @var array<mixed>
+     * 
      */
-    private $variables = [];
+    private array $variables = [];
 
     /**
      * Var holding all sections
+     * @var array<mixed>
      */
-    private $sections = [];
+    private array $sections = [];
 
     /**
      * Get filename without extension
@@ -38,8 +44,9 @@ class Config
 
     /**
      * Get config array from a dir and a file
+     * @return array<mixed>
      */
-    private function getConfigArray($dir, $file)
+    private function getConfigArray(string $dir, string $file): array
     {
         $config_file = $dir . "/$file";
         $config_array = require($config_file);
@@ -47,10 +54,12 @@ class Config
     }
 
     /**
-     * Only php files a vlid from a configuration dir.
+     * Only php files a valid from a configuration dir.
      * Remove everything that is not a config file.
+     * @param array<string> $files
+     * @return array<string>
      */
-    private function getCleanedFiles($files)
+    private function getCleanedFiles(array $files): array
     {
         $files_ret = [];
         foreach ($files as $file) {
@@ -66,7 +75,7 @@ class Config
     /**
      * Read all configuration files (php files) from dir.
      */
-    public function readConfig(string $dir)
+    public function readConfig(string $dir): void
     {
         if (!file_exists($dir)) {
             throw new Exception('Config exception. Before reading a config dir, you need to make sure the dir exist: ' . $dir);
@@ -95,6 +104,8 @@ class Config
 
     /**
      * Get a config section. E.g. 'SMTP' will get the configuration from the file 'config/SMTP.php'
+     * @param array<mixed> $config_array
+     * @return array<mixed>
      */
     private function getSectionByName(string $section, array $config_array): array
     {
@@ -107,17 +118,18 @@ class Config
 
     /**
      * Get e.g. `Config::get('SMTP.username')`
+     * @return mixed 
      */
     public function get(string $key)
     {
         if (isset($this->variables[$key])) {
             return $this->variables[$key];
         }
-        return null;
     }
 
     /**
      * Get section of configuration, e.g. `Config::get('DB')`
+     * @return array<mixed> 
      */
     public function getSection(string $key): array
     {

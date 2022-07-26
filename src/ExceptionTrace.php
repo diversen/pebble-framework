@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Pebble;
 
+use Throwable;
+
 class ExceptionTrace
 {
     /**
      * Get information from an exception as a string
      */
-    public static function get($e)
+    public static function get(Throwable $e): string
     {
 
         // Log error to file

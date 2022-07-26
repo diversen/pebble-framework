@@ -11,13 +11,20 @@ use Pebble\Service\ConfigService;
 
 class Migrate
 {
+
+    /**
+     * @var \Pebble\Config
+     */
     private $config;
     public function __construct()
     {
         $this->config = (new ConfigService())->getConfig();
     }
 
-    // Return main commands help
+    /**
+     * return main commands help
+     * @return array<mixed>
+     */
     public function getCommand()
     {
         return
@@ -34,8 +41,7 @@ class Migrate
         );
     }
 
-
-    public function runCommand(ParseArgv $args)
+    public function runCommand(ParseArgv $args): int
     {
 
         // Get DB configuration
@@ -48,7 +54,6 @@ class Migrate
         // Connect to DB and create an instance
         $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
 
-
         $migrate = new Migration($db->getDbh());
 
         $version = $args->getArgument(0);
@@ -58,6 +63,7 @@ class Migrate
             }
 
             $migrate->up((int)$version);
+            
         }
 
         if ($args->getOption('down')) {
@@ -66,5 +72,7 @@ class Migrate
             }
             $migrate->down((int)$version);
         }
+
+        return 0;
     }
 }

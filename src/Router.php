@@ -13,28 +13,30 @@ class Router
 {
     /**
      * Holding routes
+     * @var array<mixed>
      */
-    private $routes = [];
+    private array $routes = [];
 
     /**
      * Array middleware, callables
+     * @var array<callable>
      */
-    private $middleware = [];
+    private array $middleware = [];
 
     /**
      * Current route being executed
      */
-    private static $current_route = '';
+    private static string $current_route = '';
 
     /**
      * Class to create middleware transport object from
      */
-    private $middleware_class = null;
+    private ?string $middleware_class = null;
 
     /**
      * Check if a string starts with a neddle, ':param'
      */
-    private function startsWith($haystack, $needle)
+    private function startsWith(string $haystack, string $needle): bool
     {
         return substr_compare($haystack, $needle, 0, strlen($needle)) === 0;
     }
@@ -42,21 +44,25 @@ class Router
     /**
      * Check if a string is in the format ':param', ':username' or not
      */
-    private function isParam($str)
+    private function isParam(string $str): bool
     {
         if ($this->startsWith($str, ':')) {
             return true;
         }
+        return false;
     }
 
     /**
      * Split parts of an URL into an array
+     * @return array<string>
      */
-    private function getUrlParts($route)
+    private function getUrlParts(string $route): array
     {
         // Remove query string
         $route = strtok($route, '?');
+        if (!$route) return [];
         $url_parts = explode('/', $route);
+
         $url_parts_filtered = [];
         foreach ($url_parts as $url_part) {
             if ($url_part) {
@@ -69,7 +75,7 @@ class Router
     /**
      * Check if a route with REQUEST_METHOD is set
      */
-    private function filterRouteByRequestMethod()
+    private function filterRouteByRequestMethod(): void
     {
         $method = $_SERVER['REQUEST_METHOD'];
         if (!isset($this->routes[$method])) {
@@ -81,7 +87,7 @@ class Router
      * Filter out routes that does not have the correct length
      * /test/:hello/:world (3 in length)
      */
-    private function filterRoutesByPartsLength()
+    private function filterRoutesByPartsLength(): void
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $length = count($this->getUrlParts($_SERVER['REQUEST_URI']));
@@ -103,12 +109,12 @@ class Router
 
     /**
      * Compare each route part with each REQUEST_URI part and filter
-     * out routes that does not match each and every URL part
+     * remove routes that does not match each and every URL part
      */
-    private function filterRoutesByIndexPart($index, $part)
+    private function filterRoutesByIndexPart(int $index, string $part): void
     {
-        $method = $_SERVER['REQUEST_METHOD'];
 
+        $method = $_SERVER['REQUEST_METHOD'];
         $valid_routes = [];
         foreach ($this->routes[$method] as $route) {
             $route_parts = $route['parts'];
@@ -132,7 +138,7 @@ class Router
     /**
      * Filter routes part by part
      */
-    private function filterRoutesByParts()
+    private function filterRoutesByParts(): void
     {
         $current_url_parts = $this->getUrlParts($_SERVER['REQUEST_URI']);
         foreach ($current_url_parts as $index => $part) {
@@ -144,7 +150,7 @@ class Router
      * Add a single route
      * `$router->add('GET', '/some/route/with/:param', \Some\Namespace::class, 'classMethod')`
      */
-    public function add(string $request_method, string $route, string $class, string $class_method)
+    public function add(string $request_method, string $route, string $class, string $class_method): void
     {
         $this->routes[$request_method][] = [
             'route' => $route,
@@ -155,7 +161,10 @@ class Router
         ];
     }
 
-    public function getValidRoutes()
+    /**
+     * @return array<mixed> 
+     */
+    public function getValidRoutes(): array
     {
         $this->filterRouteByRequestMethod();
         $this->filterRoutesByPartsLength();
@@ -176,23 +185,31 @@ class Router
         return $routes;
     }
 
-    private function getFirstRoute()
+    /**
+     * @return array<mixed>
+     */
+    private function getFirstRoute(): array
     {
         return $this->getValidRoutes()[0];
     }
 
     /**
      * Parse a doc block and return all tags as an array. We are looking for 'route' and 'verbs'
+     * @return array<mixed>
      */
-    private function parseDocBlock($doc)
+    private function parseDocBlock(string $doc): ?array
     {
         if (preg_match_all('/@(\w+)\s+(.*)\r?\n/m', $doc, $matches)) {
             $result = array_combine($matches[1], $matches[2]);
             return $result;
         }
+        return null;
     }
 
-    private function addClassMethods(string $class, string $method_name, array $parsed_doc)
+    /**
+     * @param array<string> $parsed_doc
+     */
+    private function addClassMethods(string $class, string $method_name, array $parsed_doc): void
     {
         if (isset($parsed_doc['route']) && isset($parsed_doc['verbs'])) {
             $route = $parsed_doc['route'];
@@ -211,7 +228,7 @@ class Router
      * @route /api/posts/:id
      * @verbs GET,POST
      */
-    public function addClass(string $class)
+    public function addClass(string $class): void
     {
         $reflector = new ReflectionClass($class);
         $methods = $reflector->getMethods(ReflectionMethod::IS_PUBLIC);
@@ -238,7 +255,7 @@ class Router
      * Sets a middleware callable
      */
 
-    public function use(callable $callable)
+    public function use(callable $callable): void
     {
         $this->middleware[] = $callable;
     }
@@ -258,7 +275,7 @@ class Router
     /**
      * Sets middleware class. If it is not set then `stdClass` will be used
      */
-    public function setMiddlewareClass(string $class)
+    public function setMiddlewareClass(string $class): void
     {
         $this->middleware_class = $class;
     }
@@ -266,7 +283,7 @@ class Router
     /**
      * When all routes are loaded then the first route found will be executed
      */
-    public function run()
+    public function run(): void
     {
         if ($this->middleware_class) {
             $middleware_object = new $this->middleware_class();
@@ -293,7 +310,7 @@ class Router
     /**
      * Runs any route found in the router in the order they were added
      */
-    public function runAll()
+    public function runAll(): void
     {
         $std_obj = new stdClass();
         $routes = $this->getValidRoutes();

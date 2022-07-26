@@ -15,9 +15,10 @@ use Pebble\Service\LogService;
  */
 class StdErrorController
 {
-    private $config;
-    private $log;
-    private $env;
+
+    private \Pebble\Config $config;
+    private \Monolog\Logger $log;
+    private string $env;
 
     public function __construct()
     {
@@ -26,7 +27,7 @@ class StdErrorController
         $this->env = $this->config->get('App.env');
     }
 
-    private function displayError($e)
+    private function displayError(Throwable $e): void
     {
         $error_code = $this->getErrorCode($e);
         if ($this->env === 'dev') {
@@ -37,7 +38,7 @@ class StdErrorController
         }
     }
 
-    private function getErrorCode($e)
+    private function getErrorCode(Throwable $e): int
     {
         $error_code = $e->getCode();
         if (!$error_code) {
@@ -46,7 +47,7 @@ class StdErrorController
         return $error_code;
     }
 
-    public function render(Exception $e)
+    public function render(Throwable $e): void
     {
         $error_code = $this->getErrorCode($e);
         http_response_code($error_code);
@@ -62,25 +63,25 @@ class StdErrorController
         }
     }
 
-    private function templateException(Exception $e)
+    private function templateException(Throwable $e): void
     {
         $this->log->error('App.template.exception', ['exception' => ExceptionTrace::get($e)]);
         $this->displayError($e);
     }
 
-    private function notFoundException(Exception $e)
+    private function notFoundException(Throwable $e): void
     {
         $this->log->notice("App.index.not_found ", ['url' => $_SERVER['REQUEST_URI']]);
         $this->displayError($e);
     }
 
-    private function forbiddenException(Exception $e)
+    private function forbiddenException(Throwable $e): void
     {
         $this->log->notice("App.index.forbidden", ['url' => $_SERVER['REQUEST_URI']]);
         $this->displayError($e);
     }
 
-    private function internalException(Throwable $e)
+    private function internalException(Throwable $e): void
     {
         $this->log->notice('App.index.exception', ['exception' => ExceptionTrace::get($e)]);
         $this->displayError($e);

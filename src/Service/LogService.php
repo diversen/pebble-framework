@@ -12,6 +12,9 @@ use Pebble\Service\ConfigService;
 
 class LogService extends Container
 {
+    /**
+     * @var mixed
+     */
     private $debug_level = Logger::DEBUG;
 
     /**
@@ -38,19 +41,21 @@ class LogService extends Container
 
     /**
      * Get a log instance from `config/Log.php`
+     * @return \Monolog\Logger
      */
-    private function getLogFromConfig()
+    private function getLogFromConfig(): ?\Monolog\Logger
     {
         $config = (new ConfigService())->getConfig();
         if ($config->get('Log.logger')) {
             return $config->get('Log.logger');
         }
+        return null;
     }
 
     /**
      * The default logger logs to the file logs/main.log
      */
-    private function getDefaultLogger()
+    private function getDefaultLogger(): \Monolog\Logger
     {
         $config = (new ConfigService())->getConfig();
         if ($config->get('Log.level')) {

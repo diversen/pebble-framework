@@ -12,23 +12,28 @@ use Pebble\Cookie;
  */
 class Auth
 {
+    /**
+     * @var \Pebble\DB
+     */
     public $db;
+
+    /**
+     * @var array<mixed>
+     */
     public $auth_cookie_settings;
 
     /**
-     * Auth cookie settings
-     * $auth_cookie_settings['cookie_path'];
-     * $auth_cookie_settings['cookie_domain'];
-     * $auth_cookie_settings['cookie_secure'];
-     * $auth_cookie_settings['cookie_http'];
+     * @param array<mixed> $auth_cookie_settings
      */
-    public function __construct(DB $db, array $auth_cookie_settings)
+    public function __construct(\Pebble\DB $db, array $auth_cookie_settings)
     {
         $this->auth_cookie_settings = $auth_cookie_settings;
         $this->db = $db;
     }
+
     /**
      * Authenticate a against database auth table
+     * @return array<mixed>
      */
     public function authenticate(string $email, string $password): array
     {
@@ -42,7 +47,7 @@ class Auth
         return [];
     }
 
-    private function getRandom($len_bytes)
+    private function getRandom(int $len_bytes): string
     {
         $random = bin2hex(random_bytes($len_bytes));
         return $random;
@@ -92,8 +97,10 @@ class Auth
 
     /**
      * Get auth row by 'where' condition ['id' => 10, 'random' => 'random key of sorts']
+     * @param array<mixed> $where
+     * @return array<mixed>
      */
-    public function getByWhere($where)
+    public function getByWhere(array $where): array
     {
         return $this->db->getOne('auth', $where);
     }
@@ -113,6 +120,7 @@ class Auth
 
     /**
      * Get current users auth row from $_COOKIE['auth']
+     * @return array<mixed>
      */
     private function getValidCookieRow(): array
     {
@@ -156,7 +164,7 @@ class Auth
     /**
      * Unsets current auth cookie. This will log out the user
      */
-    public function unlinkCurrentCookie()
+    public function unlinkCurrentCookie(): void
     {
         if (isset($_COOKIE['auth'])) {
 
@@ -169,7 +177,7 @@ class Auth
     /**
      * Unset all 'auth_cookies' across different devices
      */
-    public function unlinkAllCookies($auth_id): bool
+    public function unlinkAllCookies(string $auth_id): bool
     {
         $sql = "DELETE FROM auth_cookie WHERE auth_id = ?";
         return $this->db->prepareExecute($sql, [$auth_id]);
@@ -177,6 +185,7 @@ class Auth
 
     /**
      * Set the browser cookie and store store the random cookie value in `auth_cookie`
+     * @param array<mixed> $auth
      */
     public function setCookie(array $auth, int $expires = 0): bool
     {

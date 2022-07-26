@@ -12,27 +12,28 @@ class SMTP
     /**
      * Default SMTP from (email)
      */
-    private $from = '';
+    private string $from = '';
 
     /**
      * Default fromName (name)
      */
-    private $fromName = '';
+    private string $fromName = '';
 
     /**
      * Markdown safemode enabled
      */
-    private $safeMode = true;
+    private bool $safeMode = true;
 
     /**
      * Settings
+     * @var array<mixed> $settings
      */
-    private $settings = [];
+    private array $settings = [];
 
     /**
      * Set safemode if sending markdown emails
      */
-    public function setSafeMode(bool $bool)
+    public function setSafeMode(bool $bool): void
     {
         $this->safeMode = $bool;
     }
@@ -40,7 +41,7 @@ class SMTP
     /**
      * Set from
      */
-    public function setFrom(string $from)
+    public function setFrom(string $from): void
     {
         $this->from = $from;
     }
@@ -48,7 +49,7 @@ class SMTP
     /**
      * Set from name
      */
-    public function setFromName(string $from_name)
+    public function setFromName(string $from_name): void
     {
         $this->fromName = $from_name;
     }
@@ -67,6 +68,7 @@ class SMTP
      * 'Password' => 'password',
      * 'SMTPDebug' => 0
      * ]
+     * @param array <mixed> $settings
      */
     public function __construct(array $settings = [])
     {
@@ -104,8 +106,10 @@ class SMTP
 
     /**
      * This method sends a mail but catches the exception and return a boolean
+     * @throws \Exception
+     * @param array<string> $attachments
      */
-    public function send(string $to, string $subject, string $text, string $html, array $attachments = [])
+    public function send(string $to, string $subject, string $text, string $html, array $attachments = []): void
     {
         $mail = $this->getPHPMailer();
         $mail->setFrom($this->from, $this->fromName);
@@ -126,7 +130,7 @@ class SMTP
         $mail->send();
     }
 
-    private function getMarkdown(string $text)
+    private function getMarkdown(string $text): string
     {
         $parsedown = new Parsedown();
         $parsedown->setSafeMode($this->safeMode);
@@ -136,19 +140,23 @@ class SMTP
 
     /**
      * Send mail as markdown
+     * @param array<string> $attachments
+     * @throws \Exception
      */
-    public function sendMarkdown(string $to, string $subject, string $text, array $attachments = [])
+    public function sendMarkdown(string $to, string $subject, string $text, array $attachments = []): void
     {
         $html = $this->getMarkdown($text);
-        return $this->send($to, $subject, $text, $html, $attachments);
+        $this->send($to, $subject, $text, $html, $attachments);
     }
 
     /**
      * Send both text and markdown
+     * @param array<string> $attachments
+     * @throws \Exception
      */
-    public function sendTextMarkdown(string $to, string $subject, string $text, string $markdown, array $attachments = [])
+    public function sendTextMarkdown(string $to, string $subject, string $text, string $markdown, array $attachments = []): void
     {
         $html = $this->getMarkdown($markdown);
-        return $this->send($to, $subject, $text, $html, $attachments);
+        $this->send($to, $subject, $text, $html, $attachments);
     }
 }

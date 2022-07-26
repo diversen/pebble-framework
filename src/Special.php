@@ -29,6 +29,8 @@ class Special
     /**
      * htmlspecialchars.
      * Any other values will just be returned
+     * @param mixed $value
+     * @return mixed $value
      */
     public static function encodeStr($value)
     {

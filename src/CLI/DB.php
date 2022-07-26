@@ -7,14 +7,20 @@ use Pebble\DB\Utils;
 use Diversen\ParseArgv;
 
 class DB
-{
+{   
+    /**
+     * @var \Pebble\Config
+     */
     private $config;
     public function __construct()
     {
         $this->config = (new ConfigService())->getConfig();
     }
 
-    // Return main commands help
+    /**
+     * return main commands help
+     * @return array<mixed>
+     */
     public function getCommand()
     {
         return
@@ -30,7 +36,7 @@ class DB
             );
     }
 
-    private function connect(ParseArgv $args, $database = true)
+    private function connect(ParseArgv $args, bool $database = true): void
     {
         $verbose = $args->getOption('verbose');
         $db = $this->config->getSection('DB');
@@ -48,12 +54,12 @@ class DB
         proc_close(proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes));
     }
 
-    private function serverConnect(ParseArgv $args)
+    private function serverConnect(ParseArgv $args): void
     {
         $this->connect($args, false);
     }
 
-    private function backup(ParseArgv $args)
+    private function backup(ParseArgv $args): int
     {
         $no_data = '';
         if ($args->getOption('no-data')) {
@@ -71,11 +77,10 @@ class DB
 
         $return_var = 0;
         passthru($command, $return_var);
-        exit($return_var);
+        return  $return_var;
     }
 
-
-    public function runCommand(ParseArgv $args)
+    public function runCommand(ParseArgv $args): int
     {
         if ($args->getOption('connect')) {
             $this->connect($args);

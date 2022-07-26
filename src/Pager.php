@@ -44,7 +44,7 @@ class Pager
     }
 
 
-    private function getFrom()
+    private function getFrom(): int
     {
         if (!URL::getQueryPart($this->query_part)) {
             $from = 1;
@@ -55,12 +55,15 @@ class Pager
         return $from;
     }
 
-    private function getOffset($from, $limit)
+    private function getOffset(int $from, int $limit): int
     {
         $offset = ($from - 1) * $limit;
         return $offset;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getData(int $total, int $limit): array
     {
         $data = [];

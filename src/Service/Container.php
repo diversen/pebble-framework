@@ -12,7 +12,7 @@ use Exception;
 class Container
 {
     /**
-     * @var array
+     * @var array<object>
      */
     public static $services = [];
 
@@ -20,12 +20,12 @@ class Container
      * @param string $name
      * @param object $service
      */
-    public function set(string $name, $service)
+    public function set(string $name, $service): void
     {
         self::$services[$name] = $service;
     }
 
-    public function has(string $name)
+    public function has(string $name): bool
     {
         return isset(self::$services[$name]);
     }
@@ -42,7 +42,7 @@ class Container
         }
     }
 
-    public function unsetAll()
+    public function unsetAll(): void
     {
         self::$services = [];
     }

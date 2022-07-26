@@ -7,7 +7,7 @@ class Path
     /**
      * Return an app's base path. This is at the same level as 'vendor/'
      */
-    public static function getBasePath()
+    public static function getBasePath(): string
     {
         $dir = dirname(__DIR__);
 

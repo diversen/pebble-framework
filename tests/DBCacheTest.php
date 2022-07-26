@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DBCacheTest extends TestCase
 {
-    private function __setup(): void
+    protected function setUp(): void
     {
         $container = new Container();
         $container->unsetAll();
@@ -16,7 +16,6 @@ final class DBCacheTest extends TestCase
 
     public function test_can_get_instance(): void
     {
-
         $container = new Container();
         $container->unsetAll();
 
@@ -27,18 +26,17 @@ final class DBCacheTest extends TestCase
 
     public function test_set(): void
     {
-        $this->__setup();
         $cache = (new DBCacheService())->getDBCache();
 
         $to_cache = ['this is a test'];
-        $res = $cache->set('some_key', $to_cache);
+        $cache->set('some_key', $to_cache);
 
-        $this->assertEquals(null, $res);
+        $res = $cache->get('some_key');
+        $this->assertEquals($to_cache, $res);
     }
 
     public function test_get(): void
     {
-        $this->__setup();
         $cache = (new DBCacheService())->getDBCache();
 
         $to_cache = ['this is a test'];
@@ -55,7 +53,6 @@ final class DBCacheTest extends TestCase
 
     public function test_delete(): void
     {
-        $this->__setup();
         $cache = (new DBCacheService())->getDBCache();
 
         $to_cache = ['this is a test'];

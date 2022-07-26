@@ -18,12 +18,18 @@ use Exception;
  */
 class AppExec
 {
-    private $app;
+
     /**
-     * Set error controller
+     * @var object
+     */
+    private object $app;
+
+    /**
+     * @var object
      */
     private $errorController = null;
-    public function setErrorController(string $class_name)
+
+    public function setErrorController(string $class_name): void
     {
         $this->errorController = new $class_name();
     }
@@ -31,7 +37,7 @@ class AppExec
     /**
      * Set App
      */
-    public function setApp(string $class_name)
+    public function setApp(string $class_name): void
     {
         $this->app = new $class_name();
     }
@@ -39,13 +45,13 @@ class AppExec
     /**
      * Run app
      */
-    public function run()
+    public function run(): void
     {
-        if (!$this->app) {
+        if (!is_object($this->app)) {
             throw new Exception('No app added to PebbleExec');
         }
 
-        if (!$this->errorController) {
+        if (!is_object($this->errorController)) {
             $this->errorController = new StdErrorController();
         }
 

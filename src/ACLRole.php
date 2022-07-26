@@ -9,8 +9,12 @@ use Pebble\Exception\ForbiddenException;
 use Pebble\DB;
 
 class ACLRole extends ACL
-{
-    public function __construct(DB $db, array $settings)
+{   
+    /**
+     * @param \Pebble\DB $db
+     * @param array<mixed> $settings
+     */
+    public function __construct(\Pebble\DB $db, array $settings)
     {
         parent::__construct($db, $settings);
     }
@@ -18,8 +22,9 @@ class ACLRole extends ACL
     /**
      * Sets a user role ['right' => 'admin', 'auth_id' => '1234']
      * `$aclr->setRole(['right' => 'admin', 'auth_id' => '1234'])`
+     * @param array<mixed> $role
      */
-    public function setRole(array $role)
+    public function setRole(array $role): bool
     {
         $role['entity'] = 'ROLE';
         $role['entity_id'] = '0';
@@ -30,8 +35,9 @@ class ACLRole extends ACL
     /**
      * Remove a role
      * `$aclr->removeRole(['right' => 'admin', 'auth_id' => '1234'])`
+     * @param array<mixed> $role
      */
-    public function removeRole(array $role)
+    public function removeRole(array $role): bool
     {
         $role['entity'] = 'ROLE';
         $role['entity_id'] = '0';
@@ -42,8 +48,9 @@ class ACLRole extends ACL
     /**
      * Checks if a user has a role, e.g. ['right' => 'admin', 'auth_id' => '1234']
      * `$aclr->hasRoleOrThrow(['right' => 'admin', 'auth_id' => '1234'])`
+     * @param array<mixed> $role
      */
-    public function hasRoleOrThrow(array $role)
+    public function hasRoleOrThrow(array $role): bool
     {
         $role['entity'] = 'ROLE';
         $role['entity_id'] = '0';

@@ -9,18 +9,15 @@ class DBCache
     /**
      * Default database cache table name
      */
-    private $table = 'cache_system';
+    private string $table = 'cache_system';
 
-    /**
-     * @var \Pebble\DB
-     */
-    private $db;
+    private \Pebble\DB $db;
 
     /**
      * @param string $table
      * @param \Pebble\DB $db
      */
-    public function __construct(\Pebble\DB $db, $table = null)
+    public function __construct(\Pebble\DB $db, string $table = null)
     {
         $this->db = $db;
         if ($table) {
@@ -28,7 +25,10 @@ class DBCache
         }
     }
 
-    private function generateJsonKey($id)
+    /**
+     * @param mixed $id
+     */
+    private function generateJsonKey($id): string
     {
         $key = null;
         if (is_string($id)) {
@@ -38,8 +38,11 @@ class DBCache
         }
         return $key;
     }
-
-    private function generateHashKey($id)
+    
+    /**
+     * @param mixed $id
+     */
+    private function generateHashKey($id): string
     {
         $json_key = $this->generateJsonKey($id);
         return $this->hash($json_key);
@@ -57,6 +60,8 @@ class DBCache
      * Get a cache result by ID and max_life_time in seconds
      * (from the time when the result was cached)
      * If no result is found return null
+     * @param mixed $id
+     * @return mixed
      */
     public function get($id, int $max_life_time = 0)
     {
@@ -82,8 +87,10 @@ class DBCache
     /**
      * Sets data in cache using ID
      * Throws on error
+     * @param mixed $id
+     * @param mixed $data
      */
-    public function set($id, $data)
+    public function set($id, $data): void
     {
         $this->db->inTransactionExec(function () use ($id, $data) {
             $this->delete($id);
@@ -94,6 +101,7 @@ class DBCache
 
     /**
      * Delete a string from cache by ID
+     * @param mixed $id
      */
     public function delete($id): bool
     {

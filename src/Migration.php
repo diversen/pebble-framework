@@ -15,20 +15,19 @@ class Migration
     /**
      * Name of file holding current migration version
      */
-    private $migrationFile = '.migration';
+    private string $migrationFile = '.migration';
 
     /**
      * Path to dir holding migration files
      */
-    private $migrationDir = 'migrations';
+    private string $migrationDir = 'migrations';
 
     /**
      * @var \PDO
      */
     private $dbh;
     
-    public function __construct(PDO $dbh, string $migration_dir = null, string $migration_file = null)
-    {
+    public function __construct(PDO $dbh, string $migration_dir = null, string $migration_file = null) {
         $this->dbh = $dbh;
         if ($migration_dir) {
             $this->migrationDir = $migration_dir;
@@ -45,7 +44,7 @@ class Migration
     /**
      * @return int $version
      */
-    public function getCurrentVersion()
+    public function getCurrentVersion(): int
     {
         if (file_exists($this->migrationFile)) {
             return (int)file_get_contents($this->migrationFile);
@@ -54,7 +53,7 @@ class Migration
         }
     }
 
-    public function setCurrentVersion($version = null)
+    public function setCurrentVersion(?int $version = 0): void
     {
         file_put_contents($this->migrationFile, $version);
         if (!$version) {
@@ -66,6 +65,7 @@ class Migration
     /**
      * Recursively read all file in a dir except '.', '..'
      * From http://php.net/manual/en/function.scandir.php#110570
+     * @return array<mixed>
      */
     private function dirToArray(string $dir): array
     {
@@ -84,20 +84,26 @@ class Migration
     }
 
 
-    private function executeSql($sql)
+    private function executeSql(string $sql): bool
     {
         $stmt = $this->dbh->prepare($sql);
         return $stmt->execute();
     }
-
-    private function executeStatements($sql_statements)
+ 
+    /**
+     * @param array<string> $sql_statements
+     */   
+    private function executeStatements(array $sql_statements): void
     {
         foreach ($sql_statements as $sql_Statement) {
             $this->executeSql($sql_Statement);
         }
     }
 
-    private function getSQLStatements(string $file)
+    /**
+     * @return array<string>
+     */
+    private function getSQLStatements(string $file): array
     {
         $sql = file_get_contents($file);
         $sql_statements = explode("\n\n", $sql);
@@ -110,6 +116,9 @@ class Migration
         return (int)$info['filename'];
     }
 
+    /**
+     * @return array<string>
+     */
     public function getUpFilesToExecute(int $target_version = null)
     {
         $up_dir = $this->migrationDir . '/' . 'up';
@@ -136,7 +145,7 @@ class Migration
         return $files_to_exec;
     }
 
-    public function getLatestVersion()
+    public function getLatestVersion(): int
     {
         $files = $this->getUpFilesToExecute();
         $last = array_pop($files);
@@ -147,6 +156,9 @@ class Migration
         return $this->getVersionFromFile($last);
     }
 
+    /**
+     * @return array<string>
+     */
     public function getDownFilesToExecute(int $target_version = null)
     {
         $up_dir = $this->migrationDir . '/' . 'down';
@@ -176,7 +188,7 @@ class Migration
     /**
      * Executes up to and INCLUDING target_version
      */
-    public function up(int $target_version = null)
+    public function up(int $target_version = null): void
     {
         $files = $this->getUpFilesToExecute($target_version);
         if (empty($files)) {
@@ -200,7 +212,7 @@ class Migration
     /**
      * Executes down to and EXCLUDING target_version
      */
-    public function down(int $target_version = null)
+    public function down(int $target_version = null): void
     {
         $files = $this->getDownFilesToExecute($target_version);
         foreach ($files as $file) {

@@ -1,1 +1,1 @@
-vendor/bin/phpstan analyse -l 5 src tests
+vendor/bin/phpstan analyse -l 7 src tests

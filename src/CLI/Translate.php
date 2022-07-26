@@ -9,14 +9,20 @@ use Diversen\Translate\Extractor;
 use Exception;
 
 class Translate
-{
+{   
+    /**
+     * @var \Pebble\Config
+     */
     private $config;
     public function __construct()
     {
         $this->config = (new ConfigService())->getConfig();
     }
 
-    // Return main commands help
+    /**
+     * Return command definition
+     * @return array<mixed>
+     */
     public function getCommand()
     {
         return
@@ -30,7 +36,7 @@ class Translate
             );
     }
 
-    private function extract(ParseArgv $args)
+    private function extract(ParseArgv $args): void
     {
         $default_lang = $this->config->get('Language.default');
         $translate_dir = $this->config->get('Language.translate_base_dir');
@@ -42,7 +48,7 @@ class Translate
         $e->updateLang();
     }
 
-    private function gtranslate(ParseArgv $args)
+    private function gtranslate(ParseArgv $args): int
     {
         $default_lang = $this->config->get('Language.default');
         $enabled = $this->config->get('Language.enabled');
@@ -85,7 +91,7 @@ class Translate
      * Create js from  $json
      * Including an export
      */
-    private function addJsExport(string $json)
+    private function addJsExport(string $json): string
     {
         $js = "const Translation = \n\n";
         $js.= $json . "\n\n";
@@ -96,7 +102,7 @@ class Translate
     /**
      * Transform php translations to js files
      */
-    private function toJS()
+    private function toJS(): void
     {
         $translate_dir = $this->config->get('Language.translate_base_dir');
         $translate_dir_js = $this->config->get('Language.translate_base_dir_js');
@@ -123,16 +129,16 @@ class Translate
         }
     }
 
-    public function runCommand(ParseArgv $args)
+    public function runCommand(ParseArgv $args): int
     {
         $enabled = $this->config->get('Language.enabled');
         if (empty($enabled)) {
             echo "No languages enabled, nothing to do\n";
-            return 0;
+            return 1;
         }
 
         if ($args->getOption('extract')) {
-            return $this->extract($args);
+            $this->extract($args);
         }
 
         if ($args->getOption('gtranslate')) {

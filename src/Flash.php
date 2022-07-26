@@ -10,9 +10,9 @@ class Flash
      * Set a SESSION flash message
      * @param string $message
      * @param string $type e.g. 'info', 'success', 'warning', 'error' or any other you may use in your app.
-     * @param array  $options ['flash_remove' => true] Options. E.g. ['flash_remove' => true] could be used to remove the message after 5 secs.
+     * @param array<mixed> $options ['flash_remove' => true] Options. E.g. ['flash_remove' => true] could be used to remove the message after 5 secs.
      */
-    public function setMessage(string $message, string $type, array $options = [])
+    public function setMessage(string $message, string $type, array $options = []): void
     {
         if (!isset($_SESSION['flash'])) {
             $_SESSION['flash'] = [];
@@ -22,15 +22,15 @@ class Flash
 
     /**
      * Get all flash messages from SESSION as an array, and then delete the flash messages from SESSION
-     * @return array $messages
+     * @return array<mixed> $messages
      */
     public function getMessages(): array
     {
         $messages = [];
 
         if (isset($_SESSION['flash'])) {
-            foreach ($_SESSION['flash'] as $message) {
-                $messages[] = $message;
+            foreach ($_SESSION['flash'] as $message_ary) {
+                $messages[] = $message_ary;
             }
         }
 

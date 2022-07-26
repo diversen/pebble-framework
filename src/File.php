@@ -9,6 +9,7 @@ class File
     /**
      * Recursively read all file in a dir except '.', '..'
      * From http://php.net/manual/en/function.scandir.php#110570
+     * @return array<mixed>
      */
     public static function dirToArray(string $dir): array
     {

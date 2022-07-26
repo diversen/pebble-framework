@@ -57,7 +57,7 @@ class StdUtils
      */
     protected $json;
 
-    public function __contruct()
+    public function __construct()
     {
         $this->app_base = new AppBase();
         $this->auth = $this->app_base->getAuth();

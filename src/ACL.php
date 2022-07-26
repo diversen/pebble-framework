@@ -39,6 +39,7 @@ class ACL extends Auth
 
     /**
      * Create access right ['entity', 'entity_id', 'right', 'auth_id'] row in `acl` table
+     * @param array<mixed> $access_rights
      */
     public function setAccessRights(array $access_rights): bool
     {
@@ -54,6 +55,7 @@ class ACL extends Auth
     /**
      * Remove access right ['entity', 'entity_id', 'right', 'auth_id'] from `acl` table
      * But it could also just be ['entity' => 'blog']
+     * @param array<mixed> $where_access_rights
      */
     public function removeAccessRights(array $where_access_rights): bool
     {
@@ -62,16 +64,18 @@ class ACL extends Auth
 
     /**
      * Check for a valid access rights ary
+     * @param array<mixed> $access_rights
      */
-    protected function validateAccessAry(array $ary): void
+    protected function validateAccessAry(array $access_rights): void
     {
-        if (!isset($ary['entity'], $ary['entity_id'], $ary['right'], $ary['auth_id'])) {
+        if (!isset($access_rights['entity'], $access_rights['entity_id'], $access_rights['right'], $access_rights['auth_id'])) {
             throw new InvalidArgumentException('Invalid data for ACL::validateAccessAry');
         }
     }
 
     /**
      * Check for valid access right ['entity', 'entity_id', 'right', 'auth_id'] in `acl` table
+     * @param array<mixed> $where_access_rights
      */
     private function hasRights(array $where_access_rights): bool
     {
@@ -84,7 +88,7 @@ class ACL extends Auth
 
     /**
      * Get rights as an array from a list, e.g. the string 'owner, user' returns ['owner', 'user']
-     * @return array<string>
+     * @return array<mixed>
      */
     private function getRightsArray(string $rights_str): array
     {
@@ -100,15 +104,16 @@ class ACL extends Auth
      * If a user has the right 'owner', then if we test for 'owner,admin', using e.g. hasAccessRightsOrThrow,
      * then he will be allowed. He just needs one 'right' in a list of rights.
      * Checks array consisting of ['entity', 'entity_id', 'right', 'auth_id']
+     * @param array<mixed> $access_rights
      */
-    protected function hasAccessRights(array $ary): bool
+    protected function hasAccessRights(array $access_rights): bool
     {
-        $this->validateAccessAry($ary);
-        $rights_ary = $this->getRightsArray($ary['right']);
+        $this->validateAccessAry($access_rights);
+        $rights_ary = $this->getRightsArray($access_rights['right']);
         foreach ($rights_ary as $right) {
-            $ary['right'] = $right;
+            $access_rights['right'] = $right;
 
-            if ($this->hasRights($ary)) {
+            if ($this->hasRights($access_rights)) {
                 return true;
             }
         }
@@ -119,10 +124,11 @@ class ACL extends Auth
      * If a user has the right 'owner', then if we test for 'owner,admin', using e.g. hasAccessRightsOrThrow,
      * then he will be allowed. He just needs one 'right' in a list of rights.
      * Checks array consisting of ['entity', 'entity_id', 'right', 'auth_id']
+     * @param array<mixed> $access_rights
      */
-    public function hasAccessRightsOrThrow(array $ary, string $error_message = null): void
+    public function hasAccessRightsOrThrow(array $access_rights, string $error_message = null): void
     {
-        $has_access_rights = $this->hasAccessRights($ary);
+        $has_access_rights = $this->hasAccessRights($access_rights);
         if (!$has_access_rights) {
             if (!$error_message) {
                 $error_message = 'You can not access this page';
