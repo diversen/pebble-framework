@@ -78,7 +78,6 @@ class AppBase
         $config = $this->getConfig();
         if ($config->get('App.force_ssl')) {
             Headers::redirectToHttps();
-            exit();
         }
     }
 
