@@ -18,7 +18,7 @@ class Router
     private array $routes = [];
 
     /**
-     * Array middleware, callables
+     * Array of middleware callables
      * @var array<callable>
      */
     private array $middleware = [];
@@ -29,7 +29,7 @@ class Router
     private static string $current_route = '';
 
     /**
-     * Class to create middleware transport object from
+     * Class to create middleware object from
      */
     private ?string $middleware_class = null;
 
