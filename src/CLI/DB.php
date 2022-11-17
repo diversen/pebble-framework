@@ -7,7 +7,7 @@ use Pebble\DB\Utils;
 use Diversen\ParseArgv;
 
 class DB
-{   
+{
     /**
      * @var \Pebble\Config
      */
@@ -51,7 +51,10 @@ class DB
             echo $command . "\n";
         }
 
-        proc_close(proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes));
+        $resource = proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes);
+        if ($resource) {
+            proc_close($resource);
+        }
     }
 
     private function serverConnect(ParseArgv $args): void

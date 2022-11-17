@@ -20,7 +20,8 @@
 
 
     "require": {
-        "php": ">=7.4.3"
+        "php": ">=7.4.3",
+        "thecodingmachine/safe": "^2.4"
     },
 
     "require-dev": {
@@ -30,7 +31,8 @@
         "erusev/parsedown": "^1.7",
         "diversen/simple-php-translation": "^3.0",
         "phpstan/phpstan": "^1.8",
-        "diversen/minimal-cli-framework": "^6.0"
+        "diversen/minimal-cli-framework": "^6.0",
+        "gregwar/captcha": "^1.1"
     }
 
 }

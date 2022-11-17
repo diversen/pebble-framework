@@ -6,6 +6,8 @@ namespace Pebble;
 
 use PDO;
 use Exception;
+use function Safe\scandir;
+use function Safe\file_get_contents;
 
 /**
  * Quite primite migration
@@ -71,6 +73,7 @@ class Migration
     {
         $result = array();
         $cdir = scandir($dir);
+
         foreach ($cdir as $value) {
             if (!in_array($value, array(".", ".."))) {
                 if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {

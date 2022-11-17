@@ -143,7 +143,7 @@ class DB
     /**
      * Returns last insert ID
      */
-    public function lastInsertId(string $name = null): string
+    public function lastInsertId(string $name = null): string|false
     {
         return $this->dbh->lastInsertId($name);
     }

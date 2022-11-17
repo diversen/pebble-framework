@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pebble;
 
+use function Safe\scandir;
+
 class File
 {
     /**

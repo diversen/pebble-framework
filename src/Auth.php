@@ -47,6 +47,9 @@ class Auth
         return [];
     }
 
+    /**
+     * @param int<1, max> $len_bytes
+     */
     private function getRandom(int $len_bytes): string
     {
         $random = bin2hex(random_bytes($len_bytes));

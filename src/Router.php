@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 use Pebble\Exception\NotFoundException;
+use InvalidArgumentException;
 use stdClass;
 use ReflectionClass;
 use ReflectionMethod;
@@ -225,11 +226,19 @@ class Router
      * Add class routes found in a doc block. In order for a method to be added to the router
      * it needs a @route and a @verbs tag. E.g. like in the following:
      *
+     * @param string $class
+     * 
      * @route /api/posts/:id
      * @verbs GET,POST
+     * 
      */
     public function addClass(string $class): void
     {
+
+        if (!class_exists($class)) {
+            throw new InvalidArgumentException('Class must be a string');
+        }
+
         $reflector = new ReflectionClass($class);
         $methods = $reflector->getMethods(ReflectionMethod::IS_PUBLIC);
 

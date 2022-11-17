@@ -6,6 +6,9 @@ namespace Pebble;
 
 class CSRF
 {
+
+    public static bool $disabled = false;
+
     /**
      * Sets a token in $_SESSION['csrf_token'] token and return it
      */

@@ -2,6 +2,9 @@
 
 namespace Pebble\DB;
 
+use function Safe\parse_url;
+use InvalidArgumentException;
+
 class Utils
 {
     /**
@@ -12,12 +15,20 @@ class Utils
         $ary = [];
 
         $parsed_url = parse_url($pdo_str);
-        $ary['database'] = $parsed_url['scheme'];
-        $path_parts = explode(';', $parsed_url['path']);
+        if (!is_array($parsed_url)) {
+            throw new InvalidArgumentException("Invalid PDO string: " . $pdo_str);
+        }
 
-        foreach ($path_parts as $part) {
-            list($key, $value) = explode('=', $part);
-            $ary[$key] = $value;
+        if (isset($parsed_url['scheme'])) {
+            $ary['database'] = $parsed_url['scheme'];
+        }
+
+        if (isset($parsed_url['path'])) {
+            $path_parts = explode(';', $parsed_url['path']);
+            foreach ($path_parts as $part) {
+                list($key, $value) = explode('=', $part);
+                $ary[$key] = $value;
+            }
         }
 
         return $ary;

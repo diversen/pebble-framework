@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-use Exception;
+use function Safe\json_encode;
 
 class JSON
 {
@@ -13,6 +13,8 @@ class JSON
     /**
      * json_encode wrapper which just add content-type header
      * @param mixed $value
+     * @param int $flags
+     * @param int<1, max> $depth
      * @return mixed
      */
     public static function response($value, int $flags = 0, int $depth= 512, bool $send_header = true)
@@ -27,16 +29,14 @@ class JSON
         }
 
         $res = json_encode($value, $flags, $depth);
-        if ($res === false) {
-            throw new Exception('JSON could not be encoded');
-        }
-
         return $res;
     }
 
     /**
      * Render JSON
      * @param mixed $value
+     * @param int $flags
+     * @param int<1, max> $depth
      */
     public function render($value, int $flags = 0, int $depth= 512, bool $send_header = true): void
     {

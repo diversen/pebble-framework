@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pebble;
 
+use InvalidArgumentException;
+
 class DBCache
 {
     /**
@@ -35,6 +37,9 @@ class DBCache
             $key = $id;
         } else {
             $key = json_encode($id);
+            if ($key === false) {
+                throw new InvalidArgumentException('Invalid JSON key');
+            }
         }
         return $key;
     }

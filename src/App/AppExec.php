@@ -11,6 +11,7 @@ use Pebble\App\StdErrorController;
 
 use Throwable;
 use Exception;
+use InvalidArgumentException;
 
 /**
  * Runs an application. If any exception is thrown it will be caught here
@@ -18,11 +19,10 @@ use Exception;
  */
 class AppExec
 {
-
     /**
      * @var object
      */
-    private object $app;
+    private $app = null;
 
     /**
      * @var object
@@ -31,6 +31,10 @@ class AppExec
 
     public function setErrorController(string $class_name): void
     {
+        if (!class_exists($class_name)) {
+            throw new InvalidArgumentException("Class $class_name not found");
+        }
+
         $this->errorController = new $class_name();
     }
 
@@ -39,6 +43,9 @@ class AppExec
      */
     public function setApp(string $class_name): void
     {
+        if (!class_exists($class_name)) {
+            throw new InvalidArgumentException("Class $class_name not found");
+        }
         $this->app = new $class_name();
     }
 
@@ -53,6 +60,14 @@ class AppExec
 
         if (!is_object($this->errorController)) {
             $this->errorController = new StdErrorController();
+        }
+
+        if (!method_exists($this->app, 'run')) {
+            throw new Exception('App does not have a run method');
+        }
+
+        if (!method_exists($this->errorController, 'render')) {
+            throw new Exception('App does not have a run method');
         }
 
         try {

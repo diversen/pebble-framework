@@ -9,7 +9,7 @@ use Diversen\Translate\Extractor;
 use Exception;
 
 class Translate
-{   
+{
     /**
      * @var \Pebble\Config
      */
@@ -91,11 +91,11 @@ class Translate
      * Create js from  $json
      * Including an export
      */
-    private function addJsExport(string $json): string
+    private function addJsExport(string|bool $json): string
     {
         $js = "const Translation = \n\n";
-        $js.= $json . "\n\n";
-        $js.= "export {Translation}\n";
+        $js .= $json . "\n\n";
+        $js .= "export {Translation}\n";
         return $js;
     }
 
@@ -124,8 +124,11 @@ class Translate
                 mkdir($js_lang_path, 0777, true);
             }
 
-            $js = $this->addJsExport(json_encode($LANG));
-            file_put_contents("$js_lang_path/language.js", $js);
+            $json = json_encode($LANG);
+            if ($json) {
+                $js = $this->addJsExport($json);
+                file_put_contents("$js_lang_path/language.js", $js);
+            }
         }
     }
 
