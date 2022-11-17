@@ -10,6 +10,7 @@ use Pebble\Path;
 use Pebble\Session;
 use Pebble\Headers;
 use Pebble\JSON;
+use Pebble\CSRF;
 use Pebble\Service\ACLRoleService;
 use Pebble\Service\ACLService;
 use Pebble\Service\AuthService;
@@ -102,6 +103,7 @@ class AppBase
     {
         if ($this->getConfig()->get('App.env') === 'dev') {
             JSON::$debug = true;
+            CSRF::$disabled = true;
         }
     }
 
