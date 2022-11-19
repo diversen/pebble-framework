@@ -70,6 +70,17 @@ class Auth
     }
 
     /**
+     * Shortcut to both create and verify a user
+     * It will throw if user already exists
+     */
+    public function createAndVerify(string $email, string $password): bool
+    {
+        $this->create($email, $password);
+        $user = $this->db->getOne('auth', ['email' => $email]);
+        return $this->verifyKey($user['random']);
+    }
+
+    /**
      * Verify a auth row by a key. Set verified = 1 and generate a new key
      * if there is a match
      */
