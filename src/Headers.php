@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 class Headers
-{   
+{
     /**
      * @return array<string>
      */

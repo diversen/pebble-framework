@@ -40,7 +40,9 @@ class URL
         $route = $_SERVER['REQUEST_URI'];
 
         $route = strtok($route, '?');
-        if (!$route) return null;
+        if (!$route) {
+            return null;
+        }
         $url_parts = explode('/', $route);
         $url_parts_filtered = [];
         foreach ($url_parts as $url_part) {

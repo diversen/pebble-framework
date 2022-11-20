@@ -15,7 +15,6 @@ class Session
      */
     public static function setConfigSettings(array $session_config): bool
     {
-
         $res = session_set_cookie_params(
             $session_config["lifetime"],
             $session_config["path"],

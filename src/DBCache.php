@@ -43,7 +43,7 @@ class DBCache
         }
         return $key;
     }
-    
+
     /**
      * @param mixed $id
      */

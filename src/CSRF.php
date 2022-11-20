@@ -6,7 +6,6 @@ namespace Pebble;
 
 class CSRF
 {
-
     public static bool $disabled = false;
 
     /**
@@ -25,7 +24,6 @@ class CSRF
      */
     public function validateToken(string $token = null): bool
     {
-
         if (self::$disabled) {
             return true;
         }

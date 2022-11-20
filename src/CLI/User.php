@@ -44,7 +44,6 @@ class User
 
     private function setAdmin()
     {
-
         $this->auth = (new AuthService())->getAuth();
 
         $email = trim($this->utils->readSingleline("Enter email: "));
@@ -62,7 +61,6 @@ class User
 
     private function createUser()
     {
-
         $this->auth = (new AuthService())->getAuth();
 
         $email = trim($this->utils->readSingleline("Enter email: "));
@@ -100,7 +98,6 @@ class User
 
     public function runCommand(ParseArgv $args): int
     {
-
         if ($args->getOption('create-user')) {
             return $this->createUser();
         }

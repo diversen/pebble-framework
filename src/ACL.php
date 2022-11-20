@@ -20,7 +20,7 @@ class ACL extends Auth
 {
     /**
      * @param \Pebble\DB $db
-     * @param array<mixed> $auth_cookie_settings 
+     * @param array<mixed> $auth_cookie_settings
      */
     public function __construct(DB $db, array $auth_cookie_settings)
     {

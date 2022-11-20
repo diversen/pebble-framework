@@ -36,7 +36,9 @@ class Template
         self::render($template, $vars, $options);
 
         $content = ob_get_clean();
-        if (!$content) return null;
+        if (!$content) {
+            return null;
+        }
 
         return $content;
     }

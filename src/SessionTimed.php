@@ -20,8 +20,8 @@ class SessionTimed
 
     /**
      * Get a session value på key
-     * @return mixed 
-     * 
+     * @return mixed
+     *
      */
     public function getValue(string $key)
     {

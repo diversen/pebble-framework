@@ -23,7 +23,7 @@ class Config
     /**
      * Var holding all config variables
      * @var array<mixed>
-     * 
+     *
      */
     private array $variables = [];
 
@@ -118,7 +118,7 @@ class Config
 
     /**
      * Get e.g. `Config::get('SMTP.username')`
-     * @return mixed 
+     * @return mixed
      */
     public function get(string $key)
     {
@@ -129,7 +129,7 @@ class Config
 
     /**
      * Get section of configuration, e.g. `Config::get('DB')`
-     * @return array<mixed> 
+     * @return array<mixed>
      */
     public function getSection(string $key): array
     {

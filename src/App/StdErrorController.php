@@ -15,7 +15,6 @@ use Pebble\Service\LogService;
  */
 class StdErrorController
 {
-
     private \Pebble\Config $config;
     private \Monolog\Logger $log;
     private string $env;

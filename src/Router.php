@@ -61,7 +61,9 @@ class Router
     {
         // Remove query string
         $route = strtok($route, '?');
-        if (!$route) return [];
+        if (!$route) {
+            return [];
+        }
         $url_parts = explode('/', $route);
 
         $url_parts_filtered = [];
@@ -114,7 +116,6 @@ class Router
      */
     private function filterRoutesByIndexPart(int $index, string $part): void
     {
-
         $method = $_SERVER['REQUEST_METHOD'];
         $valid_routes = [];
         foreach ($this->routes[$method] as $route) {
@@ -163,7 +164,7 @@ class Router
     }
 
     /**
-     * @return array<mixed> 
+     * @return array<mixed>
      */
     public function getValidRoutes(): array
     {
@@ -227,14 +228,13 @@ class Router
      * it needs a @route and a @verbs tag. E.g. like in the following:
      *
      * @param string $class
-     * 
+     *
      * @route /api/posts/:id
      * @verbs GET,POST
-     * 
+     *
      */
     public function addClass(string $class): void
     {
-
         if (!class_exists($class)) {
             throw new InvalidArgumentException("Class $class does not exist");
         }

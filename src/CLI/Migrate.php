@@ -11,7 +11,6 @@ use Pebble\Service\ConfigService;
 
 class Migrate
 {
-
     /**
      * @var \Pebble\Config
      */
@@ -63,7 +62,6 @@ class Migrate
             }
 
             $migrate->up((int)$version);
-            
         }
 
         if ($args->getOption('down')) {

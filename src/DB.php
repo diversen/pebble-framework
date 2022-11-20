@@ -171,10 +171,10 @@ class DB
 
     /**
      * Generate array with keys as named params =>
-     * 
+     *
      * $post['title'] = $title will be transformed into
      * $post[':title'] = $title
-     * 
+     *
      * @param array<mixed> $values
      * @return array<mixed>
      */
@@ -190,7 +190,7 @@ class DB
     /**
      * Insert into $table a new row generated from $values:
      * `$db->insert('users_table', ['user_email' => 'test@test.com', 'user_name' => 'John Doe']);`
-     * 
+     *
      * @param array<mixed> $values
      */
     public function insert(string $table, array $values): bool
@@ -224,7 +224,7 @@ class DB
     /**
      * UPDATE table row(s)
      * `$db->update('user_table', ['user_email' => 'new_email@domain', 'user_name' => 'new name'], ['id' => 42]);`
-     * 
+     *
      * @param array<mixed> $values
      * @param array<mixed> $where
      */
@@ -270,7 +270,7 @@ class DB
     /**
      * Generates simple where part of SQL, e.g. `['email' => 'some@email.dk', 'user' => 'some user']` =>
      * `WHERE username = :username AND user = :user`
-     * 
+     *
      * @param array<mixed> $where
      */
     public function getWhereSql(array $where): string
@@ -290,7 +290,7 @@ class DB
 
     /**
      * Return limit SQL
-     * 
+     *
      * @param array<int> $limit index 0 is limit and index 1 is offset
      */
     public function getLimitSql(array $limit = []): string
@@ -328,7 +328,7 @@ class DB
     /**
      * Delete from rows from a table
      * `$db->delete('project', ['id' => $id]);`
-     * 
+     *
      * @param array<mixed> $where
      */
     public function delete(string $table, array $where): bool
@@ -344,7 +344,7 @@ class DB
     /**
      * Shortcut to get one row, e.g:
      * `$db->getOne('auth', ['verified' => 1, 'email' => $email]);`
-     * 
+     *
      * @param array<mixed> $where
      * @param array<mixed> $order_by
      * @return array<mixed>
@@ -361,7 +361,7 @@ class DB
     /**
      * Shortcut to get all rows, e.g:
      * `$db->getAll('invites', ['invite_email' => $email]);`
-     * 
+     *
      * @param array<mixed> $where
      * @param array<mixed> $order_by
      * @param array<mixed> $limit
@@ -381,7 +381,7 @@ class DB
     /**
      * Prepare and fetch a single row using params in the where clause
      * Use this when you want to generate 'WHERE' clause from `$params`
-     * 
+     *
      * @param array<mixed> $params
      * @param array<mixed> $order_by
      * @return array<mixed>
@@ -404,7 +404,7 @@ class DB
     /**
      * Prepare and fetch all rows using `$params` in the where clause
      * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], [20, 10]]);`
-     * 
+     *
      * @param array<mixed> $params
      * @param array<mixed> $order_by
      * @param array<mixed> $limit
@@ -429,7 +429,7 @@ class DB
      *
      * If possible the result of the callable will be
      * returned
-     * 
+     *
      * @return mixed
      */
 

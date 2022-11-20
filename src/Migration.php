@@ -28,8 +28,9 @@ class Migration
      * @var \PDO
      */
     private $dbh;
-    
-    public function __construct(PDO $dbh, string $migration_dir = null, string $migration_file = null) {
+
+    public function __construct(PDO $dbh, string $migration_dir = null, string $migration_file = null)
+    {
         $this->dbh = $dbh;
         if ($migration_dir) {
             $this->migrationDir = $migration_dir;
@@ -92,10 +93,10 @@ class Migration
         $stmt = $this->dbh->prepare($sql);
         return $stmt->execute();
     }
- 
+
     /**
      * @param array<string> $sql_statements
-     */   
+     */
     private function executeStatements(array $sql_statements): void
     {
         foreach ($sql_statements as $sql_Statement) {

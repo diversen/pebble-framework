@@ -9,7 +9,7 @@ use Pebble\Exception\ForbiddenException;
 use Pebble\DB;
 
 class ACLRole extends ACL
-{   
+{
     /**
      * @param \Pebble\DB $db
      * @param array<mixed> $settings
