@@ -14,6 +14,12 @@ class Translate
      * @var \Pebble\Config
      */
     private $config;
+
+    /**
+     * Pretty print JSON or
+     * @var bool
+     */
+    public $pretty_print_json = true;
     public function __construct()
     {
         $this->config = (new ConfigService())->getConfig();
@@ -99,8 +105,6 @@ class Translate
         return $js;
     }
 
-    public $pretty_print = true;
-
     /**
      * Transform php translations to js files
      */
@@ -127,7 +131,7 @@ class Translate
             }
 
             $json = json_encode($LANG);
-            if ($this->pretty_print) {
+            if ($this->pretty_print_json) {
                 $json = json_encode($LANG, JSON_PRETTY_PRINT);
             }
             if ($json) {
