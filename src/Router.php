@@ -236,7 +236,7 @@ class Router
     {
 
         if (!class_exists($class)) {
-            throw new InvalidArgumentException('Class must be a string');
+            throw new InvalidArgumentException("Class $class does not exist");
         }
 
         $reflector = new ReflectionClass($class);
