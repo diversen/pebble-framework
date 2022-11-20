@@ -99,6 +99,8 @@ class Translate
         return $js;
     }
 
+    public $pretty_print = true;
+
     /**
      * Transform php translations to js files
      */
@@ -125,6 +127,9 @@ class Translate
             }
 
             $json = json_encode($LANG);
+            if ($this->pretty_print) {
+                $json = json_encode($LANG, JSON_PRETTY_PRINT);
+            }
             if ($json) {
                 $js = $this->addJsExport($json);
                 file_put_contents("$js_lang_path/language.js", $js);
