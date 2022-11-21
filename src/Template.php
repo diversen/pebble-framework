@@ -75,7 +75,7 @@ class Template
             $template = self::getTemplatePath($template);
             require($template);
         } catch (Exception $e) {
-            throw new TemplateException($e->getMessage());
+            throw new TemplateException("Error in template '$template': " . $e->getMessage());
         }
     }
 
