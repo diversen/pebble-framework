@@ -26,14 +26,14 @@ class Template
     /**
      * Get output from a template
      * @param string $template
-     * @param array<mixed> $vars
+     * @param array<mixed> $template_vars
      * @param array<mixed> $options
      */
-    public static function getOutput(string $template, array $vars = [], array $options = []): ?string
+    public static function getOutput(string $template, array $template_vars = [], array $options = []): ?string
     {
         ob_start();
 
-        self::render($template, $vars, $options);
+        self::render($template, $template_vars, $options);
 
         $content = ob_get_clean();
         if (!$content) {
@@ -57,20 +57,30 @@ class Template
         return $path;
     }
 
+    public $template_vars;
+
+    public function setTemplateVars(array $template_vars, $options): void
+    {
+        if (!isset($options['raw'])) {
+            $template_vars = Special::encodeAry($template_vars);
+        }
+        $this->template_vars = $template_vars;
+    }
+
     /**
      * Get output from a template
      * @param string $template
-     * @param array<mixed> $vars
+     * @param array<mixed> $template_vars
      * @param array<mixed> $options
      */
-    public static function render(string $template, $vars = [], array $options = []): void
+    public static function render(string $template, $template_vars = [], array $options = []): void
     {
         try {
             if (!isset($options['raw'])) {
-                $vars = Special::encodeAry($vars);
+                $template_vars = Special::encodeAry($template_vars);
             }
 
-            extract($vars);
+            extract($template_vars);
 
             $template = self::getTemplatePath($template);
             require($template);
@@ -82,22 +92,22 @@ class Template
     /**
      * Get output from a template
      * @param string $template
-     * @param array<mixed> $vars
+     * @param array<mixed> $template_vars
      */
-    public static function renderRaw(string $template, array $vars = []): void
+    public static function renderRaw(string $template, array $template_vars = []): void
     {
         $options = ['raw' => true];
-        self::render($template, $vars, $options);
+        self::render($template, $template_vars, $options);
     }
 
     /**
      * Get output from a template
      * @param string $template
-     * @param array<mixed> $vars
+     * @param array<mixed> $template_vars
      */
-    public static function getOutputRaw($template, $vars): ?string
+    public static function getOutputRaw($template, $template_vars): ?string
     {
         $options = ['raw' => true];
-        return self::getOutput($template, $vars, $options);
+        return self::getOutput($template, $template_vars, $options);
     }
 }

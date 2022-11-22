@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble\App;
 
+use Pebble\Service\Container;
 use Pebble\Service\ACLRoleService;
 use Pebble\Service\ACLService;
 use Pebble\Service\AuthService;
@@ -107,20 +108,29 @@ class StdUtils
 
     public function getFlash(): \Pebble\Flash
     {
-        $flash = new Flash();
-        return $flash;
+        $container = new Container();
+        if (!$container->has('flash')) {
+            $container->set('flash', new Flash());
+        }
+        return $container->get('flash');
     }
 
     public function getTemplate(): \Pebble\Template
     {
-        $template = new Template();
-        return $template;
+        $container = new Container();
+        if (!$container->has('template')) {
+            $container->set('template', new Template());
+        }
+        return $container->get('template');
     }
 
     public function getJSON(): \Pebble\JSON
     {
-        $json = new JSON();
-        return $json;
+        $container = new Container();
+        if (!$container->has('json')) {
+            $container->set('json', new JSON());
+        }
+        return $container->get('json');
     }
 
     public function __construct()
