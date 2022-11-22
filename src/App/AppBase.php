@@ -11,21 +11,14 @@ use Pebble\Session;
 use Pebble\Headers;
 use Pebble\JSON;
 use Pebble\CSRF;
-use Pebble\Service\ACLRoleService;
-use Pebble\Service\ACLService;
-use Pebble\Service\AuthService;
-use Pebble\Service\ConfigService;
-use Pebble\Service\DBService;
-use Pebble\Service\LogService;
-use Pebble\Service\MigrationService;
-use Pebble\Flash;
 use Pebble\Template;
 use Pebble\HTTP\AcceptLanguage;
+use Pebble\App\StdUtils;
 
 /**
- * an app base with helpful methods
+ * A base app class with some utilities
  */
-class AppBase
+class AppBase extends StdUtils
 {
     /**
      * Add base path to php include path. Then we always know how to include files
@@ -105,68 +98,5 @@ class AppBase
             JSON::$debug = true;
             CSRF::$disabled = true;
         }
-    }
-
-    public function getConfig(): \Pebble\Config
-    {
-        $config = new ConfigService();
-        return $config->getConfig();
-    }
-
-    public function getDB(): \Pebble\DB
-    {
-        $config = new DBService();
-        return $config->getDB();
-    }
-
-    public function getAuth(): \Pebble\Auth
-    {
-        $auth = new AuthService();
-        return $auth->getAuth();
-    }
-
-    public function getACL(): \Pebble\ACL
-    {
-        $acl = new ACLService();
-        return $acl->getACL();
-    }
-
-    public function getACLRole(): \Pebble\ACLRole
-    {
-        $acl_role = new ACLRoleService();
-        return $acl_role->getACLRole();
-    }
-
-    public function getLog(): \Monolog\Logger
-    {
-        $log = new LogService();
-        return $log->getLog();
-    }
-
-    public function getMigration(): \Pebble\Migration
-    {
-        $migrate = new MigrationService();
-        return $migrate->getMigration();
-    }
-
-    public function getFlash(): \Pebble\Flash
-    {
-        $flash = new Flash();
-        return $flash;
-    }
-
-    public function getTemplate(): \Pebble\Template
-    {
-        $template = new Template();
-        return $template;
-    }
-
-    /**
-     * @return \Pebble\JSON
-     */
-    public function getJSON(): \Pebble\JSON
-    {
-        $json = new JSON();
-        return $json;
     }
 }

@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace Pebble\App;
 
-use Pebble\App\AppBase;
+use Pebble\Service\ACLRoleService;
+use Pebble\Service\ACLService;
+use Pebble\Service\AuthService;
+use Pebble\Service\ConfigService;
+use Pebble\Service\DBService;
+use Pebble\Service\LogService;
+use Pebble\Service\MigrationService;
+use Pebble\Flash;
+use Pebble\Template;
+use Pebble\JSON;
 
 class StdUtils
 {
-    /**
-     * @var \Pebble\App\AppBase
-     */
-    protected $app_base;
+
     /**
      * @var \Pebble\Auth
      */
@@ -57,17 +63,76 @@ class StdUtils
      */
     protected $json;
 
+    public function getConfig(): \Pebble\Config
+    {
+        $config = new ConfigService();
+        return $config->getConfig();
+    }
+
+    public function getDB(): \Pebble\DB
+    {
+        $config = new DBService();
+        return $config->getDB();
+    }
+
+    public function getAuth(): \Pebble\Auth
+    {
+        $auth = new AuthService();
+        return $auth->getAuth();
+    }
+
+    public function getACL(): \Pebble\ACL
+    {
+        $acl = new ACLService();
+        return $acl->getACL();
+    }
+
+    public function getACLRole(): \Pebble\ACLRole
+    {
+        $acl_role = new ACLRoleService();
+        return $acl_role->getACLRole();
+    }
+
+    public function getLog(): \Monolog\Logger
+    {
+        $log = new LogService();
+        return $log->getLog();
+    }
+
+    public function getMigration(): \Pebble\Migration
+    {
+        $migrate = new MigrationService();
+        return $migrate->getMigration();
+    }
+
+    public function getFlash(): \Pebble\Flash
+    {
+        $flash = new Flash();
+        return $flash;
+    }
+
+    public function getTemplate(): \Pebble\Template
+    {
+        $template = new Template();
+        return $template;
+    }
+
+    public function getJSON(): \Pebble\JSON
+    {
+        $json = new JSON();
+        return $json;
+    }
+
     public function __construct()
     {
-        $this->app_base = new AppBase();
-        $this->auth = $this->app_base->getAuth();
-        $this->log = $this->app_base->getLog();
-        $this->db = $this->app_base->getDB();
-        $this->config = $this->app_base->getConfig();
-        $this->acl = $this->app_base->getACL();
-        $this->acl_role = $this->app_base->getACLRole();
-        $this->flash = $this->app_base->getFlash();
-        $this->template = $this->app_base->getTemplate();
-        $this->json = $this->app_base->getJSON();
+        $this->auth = $this->getAuth();
+        $this->log = $this->getLog();
+        $this->db = $this->getDB();
+        $this->config = $this->getConfig();
+        $this->acl = $this->getACL();
+        $this->acl_role = $this->getACLRole();
+        $this->flash = $this->getFlash();
+        $this->template = $this->getTemplate();
+        $this->json = $this->getJSON();
     }
 }
