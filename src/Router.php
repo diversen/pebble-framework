@@ -224,6 +224,57 @@ class Router
     }
 
     /**
+     * faster router based on URL segment
+     * e.g. /settings/test/:id 
+     * If faster router is enabled then there need to be a controller named App/Settings/*
+     * Anything atempt to loader a controller is skipped if there is no match inf faster_route mode
+     */
+    private $faster_router = false;
+
+    /**
+     * Set faster router mode
+     */
+    public function setFasterRouter(): void
+    {
+        $this->faster_router = true;
+    }
+
+    /**
+     * Get URL segment
+     */
+    private function getUrlSegment(int $num_segment): ?string
+    {
+        $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri_segments = explode('/', $uri_path);
+        unset($uri_segments[0]);
+        $uri_segments = array_values($uri_segments);
+        if (isset($uri_segments[$num_segment])) {
+            return $uri_segments[$num_segment];
+        }
+        return null;
+    }
+
+    /**
+     * Check if a class should be skipped if routing is based on first URL segment
+     * @return bool
+     */
+    private function skipFasterRouterClass(string $class): bool
+    {
+        $url_segment_0 = $this->getUrlSegment(0);
+        if (!$url_segment_0) {
+            $url_segment_0 = 'home';
+        }
+
+        $class_search = "App\\" . ucfirst($url_segment_0);
+        if (!strstr($class, $class_search)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    /**
      * Add class routes found in a doc block. In order for a method to be added to the router
      * it needs a @route and a @verbs tag. E.g. like in the following:
      *
@@ -237,6 +288,10 @@ class Router
     {
         if (!class_exists($class)) {
             throw new InvalidArgumentException("Class $class does not exist");
+        }
+
+        if ($this->faster_router && $this->skipFasterRouterClass($class)) {
+            return;
         }
 
         $reflector = new ReflectionClass($class);
