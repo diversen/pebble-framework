@@ -260,13 +260,15 @@ class Router
      */
     private function skipFasterRouterClass(string $class): bool
     {
-        $url_segment_0 = $this->getUrlSegment(0);
-        if (!$url_segment_0) {
-            $url_segment_0 = 'home';
+        $first_segment = $this->getUrlSegment(0);
+        if (!$first_segment) {
+            $first_segment = 'home';
         }
 
-        $class_search = "App\\" . ucfirst($url_segment_0);
-        if (!strstr($class, $class_search)) {
+        $class_lower = strtolower($class);
+        $first_segment_lower = strtolower($first_segment);
+        $class_search = "app\\" . $first_segment_lower;
+        if (!strstr($class_lower, $class_search)) {
             return true;
         }
         return false;
@@ -286,6 +288,7 @@ class Router
      */
     public function addClass(string $class): void
     {
+
         if (!class_exists($class)) {
             throw new InvalidArgumentException("Class $class does not exist");
         }
