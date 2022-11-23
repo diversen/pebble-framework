@@ -17,11 +17,11 @@ DROP TABLE IF EXISTS `auth`;
 
 CREATE TABLE `auth` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `password_hash` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `verified` tinyint(1) DEFAULT '0',
-  `random` varchar(100) NOT NULL,
+  `random` varchar(255) NOT NULL,
   `super` int(1) DEFAULT '0',
   `locked` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -34,7 +34,7 @@ DROP TABLE IF EXISTS `auth_cookie`;
 
 CREATE TABLE `auth_cookie` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `cookie_id` varchar(100) NOT NULL,
+  `cookie_id` varchar(255) NOT NULL,
   `auth_id` int(10) NOT NULL,
   `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `expires` int(10) DEFAULT '0',
