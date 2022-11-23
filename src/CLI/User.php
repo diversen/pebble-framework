@@ -42,6 +42,9 @@ class User
         ];
     }
 
+    /**
+     * @return int<0,1>
+     */
     private function setAdmin()
     {
         $this->auth = (new AuthService())->getAuth();
@@ -58,7 +61,10 @@ class User
         $this->utils->echoStatus('Error', 'r', 'Could not add admin role. Maybe the user does not exist?');
         return 1;
     }
-
+    
+    /**
+     * @return int<0, 128>
+     */
     private function createUser()
     {
         $this->auth = (new AuthService())->getAuth();
@@ -90,7 +96,8 @@ class User
         return 128;
     }
 
-    private function setAdminRole(string $auth_id)
+
+    private function setAdminRole(string $auth_id): bool
     {
         $acl_role = (new ACLRoleService())->getACLRole();
         return $acl_role->setRole(['right' => 'admin', 'auth_id' => $auth_id]);

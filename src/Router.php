@@ -229,7 +229,7 @@ class Router
      * If faster router is enabled then there need to be a controller named App/Settings/*
      * Anything atempt to loader a controller is skipped if there is no match inf faster_route mode
      */
-    private $faster_router = false;
+    private bool $faster_router = false;
 
     /**
      * Set faster router mode
@@ -245,6 +245,9 @@ class Router
     private function getUrlSegment(int $num_segment): ?string
     {
         $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if (!$uri_path) {
+            throw new InvalidArgumentException("PHP_URL_PATH could not be parsed");
+        }
         $uri_segments = explode('/', $uri_path);
         unset($uri_segments[0]);
         $uri_segments = array_values($uri_segments);

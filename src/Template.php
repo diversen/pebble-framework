@@ -57,16 +57,6 @@ class Template
         return $path;
     }
 
-    public $template_vars;
-
-    public function setTemplateVars(array $template_vars, $options): void
-    {
-        if (!isset($options['raw'])) {
-            $template_vars = Special::encodeAry($template_vars);
-        }
-        $this->template_vars = $template_vars;
-    }
-
     /**
      * Get output from a template
      * @param string $template
