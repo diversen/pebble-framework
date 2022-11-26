@@ -65,18 +65,21 @@ class ACLRole extends ACL
     /**
      * Check if authenticated user has defined role
      */
-    public function inSessionHasRole(string $role): bool
+    public function inSessionHasRole(string $role_name): bool
     {
         $auth_id = $this->getAuthId();
         if ($auth_id === '0') {
             return false;
         }
-        try {
-            $this->hasRoleOrThrow(['right' => $role, 'auth_id' => $auth_id]);
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
+
+        $role = [
+            'right' => $role_name,
+            'auth_id' => $auth_id,
+            'entity' => 'ROLE',
+            'entity_id' => '0',
+        ];
+
+        return $this->hasAccessRights($role);
             
     }
 }
