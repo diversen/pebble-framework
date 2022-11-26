@@ -67,7 +67,7 @@ class ACLRole extends ACL
      */
     public function inSessionHasRole(string $role): bool
     {
-        $auth_id = (int)$this->getAuthId();
+        $auth_id = $this->getAuthId();
         if ($auth_id === '0') {
             return false;
         }
