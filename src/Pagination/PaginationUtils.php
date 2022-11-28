@@ -9,12 +9,14 @@ use Pebble\URL;
 class PaginationUtils
 {
     /**
-     * Default default order by
+     * Default order by
+     * @var array<mixed>
      */
     private array $order_by_default = [];
 
     /**
      * Default order by set in constructor
+     * @var array<mixed>
      */
     private array $order_by_default_init = [];
 
@@ -26,7 +28,7 @@ class PaginationUtils
     private bool $should_change_field_order = true;
 
     /**
-     * @param array $order_by_default e.g. `['title' => 'ASC', 'updated' => 'DESC']`.
+     * @param array<mixed> $order_by_default e.g. `['title' => 'ASC', 'updated' => 'DESC']`.
      * @param string $session_key  store the ordering in SESSION
      */
     public function __construct(array $order_by_default, $session_key = null)
@@ -41,7 +43,7 @@ class PaginationUtils
         }
     }
 
-    public function setShouldChangeFieldOrder(bool $val)
+    public function setShouldChangeFieldOrder(bool $val): void
     {
         $this->should_change_field_order = $val;
     }
@@ -49,7 +51,7 @@ class PaginationUtils
     /**
      * Validate a field. Checks if it is set `$order_by_default` fields
      */
-    private function validateField(string $order_by)
+    private function validateField(string $order_by): void
     {
         $fields = array_keys($this->order_by_default_init);
         if (!in_array($order_by, $fields)) {
@@ -60,7 +62,7 @@ class PaginationUtils
     /**
      * Checks diretion, it can only be 'ASC' or 'DESC'
      */
-    private function validateDirection(string $direction)
+    private function validateDirection(string $direction): void
     {
         $direction = mb_strtoupper($direction);
         if (!in_array($direction, ['ASC', 'DESC'])) {
@@ -68,6 +70,10 @@ class PaginationUtils
         }
     }
 
+    /**
+     * @param array<mixed> $order_by
+     * @return array<mixed>
+     */
     private function getNewOrderBy(array $order_by): array
     {
         // Check if ORDER BY should be altered
@@ -104,7 +110,11 @@ class PaginationUtils
         return $new_order_by;
     }
 
-    private function validateFields($order_by)
+    /**
+     * @param array<mixed> $order_by
+     * @return bool
+     */
+    private function validateFields(array $order_by): bool
     {
         try {
             foreach ($order_by as $field => $direction) {
@@ -130,9 +140,9 @@ class PaginationUtils
 
     /**
      * Get ORDER BY from GET or if not set, use default (SESSION or constructor)
-     * @return array $order_by
+     * @return array<mixed> $order_by
      */
-    public function getOrderByFromRequest(string $session_key)
+    public function getOrderByFromRequest(string $session_key): array
     {
         $order_by = $this->getOrderByFromQuery();
 
@@ -156,9 +166,9 @@ class PaginationUtils
      * Get the ORDER BY parameters from the URL or order by from settings OR
      * get the default ORDER BY
      *
-     * @return array $order_by , e.g. `['title' => 'ASC', 'updated' => 'DESC']`
+     * @return array<mixed> $order_by , e.g. `['title' => 'ASC', 'updated' => 'DESC']`
      */
-    public function getOrderByFromQuery()
+    public function getOrderByFromQuery(): array
     {
         $order_by = $_GET['order_by'] ?? null;
         if (!$order_by) {
@@ -178,7 +188,7 @@ class PaginationUtils
     /**
      * Build a query URL pattern can be used with JasonGrimes/Paginator
      */
-    public function getPaginationURLPattern(string $url)
+    public function getPaginationURLPattern(string $url): string
     {
         $query['order_by'] = $this->getOrderByFromQuery();
         $query_str = http_build_query($query);
@@ -190,10 +200,11 @@ class PaginationUtils
      * Get a URL where a new ORDER BY is indicated using `$_GET['alter'] = 'field'`
      * @param string $field
      */
-    public function getAlterOrderUrl(string $field)
+    public function getAlterOrderUrl(string $field): string
     {
         $query['order_by'] = $this->getOrderByFromQuery();
-        $query['page'] = (int)URL::getQueryPart('page') ?? 1;
+        $query['page'] = URL::getQueryPart('page') ?? 1;
+        $query['page'] = (int) $query['page'];
 
         $route = strtok($_SERVER["REQUEST_URI"], '?');
         return  $route . '?' . http_build_query($query) . "&alter=$field";
@@ -202,7 +213,7 @@ class PaginationUtils
     /**
      * Get a arrow showing current direction of a field
      */
-    public function getCurrentDirectionArrow(string $field)
+    public function getCurrentDirectionArrow(string $field): string
     {
         $order_by = $this->getOrderByFromQuery();
         $direction = $order_by[$field];
