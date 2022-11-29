@@ -308,7 +308,8 @@ class DB
 
     /**
      * Return `order by ... ` SQL string from an array
-     * @param array<mixed> $order_by `An array of arrays contains order where index 0 is field and index 1 is direction`
+     * @param array<mixed> $order_by array of arrays contains order where index 0 is field and index 1 is direction`
+     * @param array<mixed> $allow an array of allowed order by fields
      */
     public function getOrderBySql(array $order_by = [], array $allow = []): string
     {
@@ -330,8 +331,7 @@ class DB
     }
 
     /**
-     * Delete from rows from a table
-     * `$db->delete('project', ['id' => $id]);`
+     * Delete from rows from a table, e.g. `$db->delete('project', ['id' => $id]);`
      *
      * @param array<mixed> $where
      */
