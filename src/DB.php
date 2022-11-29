@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble;
 
+use InvalidArgumentException;
 use PDO;
 use PDOStatement;
 use Throwable;
@@ -309,14 +310,17 @@ class DB
      * Return `order by ... ` SQL string from an array
      * @param array<mixed> $order_by `An array of arrays contains order where index 0 is field and index 1 is direction`
      */
-    public function getOrderBySql(array $order_by = []): string
+    public function getOrderBySql(array $order_by = [], array $allow = []): string
     {
         if (empty($order_by)) {
             return '';
         }
 
         foreach ($order_by as $field => $direction) {
-            $order_by_sql_ary[] = "`$field` $direction";
+            if (!empty($allow) && !in_array($field, $allow)) {
+                throw new InvalidArgumentException("Invalid order by field: $field");
+            }
+            $order_by_sql_ary[] = $field . " " . $direction;
         }
 
         $order_by_sql = 'ORDER BY ';

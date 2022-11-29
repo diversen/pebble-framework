@@ -192,7 +192,8 @@ class PaginationUtils
     {
         $query['order_by'] = $this->getOrderByFromQuery();
         $query_str = http_build_query($query);
-        return $url . '?' . $query_str . '&' . 'page=(:num)';
+        $url_pattern = $url . '?' . $query_str . '&' . 'page=(:num)';
+        return $url_pattern;
     }
 
 
