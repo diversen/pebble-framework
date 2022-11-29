@@ -216,7 +216,7 @@ class PaginationUtils
     public function getCurrentDirectionArrow(string $field): string
     {
         $order_by = $this->getOrderByFromQuery();
-        $direction = $order_by[$field];
+        $direction = $order_by[$field] ?? null;
 
         if ($direction == 'ASC') {
             return "↑";
