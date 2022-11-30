@@ -234,6 +234,8 @@ class PaginationUtils
 
     /**
      * Get JasonGrimes/Paginator and with order by saved to session 
+     * @return Paginator
+     * @param array<mixed> $default_order
      */
     public static function getPaginator(
         int $total_items,

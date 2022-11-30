@@ -32,7 +32,7 @@
         "diversen/simple-php-translation": "^3.0",
         "phpstan/phpstan": "^1.8",
         "diversen/minimal-cli-framework": "^6.0",
-        "gregwar/captcha": "^1.1"
+        "gregwar/captcha": "^1.1",
+        "jasongrimes/paginator": "^1.0"
     }
-
 }

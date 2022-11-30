@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Pebble\Pagination;
 
+use \JasonGrimes\Paginator;
+
 /**
  * Class that renders the pagination links in HTML using the JasonGrimes/Paginator library.
  * Mostly of how to render the \JasonGrimes\Paginator
  */
 class PaginationRender
 {
-    public function render(\JasonGrimes\Paginator $paginator) { ?>
+    public function render(Paginator $paginator): void { ?>
 
         <div class="pagination"><?php
 
