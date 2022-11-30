@@ -25,7 +25,7 @@ class Auth
     /**
      * @param array<mixed> $auth_cookie_settings
      */
-    public function __construct(\Pebble\DB $db, array $auth_cookie_settings)
+    public function __construct(DB $db, array $auth_cookie_settings)
     {
         $this->auth_cookie_settings = $auth_cookie_settings;
         $this->db = $db;
@@ -122,7 +122,7 @@ class Auth
     /**
      * Update 'password', actually the 'password_hash', and the random key by auth 'id'
      */
-    public function updatePassword(string $id, string $password): bool
+    public function updatePassword(int $id, string $password): bool
     {
         $random = $this->getRandom(32);
         $options = ['cost' => 12];
@@ -166,11 +166,11 @@ class Auth
      * for a $_COOKIE['auth'] match. If no row is found
      * return "0"
      */
-    public function getAuthId(): string
+    public function getAuthId(): int
     {
         $auth_cookie_row = $this->getValidCookieRow();
         if (empty($auth_cookie_row)) {
-            return "0";
+            return 0;
         }
         return $auth_cookie_row['auth_id'];
     }
@@ -191,7 +191,7 @@ class Auth
     /**
      * Unset all 'auth_cookies' across different devices
      */
-    public function unlinkAllCookies(string $auth_id): bool
+    public function unlinkAllCookies(int $auth_id): bool
     {
         $sql = "DELETE FROM auth_cookie WHERE auth_id = ?";
         return $this->db->prepareExecute($sql, [$auth_id]);
@@ -215,7 +215,7 @@ class Auth
         return false;
     }
 
-    private function setCookieDB(string $random, string $auth_id, int $expires = 0): bool
+    private function setCookieDB(string $random, int $auth_id, int $expires = 0): bool
     {
         $sql = "INSERT INTO auth_cookie (`cookie_id`, `auth_id`, `expires`) VALUES (?, ?, ?) ";
         return $this->db->prepareExecute($sql, [$random, $auth_id, $expires]);

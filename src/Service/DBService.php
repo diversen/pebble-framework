@@ -17,7 +17,9 @@ class DBService extends Container
     {
         if (!$this->has('db')) {
             $db_config = (new ConfigService())->getConfig()->getSection('DB');
-            $db = new DB($db_config['url'], $db_config['username'], $db_config['password']);
+            $options = $db_config['options'] ?? [];
+            $db = new DB($db_config['url'], $db_config['username'], $db_config['password'], $options);
+
             $this->set('db', $db);
         }
 

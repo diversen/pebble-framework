@@ -46,18 +46,20 @@ class DB
      */
     public function __construct(string $url, string $username = '', string $password = '', array $options = [])
     {
+        if (empty($options)) {
+            $options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                // Change in 8.1
+                // Integers and floats in result sets will now be returned using native PHP types
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ];
+        }
         $this->dbh = new PDO(
             $url,
             $username,
             $password,
             $options
         );
-        $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Change in 8.1
-        // Integers and floats in result sets will now be returned using native PHP types
-        // instead of strings when using emulated prepared statements.
-        $this->dbh->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
     }
 
     /**
