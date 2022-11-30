@@ -50,6 +50,11 @@ class Pager
             $from = 1;
         } else {
             $from = (int)URL::getQueryPart($this->query_part);
+            // If query part e.g. has been a string
+            if (!$from) {
+                $from = 1;
+            }
+            
         }
 
         return $from;
