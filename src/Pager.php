@@ -93,7 +93,7 @@ class Pager
 
         $data['prev'] = null;
         $data['has_prev'] = false;
-        if ($from > 0) {
+        if ($from > 1) {
             $data['prev'] = $from - 1;
             $data['has_prev'] = true;
         }
