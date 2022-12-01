@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pebble\HTTP;
 
 class AcceptLanguage
@@ -10,7 +12,7 @@ class AcceptLanguage
      * Find language from e.g.: 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';
      * @param array<string> $options
      */
-    public static function getLanguage(array $options, string $default): string
+    public static function getLanguage(array $options, string $default): ?string
     {
 
         // Check if it isset in the request
@@ -32,6 +34,9 @@ class AcceptLanguage
 
             // Get language part. 'fr-CH', 'fr' ...
             $language = $language_ary[0] ?? null;
+            if (!$language) {
+                continue;
+            }
 
             // Check if language has been found, e.g. 'fr-CH', 'fr'
             if (in_array($language, $options)) {

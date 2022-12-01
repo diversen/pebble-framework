@@ -76,7 +76,7 @@ class AppBase extends StdUtils
     }
 
 
-    public function getRequestLanguage(): string
+    public function getRequestLanguage(): ?string
     {
         $default = $this->getConfig()->get('Language.default');
         $supported = $this->getConfig()->get('Language.enabled');
