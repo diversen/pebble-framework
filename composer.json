@@ -20,7 +20,7 @@
 
 
     "require": {
-        "php": ">=7.4.3",
+        "php": ">=8.0.0",
         "thecodingmachine/safe": "^2.4"
     },
 
