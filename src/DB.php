@@ -118,7 +118,7 @@ class DB
         $sql = "SELECT count($field) as num_rows FROM $table ";
         $sql .= $this->getWhereSql($where);
         $row = $this->prepareFetch($sql, $where);
-        return (int)$row['num_rows'];
+        return $row['num_rows'];
     }
 
     /**
