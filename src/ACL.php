@@ -30,10 +30,13 @@ class ACL extends Auth
     /**
      * Check if user is authenticated or throw a ForbiddenException
      */
-    public function isAuthenticatedOrThrow(): void
+    public function isAuthenticatedOrThrow(string $error_message = ''): void
     {
         if (!$this->isAuthenticated()) {
-            throw new ForbiddenException('You can not access this page');
+            if (empty($error_message)) {
+                $error_message = 'You are not logged in. Please log in.';
+            }
+            throw new ForbiddenException($error_message);
         }
     }
 
