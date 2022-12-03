@@ -11,7 +11,7 @@ final class UtilsTest extends TestCase
         $pdo_str = 'mysql:host=localhost;dbname=test;port=3306';
         $ary = $db_utils->parsePDOString($pdo_str);
 
-        $expect = array (
+        $expect = array(
             'database' => 'mysql',
             'host' => 'localhost',
             'dbname' => 'test',
@@ -19,10 +19,5 @@ final class UtilsTest extends TestCase
         );
 
         $this->assertSame($expect, $ary);
-          
-
-
-        
-        // var_export($ary);
     }
 }

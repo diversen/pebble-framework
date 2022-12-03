@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-
 use PHPUnit\Framework\TestCase;
 use Pebble\HTTP\AcceptLanguage;
-
 
 final class AcceptLanguageTest extends TestCase
 {
 
-    public function test_getLanguage(): void {
+    public function test_getLanguage(): void
+    {
 
         $options = ['fr', 'en', 'de'];
 
-        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';  
-        $language = AcceptLanguage::getLanguage($options, 'en');        
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';
+        $language = AcceptLanguage::getLanguage($options, 'en');
         $this->assertSame('fr', $language);
 
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-GB, en;q=0.9, fr;q=0.8, de;q=0.7, *;q=0.5';
@@ -41,7 +40,5 @@ final class AcceptLanguageTest extends TestCase
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'gibberish';
         $language = AcceptLanguage::getLanguage($options, 'en');
         $this->assertSame('en', $language);
-        
-        
     }
 }
