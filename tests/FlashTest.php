@@ -20,6 +20,7 @@ final class FlashTest extends TestCase
             ]
         ];
         $this->assertEquals($expect, $_SESSION['flash'][0]);
+
     }
 
     public function test_getMessage(): void
