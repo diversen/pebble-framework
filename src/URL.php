@@ -22,12 +22,13 @@ class URL
     }
 
     /**
-     * Get a variable from $_GET. If the query part is not set thenthe method returns null
+     * Get a variable from $_GET. If the query part is not set then the method returns null
      */
     public static function getQueryPart(string $str): ?string
     {
         if (isset($_GET[$str])) {
-            return $_GET[$str];
+            $res = $_GET[$str];
+            return $res;
         }
         return null;
     }

@@ -16,6 +16,9 @@ use Pebble\Flash;
 use Pebble\Template;
 use Pebble\JSON;
 
+/**
+ * A Utils class that returns convenient services which are singletons
+ */
 class StdUtils
 {
 
@@ -133,6 +136,11 @@ class StdUtils
         return $container->get('json');
     }
 
+    /**
+     * Properties can only be used in sub classes
+     * Convenient if you extend e.g. a controller with the StdUtils class
+     * then you can just use, e.g. $this->auth
+     */
     public function __construct()
     {
         $this->auth = $this->getAuth();

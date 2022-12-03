@@ -15,6 +15,9 @@ use Pebble\Template;
 use Pebble\HTTP\AcceptLanguage;
 use Pebble\App\StdUtils;
 
+use function Safe\set_include_path;
+use function Safe\get_include_path;
+
 /**
  * A base app class with some utilities
  */
@@ -47,10 +50,10 @@ class AppBase extends StdUtils
     /**
      * Set error handler so that any error is an ErrorException
      */
-    public function setErrorHandler(): void
+    public function setErrorHandler(): ?callable
     {
         // Throw on all kind of errors and notices
-        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+        return set_error_handler(function ($errno, $errstr, $errfile, $errline) {
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
         });
     }
@@ -58,10 +61,10 @@ class AppBase extends StdUtils
     /**
      * Start session with configuraton fra Session config
      */
-    public function sessionStart(): void
+    public function sessionStart(): bool
     {
         Session::setConfigSettings($this->getConfig()->getSection('Session'));
-        session_start();
+        return session_start();
     }
 
     /**

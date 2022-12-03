@@ -10,7 +10,7 @@ class Tag
      * returns `<button title="Click me" disabled>2 factor login</button>`
      * @param string $tag the html tag
      * @param string $value the html tag value
-     * @param array<string> $attrs_ary attributes
+     * @param array<mixed> $attrs_ary attributes
      */
     public static function getTag(string $tag, string $value, array $attrs_ary): string
     {

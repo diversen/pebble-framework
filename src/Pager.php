@@ -15,7 +15,6 @@ class Pager
     public ?int $prev;
     public bool $has_next;
     public bool $has_prev;
-    public bool $current;
     public int $num_pages;
 
     private string $query_part;
