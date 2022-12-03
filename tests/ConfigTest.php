@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ConfigTest extends TestCase
 {
-
     public function test_can_get_service_instance(): void
     {
         $container = new Container();
@@ -43,5 +42,4 @@ final class ConfigTest extends TestCase
         $test_config = $config->get('Test.username');
         $this->assertEquals('Test username', $test_config);
     }
-    
 }

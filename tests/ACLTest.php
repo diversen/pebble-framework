@@ -23,7 +23,7 @@ final class ACLTest extends TestCase
      * @var \Pebble\DB
      */
     public $db;
-    
+
     /**
      * @var \Pebble\Auth
      */
@@ -76,7 +76,6 @@ final class ACLTest extends TestCase
 
     public function test_can_get_service_instance(): void
     {
-
         $container = new Container();
         $container->unsetAll();
 

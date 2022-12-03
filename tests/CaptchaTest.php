@@ -31,4 +31,3 @@ final class CaptchaTest extends TestCase
         $this->assertEquals($res, true);
     }
 }
-

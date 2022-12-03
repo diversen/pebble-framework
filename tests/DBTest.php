@@ -41,7 +41,6 @@ EOF;
 
     public function test_can_get_instance(): void
     {
-
         $container = new Container();
         $container->unsetAll();
 

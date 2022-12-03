@@ -20,7 +20,7 @@ final class StdErrorControllerTest extends TestCase
         if ($output === false) {
             throw new Exception('ob_get_contents() failed');
         }
-        
+
         return $output;
     }
 
@@ -32,10 +32,10 @@ final class StdErrorControllerTest extends TestCase
         try {
             throw new ForbiddenException();
         } catch (ForbiddenException $e) {
-            $func = function() use ($std_error_controller, $e) {
+            $func = function () use ($std_error_controller, $e) {
                 $std_error_controller->render($e);
             };
-            
+
             $output = $this->catchOutput($func);
             $this->assertStringContainsString('403', $output);
         }
@@ -43,10 +43,10 @@ final class StdErrorControllerTest extends TestCase
         try {
             throw new TemplateException();
         } catch (TemplateException $e) {
-            $func = function() use ($std_error_controller, $e) {
+            $func = function () use ($std_error_controller, $e) {
                 $std_error_controller->render($e);
             };
-            
+
             $output = $this->catchOutput($func);
             $this->assertStringContainsString('510', $output);
         }
@@ -54,10 +54,10 @@ final class StdErrorControllerTest extends TestCase
         try {
             throw new NotFoundException();
         } catch (NotFoundException $e) {
-            $func = function() use ($std_error_controller, $e) {
+            $func = function () use ($std_error_controller, $e) {
                 $std_error_controller->render($e);
             };
-            
+
             $output = $this->catchOutput($func);
             $this->assertStringContainsString('404', $output);
         }
@@ -65,10 +65,10 @@ final class StdErrorControllerTest extends TestCase
         try {
             throw new Exception();
         } catch (Throwable $e) {
-            $func = function() use ($std_error_controller, $e) {
+            $func = function () use ($std_error_controller, $e) {
                 $std_error_controller->render($e);
             };
-            
+
             $output = $this->catchOutput($func);
             $this->assertStringContainsString('500', $output);
         }

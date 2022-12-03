@@ -9,7 +9,7 @@ final class FlashTest extends TestCase
     {
         $_SESSION = [];
         $flash = new Flash();
-        
+
         $flash->setMessage('Error test', 'error', ['alert_option' => true]);
 
         $expect = [
@@ -20,7 +20,6 @@ final class FlashTest extends TestCase
             ]
         ];
         $this->assertEquals($expect, $_SESSION['flash'][0]);
-
     }
 
     public function test_getMessage(): void

@@ -24,7 +24,7 @@ final class AppBaseTest extends TestCase
 
         $res = $app_base->setErrorHandler();
         if ($res) {
-            // Old error handler PHPUnit\Util\ErrorHandler 
+            // Old error handler PHPUnit\Util\ErrorHandler
             $this->assertIsCallable($res);
         }
 

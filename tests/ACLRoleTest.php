@@ -18,7 +18,7 @@ final class ACLRoleTest extends TestCase
      * @var \Pebble\Config
      */
     public $config;
-    
+
     /**
      * @var \Pebble\DB
      */
@@ -31,7 +31,6 @@ final class ACLRoleTest extends TestCase
 
     private function __setup(): void
     {
-
         $this->config = (new ConfigService())->getConfig();
         $this->auth = (new AuthService())->getAuth();
         $this->db = (new DBService())->getDB();
@@ -39,7 +38,6 @@ final class ACLRoleTest extends TestCase
 
     public function test_can_get_instance(): void
     {
-
         $container = new Container();
         $container->unsetAll();
 
@@ -67,7 +65,7 @@ final class ACLRoleTest extends TestCase
         $row = $this->auth->getByWhere(['email' => 'some_email@test.dk']);
         return $this->auth->verifyKey($row['random']);
     }
-    
+
     /**
      * @return array<string>
      */

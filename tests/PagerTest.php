@@ -20,6 +20,5 @@ final class PagerTest extends TestCase
         $this->assertEquals($pager->prev, 1);
         $this->assertEquals($pager->has_prev, true);
         $this->assertEquals($pager->num_pages, 11);
-
     }
 }

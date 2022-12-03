@@ -7,10 +7,8 @@ use Pebble\HTTP\AcceptLanguage;
 
 final class AcceptLanguageTest extends TestCase
 {
-
     public function test_getLanguage(): void
     {
-
         $options = ['fr', 'en', 'de'];
 
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5';

@@ -8,11 +8,11 @@ use Pebble\Config;
 
 final class StdUtilsTest extends TestCase
 {
-
-    public function test_getInstancesOfServices(): void {
+    public function test_getInstancesOfServices(): void
+    {
         $std_utils = new StdUtils();
 
-        
+
         // Test if same instances
         $acl = $std_utils->getACL();
         $this->assertSame($acl, $std_utils->getACL());
@@ -53,6 +53,5 @@ final class StdUtilsTest extends TestCase
         // Different objects
         $another_config = new Config();
         $this->assertNotSame($config, $another_config);
-        
     }
 }

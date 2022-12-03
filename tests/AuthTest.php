@@ -13,7 +13,7 @@ final class AuthTest extends TestCase
      * @var \Pebble\Auth
      */
     private $auth;
-    
+
     /**
      * @var \Pebble\DB
      */
@@ -44,7 +44,6 @@ final class AuthTest extends TestCase
 
     public function test_can_get_service_instance(): void
     {
-
         $container = new Container();
         $container->unsetAll();
 
