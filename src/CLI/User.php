@@ -61,7 +61,7 @@ class User
         $this->utils->echoStatus('Error', 'r', 'Could not add admin role. Maybe the user does not exist?');
         return 1;
     }
-    
+
     /**
      * @return int<0, 128>
      */

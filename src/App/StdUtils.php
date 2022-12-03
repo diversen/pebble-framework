@@ -21,7 +21,6 @@ use Pebble\JSON;
  */
 class StdUtils
 {
-
     /**
      * @var \Pebble\Auth
      */

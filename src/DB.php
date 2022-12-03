@@ -410,7 +410,7 @@ class DB
     /**
      * Prepare and fetch all rows using `$params` in the where clause
      * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], [20, 10]]);`
-     * 
+     *
      * @param string $sql
      * @param array<mixed> $params
      * @param array<mixed> $order_by

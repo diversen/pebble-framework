@@ -225,7 +225,7 @@ class Router
 
     /**
      * faster router based on URL segment
-     * e.g. /settings/test/:id 
+     * e.g. /settings/test/:id
      * If faster router is enabled then there need to be a controller named App/Settings/*
      * Anything atempt to loader a controller is skipped if there is no match inf faster_route mode
      */
@@ -291,7 +291,6 @@ class Router
      */
     public function addClass(string $class): void
     {
-
         if (!class_exists($class)) {
             throw new InvalidArgumentException("Class $class does not exist");
         }

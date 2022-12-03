@@ -27,7 +27,7 @@ class PaginationUtils
     private array $order_by_default_init = [];
 
     /**
-     * Change  'ORDER BY' order dynamically 
+     * Change  'ORDER BY' order dynamically
      * e.g. `['title' => 'ASC', 'updated' => 'DESC']` to `['updated' => 'ASC', 'title' => 'ASC']`
      * If false then only the DIRECTION part of the ORDER BY will change
      */
@@ -233,7 +233,7 @@ class PaginationUtils
     }
 
     /**
-     * Get JasonGrimes/Paginator and with order by saved to session 
+     * Get JasonGrimes/Paginator and with order by saved to session
      * @return Paginator
      * @param array<mixed> $default_order
      */
@@ -246,7 +246,6 @@ class PaginationUtils
         int $max_pages = 10,
         string $session_key = null,
     ) {
-
         $pagination_utils = new PaginationUtils($default_order, $session_key);
         $url_pattern = $pagination_utils->getPaginationURLPattern($url);
 

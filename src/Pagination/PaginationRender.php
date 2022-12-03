@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble\Pagination;
 
-use \JasonGrimes\Paginator;
+use JasonGrimes\Paginator;
 
 /**
  * Class that renders the pagination links in HTML using the JasonGrimes/Paginator library.

@@ -80,6 +80,5 @@ class ACLRole extends ACL
         ];
 
         return $this->hasAccessRights($role);
-            
     }
 }

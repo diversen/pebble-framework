@@ -53,7 +53,6 @@ class Pager
             if ($from < 1) {
                 $from = 1;
             }
-            
         }
 
         return $from;
