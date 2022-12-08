@@ -164,7 +164,6 @@ class Auth
     /**
      * Get an auth id by checking the auth_cookie table
      * for a $_COOKIE['auth'] match. If no row is found
-     * return "0"
      */
     public function getAuthId(): int
     {
@@ -178,14 +177,15 @@ class Auth
     /**
      * Unsets current auth cookie. This will log out the user
      */
-    public function unlinkCurrentCookie(): void
+    public function unlinkCurrentCookie(): ?bool
     {
         if (isset($_COOKIE['auth'])) {
 
             // Delete current cookie
             $sql = "DELETE FROM auth_cookie WHERE cookie_id = ?";
-            $this->db->prepareExecute($sql, [$_COOKIE['auth']]);
+            return $this->db->prepareExecute($sql, [$_COOKIE['auth']]);
         }
+        return null;
     }
 
     /**
