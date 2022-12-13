@@ -110,7 +110,13 @@ class Migration
     private function getSQLStatements(string $file): array
     {
         $sql = file_get_contents($file);
-        $sql_statements = explode("\n\n", $sql);
+        $sql_statements = explode(";", $sql);
+        
+        // Remove empty statements
+        $sql_statements = array_filter($sql_statements, function ($value) {
+            return trim($value) !== '';
+        });
+
         return $sql_statements;
     }
 

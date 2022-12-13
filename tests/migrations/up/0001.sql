@@ -8,7 +8,7 @@ CREATE TABLE `table_1_a` (
   `auth_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+     
 DROP TABLE IF EXISTS `table_1_b`;
 
 CREATE TABLE `table_1_b` (
