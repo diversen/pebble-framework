@@ -56,7 +56,7 @@ Install:
 
 Install (run) a MySQL image that will work:
 
-    docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
+    docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:8.0
 
 Create a database:
 
@@ -67,7 +67,7 @@ Create a database:
 
 Install (run) a MySQL image that will work:
 
-    docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:5.7
+    docker run -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD=password -d mysql:8.0
 
 List containers 
 
