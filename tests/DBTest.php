@@ -310,6 +310,24 @@ EOF;
         $rows = $db->prepareFetchAll("SELECT * FROM account_test");
         $num_rows = count($rows);
         $this->assertEquals($num_rows, 3);
+
+        // $this->expectException(PDOException::class);
+        try {
+            $res = $db->inTransactionExec(function () use ($db) {
+                $db->insert('account_test', ['email' => 'test4@test', 'password' => 'test']);
+                $db->insert('account_tests', ['email' => 'test5@test'], ['password' => 'test']);
+            });
+        } catch (PDOException $e) {
+            $this->assertStringContainsString('Base table or view not found', $e->getMessage());
+        }
+
+        // Still only 3 rows
+        $num_rows = $db->getTableNumRows('account_test', 'id');
+        $this->assertEquals($num_rows, 3);
+
+
+
+        
     }
 
     public function test_insert(): void
