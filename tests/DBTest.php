@@ -419,5 +419,7 @@ EOF;
 
         $this->assertIsArray($rows);
         $this->assertIsObject($rows[0]);
+
+        $db->setPDOFetchMode(PDO::FETCH_ASSOC);
     }
 }
