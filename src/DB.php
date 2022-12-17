@@ -81,7 +81,7 @@ class DB
 
     /**
      * Prepare and fetch all rows using `$sql` and `$params`
-     * `$db->prepareFetch("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
+     * `$db->prepareFetchAll("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
      * @param string $sql
      * @param array<mixed> $params
      * @return array<mixed>
@@ -116,9 +116,9 @@ class DB
      * Count number of rows in a table from a `$table` name, the `$field` to count from, and `$where` conditions
      * @param string $table
      * @param string $field
-     * @param array<string> $where
+     * @param array<string> $where ['user_id' => 64]
      */
-    public function getTableNumRows(string $table, string $field, array $where = []): int
+    public function getTableNumRows(string $table, string $field='*', array $where = []): int
     {
         $sql = "SELECT count($field) as num_rows FROM $table ";
         $sql .= $this->getWhereSql($where);
@@ -276,10 +276,9 @@ class DB
     }
 
     /**
-     * Generates simple where part of SQL, e.g. `['email' => 'some@email.dk', 'user' => 'some user']` =>
-     * `WHERE username = :username AND user = :user`
+     * Generates simple where part of SQL
      *
-     * @param array<mixed> $where
+     * @param array<mixed> $where ['id' => 42, 'user_name' => 'John Doe']
      */
     public function getWhereSql(array $where = []): string
     {
@@ -299,7 +298,7 @@ class DB
     /**
      * Return limit SQL
      *
-     * @param array<int> $limit index 0 is limit and index 1 is offset
+     * @param array<int> $limit index 0 is limit and index 1 is offset [0, 10]
      */
     public function getLimitSql(array $limit = []): string
     {
@@ -315,8 +314,8 @@ class DB
 
     /**
      * Return `order by ... ` SQL string from an array
-     * @param array<mixed> $order_by array of arrays contains order where index 0 is field and index 1 is direction`
-     * @param array<mixed> $allow an array of allowed order by fields
+     * @param array<mixed> $order_by ['id' => 'DESC', 'name' => 'ASC']
+     * @param array<mixed> $allow ['id', 'name'] - only allow these fields to be used in order by
      */
     public function getOrderBySql(array $order_by = [], array $allow = []): string
     {
@@ -340,7 +339,7 @@ class DB
     /**
      * Delete from rows from a table, e.g. `$db->delete('project', ['id' => $id]);`
      *
-     * @param array<mixed> $where
+     * @param array<mixed> $where ['id' => 1, 'name' => 'some name']
      */
     public function delete(string $table, array $where = []): bool
     {
@@ -356,8 +355,8 @@ class DB
      * Shortcut to get one row, e.g:
      * `$db->getOne('auth', ['verified' => 1, 'email' => $email]);`
      *
-     * @param array<mixed> $where
-     * @param array<mixed> $order_by
+     * @param array<mixed> $where ['id' => 1, 'name' => 'some name']
+     * @param array<mixed> $order_by ['id' => 'DESC', 'name' => 'ASC']
      */
     public function getOne(string $table, array $where = [], array $order_by = []): mixed
     {
@@ -392,8 +391,8 @@ class DB
      * Prepare and fetch a single row using params in the where clause
      * Use this when you want to generate 'WHERE' clause from `$params`
      *
-     * @param array<mixed> $params
-     * @param array<mixed> $order_by
+     * @param array<mixed> $params ['id' => 1, 'name' => 'some name']
+     * @param array<mixed> $order_by ['id' => 'DESC', 'name' => 'ASC']
      * @return array<mixed>
      */
     public function getOneQuery(string $sql, array $params = [], array $order_by = []): array
@@ -416,9 +415,9 @@ class DB
      * `$db->prepareQueryAll("SELECT * FROM invites", ['status' =>1], ['updated' => 'DESC'], [20, 10]]);`
      *
      * @param string $sql
-     * @param array<mixed> $params
-     * @param array<mixed> $order_by
-     * @param array<mixed> $limit
+     * @param array<mixed> $params ['id' => 1, 'name' => 'some name']
+     * @param array<mixed> $order_by ['id' => 'DESC', 'name' => 'ASC']
+     * @param array<mixed> $limit [10, 10]
      * @return array<mixed>
      */
     public function getAllQuery(string $sql, array $params = [], array $order_by = [], array $limit = []): array
