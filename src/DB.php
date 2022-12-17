@@ -372,9 +372,9 @@ class DB
      * Shortcut to get all rows, e.g:
      * `$db->getAll('invites', ['invite_email' => $email]);`
      *
-     * @param array<mixed> $where
-     * @param array<mixed> $order_by
-     * @param array<mixed> $limit
+     * @param array<mixed> $where ['id' => 1, 'name' => 'some name']
+     * @param array<mixed> $order_by ['id' => 'DESC', 'name' => 'ASC']
+     * @param array<mixed> $limit [10, 10]
      * @return array<mixed>
      */
     public function getAll(string $table, array $where =[], array $order_by = [], array $limit = []): array
