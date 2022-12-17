@@ -52,6 +52,19 @@ class DB
             $password,
             $options
         );
+
+        // Default fetch mode is FETCH_ASSOC
+        $this->setPDOFetchMode(PDO::FETCH_ASSOC);
+    }
+
+    public function setPDOFetchMode(int $mode): void
+    {
+        $this->dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, $mode);
+    }
+
+    public function getPDOFetchMode(): int
+    {
+        return $this->dbh->getAttribute(PDO::ATTR_DEFAULT_FETCH_MODE);
     }
 
     /**
@@ -76,7 +89,7 @@ class DB
     public function prepareFetchAll(string $sql, array $params = []): array
     {
         $stmt = $this->getStmt($sql, $params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
 
     /**
@@ -84,14 +97,14 @@ class DB
      * `$db->prepareFetch("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
      * @param string $sql
      * @param array<mixed> $params
-     * @return array<mixed>
+     * @return mixed 
      */
-    public function prepareFetch(string $sql, array $params = []): array
+    public function prepareFetch(string $sql, array $params = []): mixed
     {
         $stmt = $this->getStmt($sql, $params);
 
         // Fetch returns false when 0 rows. FetchAll always returns an array
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
         if (!empty($row)) {
             return $row;
         }
@@ -345,9 +358,8 @@ class DB
      *
      * @param array<mixed> $where
      * @param array<mixed> $order_by
-     * @return array<mixed>
      */
-    public function getOne(string $table, array $where, array $order_by = []): array
+    public function getOne(string $table, array $where, array $order_by = []): mixed
     {
         $sql = "SELECT * FROM `$table` ";
         $sql .= $this->getWhereSql($where);
@@ -392,7 +404,7 @@ class DB
         $sql .= $this->getWhereSql($where);
         $sql .= $this->getOrderBySql($order_by);
         $stmt = $this->getStmt($sql, $params);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
         if (!empty($row)) {
             return $row;
         }
@@ -418,7 +430,7 @@ class DB
         $sql .= $this->getOrderBySql($order_by);
         $sql .= $this->getLimitSql($limit);
         $stmt = $this->getStmt($sql, $params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
 
     /**

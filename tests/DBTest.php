@@ -315,7 +315,7 @@ EOF;
         try {
             $res = $db->inTransactionExec(function () use ($db) {
                 $db->insert('account_test', ['email' => 'test4@test', 'password' => 'test']);
-                $db->insert('account_tests', ['email' => 'test5@test'], ['password' => 'test']);
+                $db->insert('account_tests', ['email' => 'test5@test', 'password' => 'test']);
             });
         } catch (PDOException $e) {
             $this->assertStringContainsString('Base table or view not found', $e->getMessage());
@@ -396,5 +396,28 @@ EOF;
         $db = $this->__getDB();
         $where = $db->getWhereSql(['id' => 100, 'test' => 'this is a test']);
         $this->assertEquals($where, " WHERE  `id`=:id  AND  `test`=:test  ");
+    }
+
+    public function test_setPDOFetchMode(): void
+    {
+        $this->__cleanup();
+        $this->__createTestTable();
+        $this->__addRows();
+
+        $db = $this->__getDB();
+
+        $db->setPDOFetchMode(PDO::FETCH_ASSOC);
+        $this->assertEquals($db->getPDOFetchMode(), PDO::FETCH_ASSOC);
+
+        $db->setPDOFetchMode(PDO::FETCH_OBJ);
+        $this->assertEquals($db->getPDOFetchMode(), PDO::FETCH_OBJ);
+
+        $row = $db->getOne('account_test', ['email' => 'test@test.dk']);
+        $this->assertIsObject($row);
+
+        $rows = $db->getAll('account_test', ['email' => 'test@test.dk']);
+
+        $this->assertIsArray($rows);
+        $this->assertIsObject($rows[0]);
     }
 }
