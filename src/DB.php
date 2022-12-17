@@ -236,7 +236,7 @@ class DB
      * @param array<mixed> $values
      * @param array<mixed> $where
      */
-    public function update(string $table, array $values, array $where): bool
+    public function update(string $table, array $values, array $where = []): bool
     {
         $sql = "UPDATE $table SET ";
 
@@ -281,7 +281,7 @@ class DB
      *
      * @param array<mixed> $where
      */
-    public function getWhereSql(array $where): string
+    public function getWhereSql(array $where = []): string
     {
         if (empty($where)) {
             return ' ';
@@ -342,7 +342,7 @@ class DB
      *
      * @param array<mixed> $where
      */
-    public function delete(string $table, array $where): bool
+    public function delete(string $table, array $where = []): bool
     {
         $sql = "DELETE FROM $table ";
         $sql .= $this->getWhereSql($where);
@@ -359,7 +359,7 @@ class DB
      * @param array<mixed> $where
      * @param array<mixed> $order_by
      */
-    public function getOne(string $table, array $where, array $order_by = []): mixed
+    public function getOne(string $table, array $where = [], array $order_by = []): mixed
     {
         $sql = "SELECT * FROM `$table` ";
         $sql .= $this->getWhereSql($where);
@@ -377,7 +377,7 @@ class DB
      * @param array<mixed> $limit
      * @return array<mixed>
      */
-    public function getAll(string $table, array $where, array $order_by = [], array $limit = []): array
+    public function getAll(string $table, array $where =[], array $order_by = [], array $limit = []): array
     {
         $sql = "SELECT * FROM `$table` ";
         $sql .= $this->getWhereSql($where);
