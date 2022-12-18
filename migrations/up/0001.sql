@@ -39,6 +39,7 @@ CREATE TABLE `auth_cookie` (
   `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `expires` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
+  FOREIGN KEY (`auth_id`) REFERENCES `auth` (`id`) ON DELETE CASCADE,
   KEY `idx_cookie` (`cookie_id`),
   KEY `idx_auth_id` (`auth_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
