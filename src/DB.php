@@ -97,7 +97,7 @@ class DB
      * `$db->prepareFetch("SELECT * FROM invites WHERE auth_id = ? ", [$auth_id]);`
      * @param string $sql
      * @param array<mixed> $params
-     * @return mixed 
+     * @return mixed
      */
     public function prepareFetch(string $sql, array $params = []): mixed
     {

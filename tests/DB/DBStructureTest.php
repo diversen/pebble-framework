@@ -8,15 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 final class DBStructureTest extends TestCase
 {
-    /**
-     * @return \Pebble\DB
-     */
-    private function __getDB()
-    {
-        return (new DBService())->getDB();
-    }
 
-    public function testDBStructure()
+    public function testDBStructure(): void
     {
 
         // https://stackoverflow.com/questions/201621/how-do-i-see-all-foreign-keys-to-a-table-or-column
@@ -41,8 +34,6 @@ final class DBStructureTest extends TestCase
         $this->assertEquals('auth_cookie', $foreign_keys[0]['TABLE_NAME']);
         $this->assertEquals('id', $foreign_keys[0]['REFERENCED_COLUMN_NAME']);
         $this->assertEquals('auth', $foreign_keys[0]['REFERENCED_TABLE_NAME']);
-
-        $this->assertTrue(true);
     }
 }
 

@@ -111,7 +111,7 @@ class Migration
     {
         $sql = file_get_contents($file);
         $sql_statements = explode(";", $sql);
-        
+
         // Remove empty statements
         $sql_statements = array_filter($sql_statements, function ($value) {
             return trim($value) !== '';

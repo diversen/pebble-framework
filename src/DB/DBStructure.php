@@ -6,25 +6,34 @@ namespace Pebble\DB;
 
 use PDO;
 
-class DBStructure {
+class DBStructure
+{
+    public PDO $dbh;
 
-    public $dbh;
-
-    public function __construct(PDO $dbh) {
+    public function __construct(PDO $dbh)
+    {
         $this->dbh = $dbh;
     }
 
-    public function getDatabaseName() {
-        return $this->dbh->query('SELECT DATABASE()')->fetchColumn();
+    public function getDatabaseName(): mixed
+    {
+        $stmt = $this->dbh->query('SELECT DATABASE()');
+        if ($stmt) {
+            return $stmt->fetchColumn();
+        }
+        return null;
     }
 
-    public function getTableFields(string $table_name) {
-        
+    /**
+     * @return array<mixed>
+     */
+    public function getTableFields(string $table_name): array
+    {
         $sql = "
         SELECT table_schema, table_name, column_name, ordinal_position, data_type, numeric_precision, column_type 
             FROM information_schema.columns 
         WHERE table_name = :table_name and table_schema = :table_schema ORDER BY ordinal_position;";
-        
+
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute([
             ':table_name' => $table_name,
@@ -35,8 +44,11 @@ class DBStructure {
         return $rows;
     }
 
-    public function getTableKeys(string $table_name) {
-
+    /**
+     * @return array<mixed>
+     */
+    public function getTableKeys(string $table_name): array
+    {
         $sql = "SHOW keys FROM $table_name";
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();
@@ -44,7 +56,11 @@ class DBStructure {
         return $rows;
     }
 
-    public function getForeignKeys(string $database = null) {
+    /**
+     * @return array<mixed>
+     */
+    public function getForeignKeys(string $database = null): array
+    {
         if (!$database) {
             $database = $this->getDatabaseName();
         }
@@ -58,5 +74,5 @@ class DBStructure {
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
-    }       
+    }
 }
