@@ -230,6 +230,23 @@ class DB
     }
 
     /**
+     * Insert or update a row in a table
+     * @param string $table
+     * @param array<mixed> $values
+     * @param array<mixed> $where
+     */
+    public function replace(string $table, array $values, array $where): bool {
+
+        if ($this->getOne($table, $where)) {
+            $res = $this->update($table, $values, $where);
+        } else {
+            $res = $this->insert($table, $values);
+        }
+        return $res;
+        
+    }
+
+    /**
      * UPDATE table row(s)
      * `$db->update('user_table', ['user_email' => 'new_email@domain', 'user_name' => 'new name'], ['id' => 42]);`
      *
