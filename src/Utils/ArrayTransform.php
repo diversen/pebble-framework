@@ -37,7 +37,6 @@ class ArrayTransform
 
         $old_columns = array_keys($ary[0]);
 
-
         // Remove keys that are not in the $new_columns array
         $cleaned_columns = array_intersect($old_columns, array_keys($new_columns));
 
@@ -75,8 +74,6 @@ class ArrayTransform
         return $max;
     }
 
-
-
     /**
      * Convert a one dimensional array to a two dimensional array with two columns
      * named $keys[0] and $keys[1]
@@ -93,22 +90,6 @@ class ArrayTransform
             $ary_ret[] = [$keys[0] => $key, $keys[1] => $value];
         }
         $this->ary = [$ary_ret];
-    }
-
-    /**
-     * Method that adds a column to a two dimensional array
-     */
-    public function addColumn(string $key, $value)
-    {
-
-        $ary = $this->ary;
-        $ary_ret = [];
-        foreach ($ary as $row) {
-            $row[$key] = $value;
-            $ary_ret[] = $row;
-        }
-
-        $this->ary = $ary_ret;
     }
 
     /** 
@@ -134,7 +115,6 @@ class ArrayTransform
      */
     public function addColumnCallbackMultiple(array $columns, callable $callback)
     {
-
         foreach ($columns as $column) {
             $this->addColumnCallback($column, $callback);
         }
