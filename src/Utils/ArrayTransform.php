@@ -11,13 +11,18 @@ use Exception;
  */
 class ArrayTransform
 {
-
     private int $dimensions = 0;
+
+    /**
+     * @var array<mixed>
+     */
     private array $ary = [];
 
+    /**
+     * @param array<mixed> $ary
+     */
     public function __construct(array $ary)
     {
-        $this->copy = $ary;
         $this->ary = $ary;
         $this->dimensions = $this->getArrayDimensions($ary);
         if ($this->dimensions === 1) {
@@ -27,12 +32,10 @@ class ArrayTransform
 
     /**
      * Get array from $new_columns. Sort according to $new_columns. Update keys to $new_columns.
-     * @param array $new_columns
-     * @return array
+     * @param array<mixed> $new_columns
      */
-    public function alterColumns(array $new_columns)
+    public function alterColumns(array $new_columns): void
     {
-
         $ary = $this->ary;
 
         $old_columns = array_keys($ary[0]);
@@ -59,8 +62,9 @@ class ArrayTransform
 
     /**
      * Get the number of dimensions in an array
+     * @param array<mixed> $ary
      */
-    private function getArrayDimensions($ary)
+    private function getArrayDimensions(array $ary): int
     {
         $max = 1;
         foreach ($ary as $value) {
@@ -76,9 +80,10 @@ class ArrayTransform
 
     /**
      * Convert a one dimensional array to a two dimensional array with two columns
-     * named $keys[0] and $keys[1]
+     * named $columns[0] and $columns[1]
+     * @param array<mixed> $columns
      */
-    public function oneToTwoDimensions(array $keys)
+    public function oneToTwoDimensions(array $columns): void
     {
         if ($this->dimensions !== 1) {
             throw new Exception("Array must be one dimensional");
@@ -87,18 +92,17 @@ class ArrayTransform
         $ary = $this->ary[0];
         $ary_ret = [];
         foreach ($ary as $key => $value) {
-            $ary_ret[] = [$keys[0] => $key, $keys[1] => $value];
+            $ary_ret[] = [$columns[0] => $key, $columns[1] => $value];
         }
         $this->ary = [$ary_ret];
     }
 
-    /** 
-     * Method that adds a column (or replace an existing) to a two dimensional array 
+    /**
+     * Method that adds a column (or replace an existing) to a two dimensional array
      * using a callback function that works on the row
      */
-    public function addColumnCallback(string $column, callable $callback)
+    public function addColumnCallback(string $column, callable $callback): void
     {
-
         $ary = $this->ary;
         $ary_ret = [];
         foreach ($ary as $row) {
@@ -111,9 +115,9 @@ class ArrayTransform
 
     /**
      * Method that adds a column callback to multiple columns
-      
+     * @param array<mixed> $columns
      */
-    public function addColumnCallbackMultiple(array $columns, callable $callback)
+    public function addColumnCallbackMultiple(array $columns, callable $callback): void
     {
         foreach ($columns as $column) {
             $this->addColumnCallback($column, $callback);
@@ -121,9 +125,10 @@ class ArrayTransform
     }
 
     /**
-     * Run a callback on the values of the keys in $keys
+     * Run a callback on the spcified columns (array) or column (string)
+     * @param string|array<mixed> $columns
      */
-    public function addCallbackOnValue(array|string $columns, callable $callback)
+    public function addCallbackOnValue(array|string $columns, callable $callback): void
     {
         $ary = $this->ary;
 
@@ -150,8 +155,9 @@ class ArrayTransform
 
     /**
      * Return the array
+     * @return array<mixed>
      */
-    public function getArray()
+    public function getArray(): array
     {
         if ($this->dimensions === 1) {
             return $this->ary[0];

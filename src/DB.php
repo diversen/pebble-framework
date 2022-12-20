@@ -235,15 +235,14 @@ class DB
      * @param array<mixed> $values
      * @param array<mixed> $where
      */
-    public function replace(string $table, array $values, array $where): bool {
-
+    public function replace(string $table, array $values, array $where): bool
+    {
         if ($this->getOne($table, $where)) {
             $res = $this->update($table, $values, $where);
         } else {
             $res = $this->insert($table, $values);
         }
         return $res;
-        
     }
 
     /**

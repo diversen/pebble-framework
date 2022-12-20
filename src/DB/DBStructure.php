@@ -75,4 +75,16 @@ class DBStructure
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getTables(): array
+    {
+        $sql = "SHOW TABLES";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
 }

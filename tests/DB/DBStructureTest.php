@@ -34,6 +34,7 @@ final class DBStructureTest extends TestCase
         $this->assertEquals('auth_cookie', $foreign_keys[0]['TABLE_NAME']);
         $this->assertEquals('id', $foreign_keys[0]['REFERENCED_COLUMN_NAME']);
         $this->assertEquals('auth', $foreign_keys[0]['REFERENCED_TABLE_NAME']);
+
     }
 }
 
