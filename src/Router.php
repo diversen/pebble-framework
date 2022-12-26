@@ -152,7 +152,7 @@ class Router
      * Add a single route
      * `$router->add('GET', '/some/route/with/:param', \Some\Namespace::class, 'classMethod')`
      */
-    public function add(string $request_method, string $route, string $class, string $class_method, array $parsed_doc = []): void
+    public function add(string $request_method, string $route, string $class, string $class_method, array $parsed_doc): void
     {
         $this->routes[$request_method][] = [
             'route' => $route,
@@ -399,13 +399,15 @@ class Router
 
         $route = $this->getFirstRoute();    
     
-        $params = $route['params'];
+        
 
         // Cast params if specified in the doc block
         $cast = $route['parsed_doc']['cast'] ?? null;
         if ($cast) {
             $route['params'] = $this->castParams($cast, $route['params']);
         }
+
+        $params = $route['params'];
 
         self::$current_route = $route['route'];
 
