@@ -151,6 +151,7 @@ class Router
     /**
      * Add a single route
      * `$router->add('GET', '/some/route/with/:param', \Some\Namespace::class, 'classMethod')`
+     * @param array<mixed> $parsed_doc
      */
     public function add(string $request_method, string $route, string $class, string $class_method, array $parsed_doc = []): void
     {
@@ -354,6 +355,7 @@ class Router
      * cast params
      * @param string $cast
      * @param array<string> $params
+     * @return array<mixed>
      */
     private function castParams(string $cast, array $params): array
     {
