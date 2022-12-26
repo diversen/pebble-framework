@@ -152,7 +152,7 @@ class Router
      * Add a single route
      * `$router->add('GET', '/some/route/with/:param', \Some\Namespace::class, 'classMethod')`
      */
-    public function add(string $request_method, string $route, string $class, string $class_method, array $parsed_doc): void
+    public function add(string $request_method, string $route, string $class, string $class_method, array $parsed_doc = []): void
     {
         $this->routes[$request_method][] = [
             'route' => $route,
