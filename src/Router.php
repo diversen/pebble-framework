@@ -152,13 +152,14 @@ class Router
      * Add a single route
      * `$router->add('GET', '/some/route/with/:param', \Some\Namespace::class, 'classMethod')`
      */
-    public function add(string $request_method, string $route, string $class, string $class_method): void
+    public function add(string $request_method, string $route, string $class, string $class_method, array $parsed_doc): void
     {
         $this->routes[$request_method][] = [
             'route' => $route,
             'class' => $class,
             'method' => $class_method,
             'parts' => $this->getUrlParts($route),
+            'parsed_doc' => $parsed_doc,
 
         ];
     }
@@ -218,7 +219,7 @@ class Router
             $verbs = explode(',', $parsed_doc['verbs']);
             foreach ($verbs as $verb) {
                 $verb = trim($verb);
-                $this->add($verb, $route, $class, $method_name);
+                $this->add($verb, $route, $class, $method_name, $parsed_doc);
             }
         }
     }
@@ -350,6 +351,42 @@ class Router
     }
 
     /**
+     * cast params
+     * @param string $cast
+     * @param array<string> $params
+     */
+    private function castParams(string $cast, array $params): array
+    {
+
+        // parse string in the form of "int:id,float:price"
+        $cast = explode(',', $cast);
+        $cast = array_map('trim', $cast);
+        $cast = array_map('strtolower', $cast);
+
+        foreach($cast as $cast_item) {
+            $cast_item = explode(':', $cast_item);
+            $cast_item = array_map('trim', $cast_item);
+            $cast_item = array_map('strtolower', $cast_item);
+            $new_params[$cast_item[1]] = $cast_item[0];
+        }
+
+        $cast = [
+            'int' => 'intval',
+            'float' => 'floatval',
+            'string' => 'strval',
+            'bool' => 'boolval',
+        ];
+
+        foreach ($params as $key => $value) {
+            if (isset($new_params[$key])) {
+                $params[$key] = $cast[$new_params[$key]]($value);
+            }
+        }
+
+        return $params;
+    }
+
+    /**
      * When all routes are loaded then the first route found will be executed
      */
     public function run(): void
@@ -360,9 +397,16 @@ class Router
             $middleware_object = new stdClass();
         }
 
-        $route = $this->getFirstRoute();
-
+        $route = $this->getFirstRoute();    
+    
         $params = $route['params'];
+
+        // Cast params if specified in the doc block
+        $cast = $route['parsed_doc']['cast'] ?? null;
+        if ($cast) {
+            $route['params'] = $this->castParams($cast, $route['params']);
+        }
+
         self::$current_route = $route['route'];
 
         foreach ($this->middleware as $middleware) {

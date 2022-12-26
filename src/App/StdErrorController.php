@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pebble\App;
 
-use Exception;
 use Throwable;
 use Pebble\ExceptionTrace;
 use Pebble\Service\ConfigService;
