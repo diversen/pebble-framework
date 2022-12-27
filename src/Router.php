@@ -192,7 +192,7 @@ class Router
     /**
      * @return array<mixed>
      */
-    private function getFirstRoute(): array
+    public function getFirstRoute(): array
     {
         return $this->getValidRoutes()[0];
     }
@@ -365,7 +365,7 @@ class Router
         $cast = array_map('trim', $cast);
         $cast = array_map('strtolower', $cast);
 
-        foreach($cast as $cast_item) {
+        foreach ($cast as $cast_item) {
             $cast_item = explode(':', $cast_item);
             $cast_item = array_map('trim', $cast_item);
             $cast_item = array_map('strtolower', $cast_item);
@@ -389,6 +389,22 @@ class Router
     }
 
     /**
+     * @param array<mixed> $route
+     * @return array<mixed> $params
+     */
+    public function getParamsFromRoute(array $route): array
+    {
+        // Cast params if specified in the doc block
+        $cast = $route['parsed_doc']['cast'] ?? null;
+        if ($cast) {
+            $route['params'] = $this->castParams($cast, $route['params']);
+        }
+
+        $params = $route['params'];
+        return $params;
+    }
+
+    /**
      * When all routes are loaded then the first route found will be executed
      */
     public function run(): void
@@ -399,18 +415,8 @@ class Router
             $middleware_object = new stdClass();
         }
 
-        $route = $this->getFirstRoute();    
-    
-        
-
-        // Cast params if specified in the doc block
-        $cast = $route['parsed_doc']['cast'] ?? null;
-        if ($cast) {
-            $route['params'] = $this->castParams($cast, $route['params']);
-        }
-
-        $params = $route['params'];
-
+        $route = $this->getFirstRoute();
+        $params = $this->getParamsFromRoute($route);
         self::$current_route = $route['route'];
 
         foreach ($this->middleware as $middleware) {

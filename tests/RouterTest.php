@@ -9,25 +9,14 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
-    public function test_noRoutes(): void
+
+    public function test_notFound(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['REQUEST_URI'] = '/test/hello_world';
+        $_SERVER['REQUEST_URI'] = '/no/such/route';
 
         $router = new Router();
-        $router->add('POST', '/tester/:param1', Test::class, 'index');
-
-        $this->expectException(NotFoundException::class);
-        $router->getValidRoutes();
-    }
-
-    public function test_missingMethod(): void
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['REQUEST_URI'] = '/test/hello_world';
-
-        $router = new Router();
-        $router->add('POST', '/tester/:param1', Test::class, 'doesNotExist');
+        $router->addClass(Test::class);
 
         $this->expectException(NotFoundException::class);
         $router->getValidRoutes();
@@ -40,14 +29,7 @@ final class RouterTest extends TestCase
 
         $router = new Router();
 
-        // Correct match with param
-        $router->add('POST', '/test/:param1', Test::class, 'index');
-
-        // No match
-        $router->add('POST', '/test/:param1/doh', Test::class, 'index');
-
-        // Exact match
-        $router->add('POST', '/test/hello_world', Test::class, 'helloWorld');
+        $router->addClass(Test::class);
 
         $routes = $router->getValidRoutes();
 
@@ -90,24 +72,49 @@ final class RouterTest extends TestCase
         $this->assertEquals($routes[1]['method'], 'helloWorld');
     }
 
-    public function test_run_all(): void
+    public function test_runAll(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['REQUEST_URI'] = '/test/hello_world/';
+
+        // M
+        $_SERVER['REQUEST_URI'] = '/test/hello_world';
 
         $router = new Router();
-
-        // Correct match with param
-        $router->add('POST', '/test/:param1', Test::class, 'index');
-
-        // No match
-        $router->add('POST', '/test/:param1/no_match', Test::class, 'index');
-
-        // Exact match
-        $router->add('POST', '/test/hello_world', Test::class, 'helloWorld');
+        
+        // Matches two routes
+        $router->addClass(Test::class);
 
         $router->runAll();
 
         $this->expectOutputString('Hello world');
+    }
+
+    public function test_run(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = '/cast/test/100';
+
+        $router = new Router();
+
+        $router->addClass(Test::class);
+
+        $router->run();
+
+        $this->expectOutputString('Param: 100');
+    }
+
+    public function test_castToInt(): void {
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = '/cast/test/10';
+
+        $router = new Router();
+        $router->addClass(Test::class);
+
+        $route = $router->getFirstRoute();
+        $params = $router->getParamsFromRoute($route);
+
+        $this->assertEquals(10, $params['id']);
+
     }
 }

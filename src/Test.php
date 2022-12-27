@@ -22,4 +22,13 @@ class Test
     {
         echo "Hello world";
     }
+
+    /**
+     * @route /cast/test/:id
+     * @cast int:id
+     * @verbs GET
+     */
+     public function testcast(array $params): void {
+        echo "Param: " . $params['id'];
+     }
 }
