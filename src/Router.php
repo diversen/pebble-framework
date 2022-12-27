@@ -352,7 +352,7 @@ class Router
     }
 
     /**
-     * cast params
+     * cast params, e.g.: @cast int:id,float:price 
      * @param string $cast
      * @param array<string> $params
      * @return array<mixed>
@@ -360,15 +360,12 @@ class Router
     private function castParams(string $cast, array $params): array
     {
 
-        // parse string in the form of "int:id,float:price"
         $cast = explode(',', $cast);
         $cast = array_map('trim', $cast);
-        $cast = array_map('strtolower', $cast);
 
         foreach ($cast as $cast_item) {
             $cast_item = explode(':', $cast_item);
             $cast_item = array_map('trim', $cast_item);
-            $cast_item = array_map('strtolower', $cast_item);
             $new_params[$cast_item[1]] = $cast_item[0];
         }
 
