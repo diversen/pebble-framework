@@ -97,7 +97,7 @@ class User
     }
 
 
-    private function setAdminRole(string $auth_id): bool
+    private function setAdminRole(int $auth_id): bool
     {
         $acl_role = (new ACLRoleService())->getACLRole();
         return $acl_role->setRole(['right' => 'admin', 'auth_id' => $auth_id]);
