@@ -8,6 +8,7 @@ use Diversen\ParseArgv;
 use Pebble\Service\AuthService;
 use Pebble\Service\ACLRoleService;
 use Diversen\Cli\Utils;
+use Exception;
 
 class User
 {
@@ -105,14 +106,21 @@ class User
 
     public function runCommand(ParseArgv $args): int
     {
-        if ($args->getOption('create-user')) {
-            return $this->createUser();
-        }
+        try {
 
-        if ($args->getOption('set-admin')) {
-            return $this->setAdmin();
+        
+            if ($args->getOption('create-user')) {
+                return $this->createUser();
+            }
+    
+            if ($args->getOption('set-admin')) {
+                return $this->setAdmin();
+            }
+    
+            return 0;
+        } catch (Exception $e) {
+            $this->utils->echoStatus('Error', 'error', $e->getMessage());
+            return 1;
         }
-
-        return 0;
     }
 }
