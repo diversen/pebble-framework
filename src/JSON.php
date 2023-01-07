@@ -17,15 +17,20 @@ class JSON
      * @param int<1, max> $depth
      * @return mixed
      */
-    public static function response($value, int $flags = 0, int $depth= 512, bool $send_header = true)
+    public static function response(mixed $value, int $flags = 0, int $depth= 512, bool $send_header = true)
     {
         if ($send_header) {
             header('Content-Type: application/json; charset=utf-8');
         }
 
         if (self::$debug) {
-            $value['__POST'] = $_POST;
-            $value['__GET'] = $_GET;
+            if (is_object($value)) {
+                $value->{'__POST'} = $_POST;
+                $value->{'__GET'} = $_GET;
+            } else {
+                $value['__POST'] = $_POST;
+                $value['__GET'] = $_GET;
+            }
         }
 
         $res = json_encode($value, $flags, $depth);
