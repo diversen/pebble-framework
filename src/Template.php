@@ -65,8 +65,9 @@ class Template
      */
     public static function render(string $template, $template_vars = [], array $options = []): void
     {
+        $raw = $options['raw'] ?? false;
         try {
-            if (!isset($options['raw'])) {
+            if (!$raw) {
                 $template_vars = Special::encodeAry($template_vars);
             }
 
