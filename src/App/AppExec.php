@@ -7,6 +7,7 @@ namespace Pebble\App;
 use Pebble\Exception\ForbiddenException;
 use Pebble\Exception\NotFoundException;
 use Pebble\Exception\TemplateException;
+use Pebble\Exception\JSONException;
 use Pebble\App\StdErrorController;
 
 use Throwable;
@@ -79,6 +80,9 @@ class AppExec
             // 404
             $this->errorController->render($e);
         } catch (ForbiddenException $e) {
+            // 403
+            $this->errorController->render($e);
+        } catch (JSONException $e) {
             // 403
             $this->errorController->render($e);
         } catch (Throwable $e) {
