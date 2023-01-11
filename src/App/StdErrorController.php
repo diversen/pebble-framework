@@ -8,6 +8,11 @@ use Throwable;
 use Pebble\ExceptionTrace;
 use Pebble\Service\ConfigService;
 use Pebble\Service\LogService;
+use Pebble\JSON;
+use Pebble\Exception\ForbiddenException;
+use Pebble\Exception\NotFoundException;
+use Pebble\Exception\TemplateException;
+use Pebble\Exception\JSONException;
 
 /**
  * Standard error controller
@@ -50,38 +55,39 @@ class StdErrorController
         $error_code = $this->getErrorCode($e);
         http_response_code($error_code);
 
-        if ($error_code === 404) {
-            $this->notFoundException($e);
-        } elseif ($error_code === 403) {
-            $this->forbiddenException($e);
-        } elseif ($error_code === 510) {
-            $this->templateException($e);
+        $class = get_class($e);
+
+        if ($class === NotFoundException::class) {
+
+            $this->log->notice("App.not_found ", ['url' => $_SERVER['REQUEST_URI']]);
+            $this->displayError($e);
+
+        } elseif ($class === ForbiddenException::class) {
+
+            $this->log->notice("App.forbidden", ['url' => $_SERVER['REQUEST_URI']]);
+            $this->displayError($e);
+
+        } elseif ($class === TemplateException::class) {
+
+            $this->log->error('App.template', ['exception' => ExceptionTrace::get($e)]);
+            $this->displayError($e);
+            
+        } elseif ($class === JSONException::class) {
+
+            $this->log->error('App.json', ['exception' => ExceptionTrace::get($e)]);
+            
+            $response['message'] = $e->getMessage();
+            $response['error'] = true;
+            $response['code'] = $error_code;
+
+            $json = new JSON();
+            $json->render($response);
+            
         } else {
-            $this->internalException($e);
+            
+            $this->log->notice('App.exception', ['exception' => ExceptionTrace::get($e)]);
+            $this->displayError($e);
+
         }
-    }
-
-    private function templateException(Throwable $e): void
-    {
-        $this->log->error('App.template.exception', ['exception' => ExceptionTrace::get($e)]);
-        $this->displayError($e);
-    }
-
-    private function notFoundException(Throwable $e): void
-    {
-        $this->log->notice("App.index.not_found ", ['url' => $_SERVER['REQUEST_URI']]);
-        $this->displayError($e);
-    }
-
-    private function forbiddenException(Throwable $e): void
-    {
-        $this->log->notice("App.index.forbidden", ['url' => $_SERVER['REQUEST_URI']]);
-        $this->displayError($e);
-    }
-
-    private function internalException(Throwable $e): void
-    {
-        $this->log->notice('App.index.exception', ['exception' => ExceptionTrace::get($e)]);
-        $this->displayError($e);
     }
 }
