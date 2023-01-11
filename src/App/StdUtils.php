@@ -15,6 +15,7 @@ use Pebble\Service\MigrationService;
 use Pebble\Flash;
 use Pebble\Template;
 use Pebble\JSON;
+use Pebble\CSRF;
 
 /**
  * A Utils class that returns convenient services which are singletons
@@ -65,6 +66,11 @@ class StdUtils
      * @var \Pebble\JSON
      */
     protected $json;
+
+    /**
+     * @var \Pebble\CSRF
+     */
+    protected $csrf;
 
     public function getConfig(): \Pebble\Config
     {
@@ -135,6 +141,16 @@ class StdUtils
         return $container->get('json');
     }
 
+    public function getCSRF(): \Pebble\CSRF
+    {
+        $container = new Container();
+        if (!$container->has('csrf')) {
+            $container->set('csrf', new CSRF());
+        }
+        return $container->get('csrf');
+    }
+
+
     /**
      * Properties can only be used in sub classes
      * Convenient if you extend e.g. a controller with the StdUtils class
@@ -151,5 +167,6 @@ class StdUtils
         $this->flash = $this->getFlash();
         $this->template = $this->getTemplate();
         $this->json = $this->getJSON();
+        $this->csrf = $this->getCSRF();
     }
 }
