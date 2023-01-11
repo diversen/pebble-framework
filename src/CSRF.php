@@ -4,9 +4,21 @@ declare(strict_types=1);
 
 namespace Pebble;
 
+use Pebble\Exception\JSONException;
+
 class CSRF
 {
+    /**
+     * Disable CSRF. Useful for testing
+     * @var bool
+     */
     public static bool $disabled = false;
+
+    /**
+     * Set a message to be displayed when CSRF fails
+     * @var string
+     */
+    public string $error_message = 'CSRF token is not valid';
 
     /**
      * Sets a token in $_SESSION['csrf_token'] token and return it
@@ -43,5 +55,17 @@ class CSRF
         }
 
         return false;
+    }
+
+    public function setErrorMessage(string $message): void
+    {
+        $this->error_message = $message;
+    }
+
+    public function validateTokenJSON () {
+
+        if (!$this->validateToken()) {
+            throw new JSONException($this->error_message, 403);      
+        } 
     }
 }
