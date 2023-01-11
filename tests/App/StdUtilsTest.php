@@ -53,5 +53,8 @@ final class StdUtilsTest extends TestCase
         // Different objects
         $another_config = new Config();
         $this->assertNotSame($config, $another_config);
+
+        $csrf = $std_utils->getCSRF();
+        $this->assertSame($csrf, $std_utils->getCSRF());
     }
 }

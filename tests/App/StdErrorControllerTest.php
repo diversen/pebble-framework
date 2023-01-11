@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Pebble\Exception\ForbiddenException;
 use Pebble\Exception\NotFoundException;
 use Pebble\Exception\TemplateException;
+use Pebble\Exception\JSONException;
 
 final class StdErrorControllerTest extends TestCase
 {
@@ -60,6 +61,19 @@ final class StdErrorControllerTest extends TestCase
 
             $output = $this->catchOutput($func);
             $this->assertStringContainsString('404', $output);
+        }
+
+        try {
+            throw new JSONException('Something went wrong', 404);
+        } catch (JSONException $e) {
+            $func = function () use ($std_error_controller, $e) {
+                $std_error_controller->render($e);
+            };
+
+            $output = $this->catchOutput($func);
+
+            $this->assertStringContainsString('404', $output);
+            $this->assertStringContainsString('Something went wrong', $output);
         }
 
         try {
