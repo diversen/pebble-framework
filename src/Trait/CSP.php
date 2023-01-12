@@ -9,6 +9,10 @@ use Pebble\Service\ConfigService;
 
 /**
  * A trait for sending CSP headers defined in a 'CSP' config file
+ * An example of a configuration file can be viewed at: 
+ * 
+ * https://github.com/diversen/ppm-project-manager/blob/main/config/CSP.php
+ * 
  * You may want to add this to a Main class in order to send CSP headers
  */
 trait CSP
@@ -36,3 +40,4 @@ trait CSP
         $headers->apply();
     }
 }
+
