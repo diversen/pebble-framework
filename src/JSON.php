@@ -24,10 +24,7 @@ class JSON
         }
 
         if (self::$debug) {
-            if (is_object($value)) {
-                $value->{'__POST'} = $_POST;
-                $value->{'__GET'} = $_GET;
-            } else {
+            if (is_array($value)) {
                 $value['__POST'] = $_POST;
                 $value['__GET'] = $_GET;
             }

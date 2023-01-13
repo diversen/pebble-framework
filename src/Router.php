@@ -27,7 +27,7 @@ class Router
     /**
      * Current route being executed
      */
-    private static ?string $current_route = null;
+    private static string $current_route;
 
     /**
      * Class to create middleware object from
@@ -37,12 +37,12 @@ class Router
     /**
      * Request URI
      */
-    private ?string $request_uri = null;
+    private string $request_uri;
 
     /**
      * Request method
      */
-    private ?string $request_method = null;
+    private string $request_method;
 
 
     /**

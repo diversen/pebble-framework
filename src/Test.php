@@ -24,6 +24,7 @@ class Test
     }
 
     /**
+     * @param array<mixed> $params
      * @route /cast/test/:id
      * @cast int:id
      * @verbs GET
