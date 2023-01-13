@@ -27,7 +27,7 @@ class Router
     /**
      * Current route being executed
      */
-    private static string $current_route = '';
+    private static ?string $current_route = null;
 
     /**
      * Class to create middleware object from
@@ -440,27 +440,5 @@ class Router
         $object = new $class();
 
         $object->$class_method($params, $middleware_object);
-    }
-
-    /**
-     * Runs any route found in the router in the order they were added
-     */
-    public function runAll(): void
-    {
-        $std_obj = new stdClass();
-        $routes = $this->getValidRoutes();
-        foreach ($routes as $route) {
-            $params = $route['params'];
-
-            foreach ($this->middleware as $middleware) {
-                $middleware($params, $std_obj);
-            }
-
-            $class_method = $route['method'];
-            $class = $route['class'];
-            $object = new $class();
-
-            $object->$class_method($params, $std_obj);
-        }
     }
 }
