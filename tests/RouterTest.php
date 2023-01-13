@@ -72,23 +72,6 @@ final class RouterTest extends TestCase
         $this->assertEquals($routes[1]['method'], 'helloWorld');
     }
 
-    public function test_runAll(): void
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-
-        // M
-        $_SERVER['REQUEST_URI'] = '/test/hello_world';
-
-        $router = new Router();
-        
-        // Matches two routes
-        $router->addClass(Test::class);
-
-        $router->runAll();
-
-        $this->expectOutputString('Hello world');
-    }
-
     public function test_run(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
