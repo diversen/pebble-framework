@@ -35,6 +35,30 @@ class Router
     private ?string $middleware_class = null;
 
     /**
+     * Request URI
+     */
+    private ?string $request_uri = null;
+
+    /**
+     * Request method
+     */
+    private ?string $request_method = null;
+
+
+    /**
+     * faster router based on URL segment
+     * e.g. /settings/test/:id
+     * If faster router is enabled then there need to be a controller named App/Settings/*
+     * Anything atempt to loader a controller is skipped if there is no match inf faster_route mode
+     */
+    private bool $faster_router = false;
+
+    public function __construct() {
+        $this->request_method = $_SERVER['REQUEST_METHOD'];
+        $this->request_uri = $_SERVER['REQUEST_URI'];
+    }
+
+    /**
      * Check if a string starts with a neddle, ':param'
      */
     private function startsWith(string $haystack, string $needle): bool
@@ -64,8 +88,8 @@ class Router
         if (!$route) {
             return [];
         }
-        $url_parts = explode('/', $route);
 
+        $url_parts = explode('/', $route);
         $url_parts_filtered = [];
         foreach ($url_parts as $url_part) {
             if ($url_part) {
@@ -80,9 +104,8 @@ class Router
      */
     private function filterRouteByRequestMethod(): void
     {
-        $method = $_SERVER['REQUEST_METHOD'];
-        if (!isset($this->routes[$method])) {
-            $this->routes[$method] = [];
+        if (!isset($this->routes[$this->request_method])) {
+            $this->routes[$this->request_method] = [];
         }
     }
 
@@ -92,11 +115,11 @@ class Router
      */
     private function filterRoutesByPartsLength(): void
     {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $length = count($this->getUrlParts($_SERVER['REQUEST_URI']));
+
+        $length = count($this->getUrlParts($this->request_uri));
 
         $valid_routes = [];
-        foreach ($this->routes[$method] as $key => $route) {
+        foreach ($this->routes[$this->request_method] as $key => $route) {
             $route_parts_length = count($route['parts']);
 
             if ($route_parts_length === $length) {
@@ -107,7 +130,7 @@ class Router
             }
         }
 
-        $this->routes[$method] = $valid_routes;
+        $this->routes[$this->request_method] = $valid_routes;
     }
 
     /**
@@ -116,9 +139,9 @@ class Router
      */
     private function filterRoutesByIndexPart(int $index, string $part): void
     {
-        $method = $_SERVER['REQUEST_METHOD'];
+
         $valid_routes = [];
-        foreach ($this->routes[$method] as $route) {
+        foreach ($this->routes[$this->request_method] as $route) {
             $route_parts = $route['parts'];
 
             if ($this->isParam($route_parts[$index])) {
@@ -134,7 +157,7 @@ class Router
             }
         }
 
-        $this->routes[$method] = $valid_routes;
+        $this->routes[$this->request_method] = $valid_routes;
     }
 
     /**
@@ -142,7 +165,7 @@ class Router
      */
     private function filterRoutesByParts(): void
     {
-        $current_url_parts = $this->getUrlParts($_SERVER['REQUEST_URI']);
+        $current_url_parts = $this->getUrlParts($this->request_uri);
         foreach ($current_url_parts as $index => $part) {
             $this->filterRoutesByIndexPart($index, $part);
         }
@@ -170,12 +193,12 @@ class Router
      */
     public function getValidRoutes(): array
     {
+        
         $this->filterRouteByRequestMethod();
         $this->filterRoutesByPartsLength();
         $this->filterRoutesByParts();
-
-        $method = $_SERVER['REQUEST_METHOD'];
-        $routes = $this->routes[$method];
+        
+        $routes = $this->routes[$this->request_method];
         if (empty($routes)) {
             throw new NotFoundException('The page does not exist');
         }
@@ -226,14 +249,6 @@ class Router
     }
 
     /**
-     * faster router based on URL segment
-     * e.g. /settings/test/:id
-     * If faster router is enabled then there need to be a controller named App/Settings/*
-     * Anything atempt to loader a controller is skipped if there is no match inf faster_route mode
-     */
-    private bool $faster_router = false;
-
-    /**
      * Set faster router mode
      */
     public function setFasterRouter(): void
@@ -246,7 +261,7 @@ class Router
      */
     private function getUrlSegment(int $num_segment): ?string
     {
-        $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri_path = parse_url($this->request_uri, PHP_URL_PATH);
         if (!$uri_path) {
             throw new InvalidArgumentException("PHP_URL_PATH could not be parsed");
         }
