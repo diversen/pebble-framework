@@ -44,4 +44,23 @@ class JSON
     {
         echo self::response($value, $flags, $depth, $send_header);
     }
+
+    /**
+     * Render an error response where 'error' => true
+     */
+    public function renderError(array $response = [] ): void
+    {
+        $response['error'] = true;
+        $this->render($response);
+    }
+
+    /**
+     * Render a success response where 'error' => false
+     * @param array $response
+     */
+    public function renderSuccess(array $response = []): void
+    {
+        $response['error'] = false;
+        $this->render($response);
+    }
 }
