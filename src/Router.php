@@ -53,7 +53,8 @@ class Router
      */
     private bool $faster_router = false;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->request_method = $_SERVER['REQUEST_METHOD'];
         $this->request_uri = $_SERVER['REQUEST_URI'];
     }
@@ -115,7 +116,6 @@ class Router
      */
     private function filterRoutesByPartsLength(): void
     {
-
         $length = count($this->getUrlParts($this->request_uri));
 
         $valid_routes = [];
@@ -139,7 +139,6 @@ class Router
      */
     private function filterRoutesByIndexPart(int $index, string $part): void
     {
-
         $valid_routes = [];
         foreach ($this->routes[$this->request_method] as $route) {
             $route_parts = $route['parts'];
@@ -193,11 +192,10 @@ class Router
      */
     public function getValidRoutes(): array
     {
-        
         $this->filterRouteByRequestMethod();
         $this->filterRoutesByPartsLength();
         $this->filterRoutesByParts();
-        
+
         $routes = $this->routes[$this->request_method];
         if (empty($routes)) {
             throw new NotFoundException('The page does not exist');
@@ -367,14 +365,13 @@ class Router
     }
 
     /**
-     * cast params, e.g.: @cast int:id,float:price 
+     * cast params, e.g.: @cast int:id,float:price
      * @param string $cast
      * @param array<string> $params
      * @return array<mixed>
      */
     private function castParams(string $cast, array $params): array
     {
-
         $cast = explode(',', $cast);
         $cast = array_map('trim', $cast);
 

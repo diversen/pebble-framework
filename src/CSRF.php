@@ -62,10 +62,10 @@ class CSRF
         $this->error_message = $message;
     }
 
-    public function validateTokenJSON (): void {
-
+    public function validateTokenJSON(): void
+    {
         if (!$this->validateToken()) {
-            throw new JSONException($this->error_message, 403);      
-        } 
+            throw new JSONException($this->error_message, 403);
+        }
     }
 }

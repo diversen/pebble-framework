@@ -58,36 +58,26 @@ class StdErrorController
         $class = get_class($e);
 
         if ($class === NotFoundException::class) {
-
             $this->log->notice("App.not_found ", ['url' => $_SERVER['REQUEST_URI']]);
             $this->displayError($e);
-
         } elseif ($class === ForbiddenException::class) {
-
             $this->log->notice("App.forbidden", ['url' => $_SERVER['REQUEST_URI']]);
             $this->displayError($e);
-
         } elseif ($class === TemplateException::class) {
-
             $this->log->error('App.template', ['exception' => ExceptionTrace::get($e)]);
             $this->displayError($e);
-            
         } elseif ($class === JSONException::class) {
-
             $this->log->error('App.json', ['exception' => ExceptionTrace::get($e)]);
-            
+
             $response['message'] = $e->getMessage();
             $response['error'] = true;
             $response['code'] = $error_code;
 
             $json = new JSON();
             $json->render($response);
-            
         } else {
-            
             $this->log->notice('App.exception', ['exception' => ExceptionTrace::get($e)]);
             $this->displayError($e);
-
         }
     }
 }

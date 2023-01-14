@@ -29,7 +29,8 @@ class Test
      * @cast int:id
      * @verbs GET
      */
-     public function testcast(array $params): void {
+    public function testcast(array $params): void
+    {
         echo "Param: " . $params['id'];
-     }
+    }
 }

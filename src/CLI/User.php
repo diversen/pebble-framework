@@ -107,16 +107,14 @@ class User
     public function runCommand(ParseArgv $args): int
     {
         try {
-
-        
             if ($args->getOption('create-user')) {
                 return $this->createUser();
             }
-    
+
             if ($args->getOption('set-admin')) {
                 return $this->setAdmin();
             }
-    
+
             return 0;
         } catch (Exception $e) {
             $this->utils->echoStatus('Error', 'error', $e->getMessage());

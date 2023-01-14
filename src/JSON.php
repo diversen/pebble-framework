@@ -47,8 +47,9 @@ class JSON
 
     /**
      * Render an error response where 'error' => true
+     * @param array<mixed> $response
      */
-    public function renderError(array $response = [] ): void
+    public function renderError(array $response = []): void
     {
         $response['error'] = true;
         $this->render($response);
@@ -56,7 +57,7 @@ class JSON
 
     /**
      * Render a success response where 'error' => false
-     * @param array $response
+     * @param array<mixed> $response
      */
     public function renderSuccess(array $response = []): void
     {
