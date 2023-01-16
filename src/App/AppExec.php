@@ -28,7 +28,17 @@ class AppExec
     /**
      * @var object
      */
-    private $errorController = null;
+    private $error_controller = null;
+
+    /**
+     * @var string
+     */
+    private string $app_class = '';
+
+    /**
+     * @var object
+     */
+    private $error_class = null;
 
     public function setErrorController(string $class_name): void
     {
@@ -36,7 +46,7 @@ class AppExec
             throw new InvalidArgumentException("Class $class_name not found");
         }
 
-        $this->errorController = new $class_name();
+        $this->error_class = $class_name;
     }
 
     /**
@@ -47,7 +57,7 @@ class AppExec
         if (!class_exists($class_name)) {
             throw new InvalidArgumentException("Class $class_name not found");
         }
-        $this->app = new $class_name();
+        $this->app_class = $class_name;
     }
 
     /**
@@ -55,40 +65,47 @@ class AppExec
      */
     public function run(): void
     {
-        if (!is_object($this->app)) {
-            throw new Exception('No app added to PebbleExec');
-        }
-
-        if (!is_object($this->errorController)) {
-            $this->errorController = new StdErrorController();
-        }
-
-        if (!method_exists($this->app, 'run')) {
-            throw new Exception('App does not have a run method');
-        }
-
-        if (!method_exists($this->errorController, 'render')) {
-            throw new Exception('App does not have a run method');
-        }
-
         try {
+
+            // Init error controller.
+            $error_class = $this->error_class;
+            $this->error_controller = new $error_class();
+
+            if (!is_object($this->error_controller)) {
+                $this->error_controller = new StdErrorController();
+            }
+
+            if (!method_exists($this->error_controller, 'render')) {
+                throw new Exception('Error controller does not have a render method');
+            }
+
+            // Init app
+            $app_class = $this->app_class;
+            $this->app = new $app_class();
+    
+            if (!method_exists($this->app, 'run')) {
+                throw new Exception('App does not have a run method');
+            }
+
             $this->app->run();
+            
+
         } catch (TemplateException $e) {
             // 510
-            $this->errorController->render($e);
+            $this->error_controller->render($e);
         } catch (NotFoundException $e) {
             // 404
-            $this->errorController->render($e);
+            $this->error_controller->render($e);
         } catch (ForbiddenException $e) {
             // 403
-            $this->errorController->render($e);
+            $this->error_controller->render($e);
         } catch (JSONException $e) {
             // 403
-            $this->errorController->render($e);
+            $this->error_controller->render($e);
         } catch (Throwable $e) {
             // 500 (Any other exception)
             // This should catch anything else
-            $this->errorController->render($e);
+            $this->error_controller->render($e);
         }
     }
 }
