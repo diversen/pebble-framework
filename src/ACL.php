@@ -29,6 +29,7 @@ class ACL extends Auth
 
     /**
      * Check if user is authenticated or throw a ForbiddenException
+     * @throws ForbiddenException
      */
     public function isAuthenticatedOrThrow(string $error_message = ''): void
     {
