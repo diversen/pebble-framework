@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pebble\App;
+namespace Pebble\Trait;
 
 use ErrorException;
 
@@ -13,15 +13,18 @@ use Pebble\JSON;
 use Pebble\CSRF;
 use Pebble\Template;
 use Pebble\HTTP\AcceptLanguage;
-use Pebble\App\StdUtils;
+use Pebble\Service\ConfigService;
 
 use function Safe\set_include_path;
 use function Safe\get_include_path;
 
 /**
- * A base app class with some utilities
+ * A base app class with some utilities which 
+ * should / may be extended by the main app class
+ * 
+ * It provides some common  
  */
-class AppBase extends StdUtils
+trait AppUtils
 {
     /**
      * Add base path to php include path. Then we always know how to include files
@@ -63,7 +66,8 @@ class AppBase extends StdUtils
      */
     public function sessionStart(): bool
     {
-        Session::setConfigSettings($this->getConfig()->getSection('Session'));
+        $session_config = (new ConfigService())->getConfig()->getSection('Session');
+        Session::setConfigSettings($session_config);
         return session_start();
     }
 
@@ -72,8 +76,8 @@ class AppBase extends StdUtils
      */
     public function sendSSLHeaders(): void
     {
-        $config = $this->getConfig();
-        if ($config->get('App.force_ssl')) {
+        $force_ssl = (new ConfigService())->getConfig()->get('App.force_ssl');
+        if ($force_ssl) {
             Headers::redirectToHttps();
         }
     }
@@ -81,8 +85,9 @@ class AppBase extends StdUtils
 
     public function getRequestLanguage(): ?string
     {
-        $default = $this->getConfig()->get('Language.default');
-        $supported = $this->getConfig()->get('Language.enabled');
+        $config = (new ConfigService())->getConfig();
+        $default = $config->get('Language.default');
+        $supported = $config->get('Language.enabled');
 
         return AcceptLanguage::getLanguage($supported, $default);
     }
@@ -97,7 +102,8 @@ class AppBase extends StdUtils
      */
     public function setDebug(): void
     {
-        if ($this->getConfig()->get('App.env') === 'dev') {
+        $config = (new ConfigService())->getConfig();
+        if ($config->get('App.env') === 'dev') {
             JSON::$debug = true;
             CSRF::$disabled = true;
         }

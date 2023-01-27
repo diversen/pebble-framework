@@ -16,6 +16,7 @@ use Pebble\Flash;
 use Pebble\Template;
 use Pebble\JSON;
 use Pebble\CSRF;
+use Pebble\DBCache;
 
 /**
  * A Utils class that returns convenient services which are singletons
@@ -71,6 +72,11 @@ class StdUtils
      * @var \Pebble\CSRF
      */
     protected $csrf;
+
+    /**
+     * @var \Pebble\DBCache
+     */
+    protected $db_cache;
 
     public function getConfig(): \Pebble\Config
     {
@@ -150,6 +156,15 @@ class StdUtils
         return $container->get('csrf');
     }
 
+    public function getDBCache(): \Pebble\DBCache
+    {
+        $container = new Container();
+        if (!$container->has('db_cache')) {
+            $db = $this->getDB();
+            $container->set('db_cache', new DBCache($db));
+        }
+        return $container->get('db_cache');
+    }
 
     /**
      * Properties can only be used in sub classes
@@ -168,5 +183,6 @@ class StdUtils
         $this->template = $this->getTemplate();
         $this->json = $this->getJSON();
         $this->csrf = $this->getCSRF();
+        $this->db_cache = $this->getDBCache();
     }
 }
