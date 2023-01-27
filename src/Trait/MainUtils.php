@@ -22,9 +22,9 @@ use function Safe\get_include_path;
  * A base app class with some utilities which 
  * should / may be extended by the main app class
  * 
- * It provides some common  
+ * It provides some common  utilities for an app
  */
-trait AppUtils
+trait MainUtils
 {
     /**
      * Add base path to php include path. Then we always know how to include files
