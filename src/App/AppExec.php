@@ -21,14 +21,16 @@ use InvalidArgumentException;
 class AppExec
 {
     /**
+     * App object
      * @var object
      */
     private $app = null;
 
     /**
+     * Error object
      * @var object
      */
-    private $error_controller = null;
+    private $error = null;
 
     /**
      * @var string
@@ -36,17 +38,22 @@ class AppExec
     private string $app_class = '';
 
     /**
-     * @var object
+     * @var string
      */
-    private $error_class = null;
+    private ?string $error_class = null;
 
-    public function setErrorController(string $class_name): void
+    public function __construct()
     {
-        if (!class_exists($class_name)) {
-            throw new InvalidArgumentException("Class $class_name not found");
+        $this->error_class = StdErrorController::class;
+    }
+
+    public function setErrorController(string $error_class): void
+    {
+        if (!class_exists($error_class)) {
+            throw new InvalidArgumentException("Class $error_class not found");
         }
 
-        $this->error_class = $class_name;
+        $this->error_class = $error_class;
     }
 
     /**
@@ -65,17 +72,15 @@ class AppExec
      */
     public function run(): void
     {
+        
         try {
 
-            // Init error controller.
+            // Init error handler
             $error_class = $this->error_class;
-            $this->error_controller = new $error_class();
+            $this->error = new $error_class();
 
-            if (!is_object($this->error_controller)) {
-                $this->error_controller = new StdErrorController();
-            }
 
-            if (!method_exists($this->error_controller, 'render')) {
+            if (!method_exists($this->error, 'render')) {
                 throw new Exception('Error controller does not have a render method');
             }
 
@@ -88,24 +93,15 @@ class AppExec
             }
 
             $this->app->run();
-            
 
-        } catch (TemplateException $e) {
-            // 510
-            $this->error_controller->render($e);
-        } catch (NotFoundException $e) {
-            // 404
-            $this->error_controller->render($e);
-        } catch (ForbiddenException $e) {
-            // 403
-            $this->error_controller->render($e);
-        } catch (JSONException $e) {
-            // 403
-            $this->error_controller->render($e);
         } catch (Throwable $e) {
-            // 500 (Any other exception)
-            // This should catch anything else
-            $this->error_controller->render($e);
+            /** 
+             * phpstan complains about the next line
+             * but it does not complain about the above line ($this->app->run)
+             * Both objects are created dynamically so I'm ignoring it for now.
+             * @phpstan-ignore-next-line
+             */
+            $this->error->render($e);
         }
     }
 }
