@@ -84,9 +84,6 @@ class StdUtils
      */
     protected $data;
 
-    /**
-     * @var \Pebble\Data
-     */
     public function getConfig(): \Pebble\Config
     {
         $config = new ConfigService();

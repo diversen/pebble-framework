@@ -10,9 +10,12 @@ namespace Pebble;
  */
 class Data {
 
+    /**
+     * @var array<mixed>
+     */
     public array $data = [];
 
-    public function setData (string $key, mixed $value) {
+    public function setData (string $key, mixed $value): void {
         $this->data[$key] = $value;
     }
 
