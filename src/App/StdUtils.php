@@ -17,6 +17,7 @@ use Pebble\Template;
 use Pebble\JSON;
 use Pebble\CSRF;
 use Pebble\DBCache;
+use Pebble\Data;
 
 /**
  * A Utils class that returns convenient services which are singletons
@@ -78,6 +79,14 @@ class StdUtils
      */
     protected $db_cache;
 
+    /**
+     * @var \Pebble\Data
+     */
+    protected $data;
+
+    /**
+     * @var \Pebble\Data
+     */
     public function getConfig(): \Pebble\Config
     {
         $config = new ConfigService();
@@ -166,6 +175,17 @@ class StdUtils
         return $container->get('db_cache');
     }
 
+    public function getDataContainer(): \Pebble\Data
+    {
+        $container = new Container();
+        if (!$container->has('data')) {
+            $data = new Data();
+            $container->set('data', $data);
+        }
+        return $container->get('data');
+    }
+
+
     /**
      * Properties can only be used in sub classes
      * Convenient if you extend e.g. a controller with the StdUtils class
@@ -184,5 +204,6 @@ class StdUtils
         $this->json = $this->getJSON();
         $this->csrf = $this->getCSRF();
         $this->db_cache = $this->getDBCache();
+        $this->data = $this->getDataContainer();
     }
 }

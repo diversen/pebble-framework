@@ -37,7 +37,7 @@ class Template
 
         $content = ob_get_clean();
         if (!$content) {
-            return null;
+            throw new TemplateException("No content in template");
         }
 
         return $content;
@@ -58,6 +58,21 @@ class Template
     }
 
     /**
+     * @param array<mixed> $template_vars
+     * @param array<mixed> $options
+     * @return array<mixed>
+     */
+    public static function encodeData(array $template_vars, array $options = []): array
+    {
+        $raw = $options['raw'] ?? false;
+        if (!$raw) {
+            $template_vars = Special::encodeAry($template_vars);
+        }
+        return $template_vars;
+
+    }
+
+    /**
      * Get output from a template
      * @param string $template
      * @param array<mixed> $template_vars
@@ -65,14 +80,10 @@ class Template
      */
     public static function render(string $template, $template_vars = [], array $options = []): void
     {
-        $raw = $options['raw'] ?? false;
+        
         try {
-            if (!$raw) {
-                $template_vars = Special::encodeAry($template_vars);
-            }
-
+            $template_vars = self::encodeData($template_vars, $options);
             extract($template_vars);
-
             $template = self::getTemplatePath($template);
             require($template);
         } catch (Exception $e) {
