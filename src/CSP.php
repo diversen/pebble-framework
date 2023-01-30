@@ -6,7 +6,6 @@ namespace Pebble;
 
 use Aidantwoods\SecureHeaders\SecureHeaders;
 use Pebble\Service\ConfigService;
-use Exception;
 
 /**
  * A wrapper class for sending CSP headers defined in a 'CSP' config file
@@ -17,16 +16,16 @@ use Exception;
 class CSP
 {
     
-    private ?string $nonce = null ;
+    private string $nonce = '';
     
     public function __construct() {}
     
-    public function getNonce()
+    public function getNonce(): string
     {
         return $this->nonce;
     }
 
-    public function sendCSPHeaders()
+    public function sendCSPHeaders(): void
     {
         $config = (new ConfigService())->getConfig();
 
@@ -36,10 +35,6 @@ class CSP
         }
 
         $this->nonce = $config->get('CSP.nonce');
-
-        /**
-         * @var SecureHeaders $headers
-         */
         $headers = $config->get('CSP.headers');
         $headers->apply();
     }

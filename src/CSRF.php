@@ -9,7 +9,7 @@ use Pebble\Exception\JSONException;
 class CSRF
 {
 
-    private $csrf_token;
+    private string $csrf_token;
     /**
      * @var bool
      */
@@ -71,8 +71,8 @@ class CSRF
 
     /**
      * Set CSRF token. Default is to set token on GET request
-     * @param array $verbs
-     * @param array $exclude_paths
+     * @param array<mixed> $verbs
+     * @param array<mixed> $exclude_paths
      */
     public function setCSRFToken(array $verbs = ['GET'], array $exclude_paths = []): void
     {
