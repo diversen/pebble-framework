@@ -15,11 +15,12 @@ use Pebble\Service\ConfigService;
  */
 class CSP
 {
-    
     private string $nonce = '';
-    
-    public function __construct() {}
-    
+
+    public function __construct()
+    {
+    }
+
     public function getNonce(): string
     {
         return $this->nonce;

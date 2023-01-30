@@ -8,7 +8,6 @@ use Pebble\Exception\JSONException;
 
 class CSRF
 {
-
     private string $csrf_token;
     /**
      * @var bool

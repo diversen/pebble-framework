@@ -161,7 +161,6 @@ class StdUtils
 
     public function getCSRF(): \Pebble\CSRF
     {
-
         $container = new Container();
         if (!$container->has('csrf')) {
             $csrf = new CSRF();
@@ -173,7 +172,6 @@ class StdUtils
 
     public function getCSP(): \Pebble\CSP
     {
-
         $container = new Container();
         if (!$container->has('csp')) {
             $csp = new CSP();
@@ -210,7 +208,6 @@ class StdUtils
      */
     public function __construct()
     {
-        
         $this->auth = $this->getAuth();
         $this->log = $this->getLog();
         $this->db = $this->getDB();

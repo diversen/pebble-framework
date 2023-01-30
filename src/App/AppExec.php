@@ -68,7 +68,6 @@ class AppExec
      */
     public function run(): void
     {
-        
         try {
 
             // Init error handler
@@ -83,15 +82,14 @@ class AppExec
             // Init app
             $app_class = $this->app_class;
             $this->app = new $app_class();
-    
+
             if (!method_exists($this->app, 'run')) {
                 throw new Exception('App does not have a run method');
             }
 
             $this->app->run();
-
         } catch (Throwable $e) {
-            /** 
+            /**
              * phpstan complains about the next line
              * but it does not complain about the above line ($this->app->run)
              * Both objects are created dynamically so I'm ignoring it for now.

@@ -19,9 +19,9 @@ use function Safe\set_include_path;
 use function Safe\get_include_path;
 
 /**
- * Some utilities which 
+ * Some utilities which
  * should / may be extended by the main app class
- * 
+ *
  * It provides some common  utilities for an app
  */
 class CommonUtils
@@ -105,7 +105,7 @@ class CommonUtils
         $config = (new ConfigService())->getConfig();
         if ($config->get('App.env') === 'dev') {
             JSON::$debug = true;
-            
+
             // Easier to run tests
             CSRF::$disabled = true;
         }

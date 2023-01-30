@@ -69,7 +69,6 @@ class Template
             $template_vars = Special::encodeAry($template_vars);
         }
         return $template_vars;
-
     }
 
     /**
@@ -80,7 +79,6 @@ class Template
      */
     public static function render(string $template, $template_vars = [], array $options = []): void
     {
-        
         try {
             $template_vars = self::encodeData($template_vars, $options);
             extract($template_vars);
