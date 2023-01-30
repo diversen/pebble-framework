@@ -8,6 +8,7 @@ use Pebble\Exception\JSONException;
 
 class CSRF
 {
+
     /**
      * Disable CSRF. Useful for testing
      * @var bool
@@ -67,5 +68,36 @@ class CSRF
         if (!$this->validateToken()) {
             throw new JSONException($this->error_message, 403);
         }
+    }
+
+    private $csrf_token;
+
+    /**
+     * Set CSRF token. Default is to set token on GET request
+     * @param array $verbs
+     * @param array $exclude_paths
+     */
+    public function setCSRFToken(array $verbs = ['GET'], array $exclude_paths = []): void
+    {
+        $request_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        if (in_array($_SERVER['REQUEST_METHOD'], $verbs) && !in_array($request_path, $exclude_paths)) {
+            $this->csrf_token = $this->getToken();
+        }
+    }
+
+    public function getCSRFToken(): string
+    {
+        return $this->csrf_token;
+    }
+
+    /**
+     * Get CSRF form field
+     * @return string
+     */
+    public function getCSRFFormField(): string
+    {
+        $csrf_token = $this->csrf_token;
+        return "<input type='hidden' name='csrf_token' value='$csrf_token'>";
     }
 }
