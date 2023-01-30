@@ -31,10 +31,16 @@ class Data {
         return isset($this->data[$key]);
     }
 
-    public function setArrayData(string $key, array $value): void {
+
+    
+
+    public function setArrayData(string $key, mixed $value): void {
         $this->data[$key][] = $value;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getArrayData(string $key): array {
         return $this->data[$key] ?? [];
     }
