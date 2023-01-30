@@ -9,14 +9,13 @@ use Pebble\Exception\JSONException;
 class CSRF
 {
 
+    private $csrf_token;
     /**
-     * Disable CSRF. Useful for testing
      * @var bool
      */
     public static bool $disabled = false;
 
     /**
-     * Set a message to be displayed when CSRF fails
      * @var string
      */
     public string $error_message = 'CSRF token is not valid';
@@ -69,8 +68,6 @@ class CSRF
             throw new JSONException($this->error_message, 403);
         }
     }
-
-    private $csrf_token;
 
     /**
      * Set CSRF token. Default is to set token on GET request
