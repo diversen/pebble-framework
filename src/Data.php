@@ -31,9 +31,6 @@ class Data {
         return isset($this->data[$key]);
     }
 
-
-    
-
     public function setArrayData(string $key, mixed $value): void {
         $this->data[$key][] = $value;
     }
