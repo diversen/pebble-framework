@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Pebble\App;
 
-use Pebble\Exception\ForbiddenException;
-use Pebble\Exception\NotFoundException;
-use Pebble\Exception\TemplateException;
-use Pebble\Exception\JSONException;
 use Pebble\App\StdErrorController;
 
 use Throwable;
