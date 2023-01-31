@@ -12,6 +12,7 @@ use Pebble\Service\ConfigService;
 use Pebble\Service\DBService;
 use Pebble\Service\LogService;
 use Pebble\Service\MigrationService;
+use Pebble\App\CommonUtils;
 use Pebble\Flash;
 use Pebble\Template;
 use Pebble\JSON;
@@ -89,6 +90,11 @@ class StdUtils
      * @var \Pebble\Data
      */
     protected $data;
+
+    /**
+     * @var \Pebble\App\CommonUtils
+     */
+    protected $utils;
 
     public function getConfig(): \Pebble\Config
     {
@@ -179,6 +185,17 @@ class StdUtils
         }
 
         return $container->get('csp');
+    }
+
+    public function getUtils(): \Pebble\App\CommonUtils
+    {
+        $container = new Container();
+        if (!$container->has('utils')) {
+            $utils = new CommonUtils();
+            $container->set('utils', $utils);
+        }
+
+        return $container->get('utils');
     }
 
     public function getDBCache(): \Pebble\DBCache
