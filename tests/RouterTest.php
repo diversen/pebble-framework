@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Pebble\Exception\NotFoundException;
 use Pebble\Router;
+use Pebble\Router\DocBlock;
 use Pebble\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -86,7 +87,8 @@ final class RouterTest extends TestCase
         $this->expectOutputString('Param: 100');
     }
 
-    public function test_castToInt(): void {
+    public function test_castToInt(): void
+    {
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/cast/test/10';
@@ -95,9 +97,10 @@ final class RouterTest extends TestCase
         $router->addClass(Test::class);
 
         $route = $router->getFirstRoute();
-        $params = $router->getParamsFromRoute($route);
+        $docblock = new DocBlock();
+
+        $params = $docblock->getParams($route);
 
         $this->assertEquals(10, $params['id']);
-
     }
 }
