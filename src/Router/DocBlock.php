@@ -41,7 +41,7 @@ class DocBlock implements RouteParser
                     'route' => $route,
                     'class' => $class,
                     'method' => $method_name,
-                    'parts' => Utils::getUrlParts($route),
+                    'parts' => Utils::getUrlParts($parsed_doc['route']),
                     'parsed_doc' => $parsed_doc,
                 ];
 
