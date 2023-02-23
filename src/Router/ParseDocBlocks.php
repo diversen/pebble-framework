@@ -9,7 +9,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use Pebble\Interfaces\RouteParser;
 
-class DocBlock implements RouteParser
+class ParseDocBlocks implements RouteParser
 {
     /**
      * Parse a doc block and return all tags as an array. We are looking for 'route' and 'verbs'

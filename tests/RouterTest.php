@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 use Pebble\Exception\NotFoundException;
 use Pebble\Router;
-use Pebble\Router\DocBlock;
+use Pebble\Router\ParseDocBlocks;
+use Pebble\Router\ParseAttributes;
 use Pebble\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -97,9 +98,28 @@ final class RouterTest extends TestCase
         $router->addClass(Test::class);
 
         $route = $router->getFirstRoute();
-        $docblock = new DocBlock();
+        $docblock = new ParseDocBlocks();
 
         $params = $docblock->getParams($route);
+
+        $this->assertEquals(10, $params['id']);
+    }
+
+
+    public function test_attributes(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = '/attributes/test/10';
+
+        $router = new Router(ParseAttributes::class);
+        $router->addClass(Test::class);
+
+        $route = $router->getFirstRoute();
+
+        $parse_attr = new ParseAttributes();
+        $routes = $parse_attr->getRoutes(Test::class);
+
+        $params = $parse_attr->getParams($route);
 
         $this->assertEquals(10, $params['id']);
     }

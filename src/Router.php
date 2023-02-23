@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 use Pebble\Exception\NotFoundException;
-use Pebble\Router\DocBlock;
+use Pebble\Router\ParseDocBlocks;
 use Pebble\Router\Utils;
 use InvalidArgumentException;
 use Pebble\Interfaces\RouteParser;
@@ -58,11 +58,20 @@ class Router
      */
     private bool $faster_router = false;
 
-    public function __construct()
+    /**
+     * @param class-string $route_parser
+     */
+
+    public function __construct(string $route_parser = null)
     {
         $this->request_method = $_SERVER['REQUEST_METHOD'];
         $this->request_uri = $_SERVER['REQUEST_URI'];
-        $this->route_parser = new DocBlock();
+
+        if (!$route_parser) {
+            $this->route_parser = new ParseDocBlocks();
+        } else {
+            $this->route_parser = new $route_parser();
+        }
     }
 
     /**
