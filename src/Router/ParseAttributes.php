@@ -14,7 +14,7 @@ class ParseAttributes implements RouteParser
 {
 
     /**
-     * @param array<mixed> $parsed_doc
+     * @param array<mixed> $args
      * @return array<mixed>
      */
     private function getRouteDefinitions(string $class, string $method_name, array $args): array
@@ -48,6 +48,7 @@ class ParseAttributes implements RouteParser
 
         $reflection_class = new ReflectionClass($class);
         $methods = $reflection_class->getMethods(ReflectionMethod::IS_PUBLIC);
+        $method_routes = [];
 
         foreach ($methods as $method) {
 
@@ -83,7 +84,7 @@ class ParseAttributes implements RouteParser
     private function castParams(array $cast, array $params): array
     {
 
-        $cast = [
+        $cast_to_map = [
             'int' => 'intval',
             'float' => 'floatval',
             'string' => 'strval',
@@ -93,7 +94,7 @@ class ParseAttributes implements RouteParser
         foreach ($params as $key => $value) {
             $cast_to = $cast[$key] ?? null;
             if ($cast_to) {
-                $params[$key] = $cast[$cast_to]($value);
+                $params[$key] = $cast_to_map[$cast_to]($value);
             }
         }
 

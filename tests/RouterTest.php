@@ -111,7 +111,8 @@ final class RouterTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/attributes/test/10';
 
-        $router = new Router(ParseAttributes::class);
+        $route_parser = new ParseAttributes();
+        $router = new Router($route_parser);
         $router->addClass(Test::class);
 
         $route = $router->getFirstRoute();

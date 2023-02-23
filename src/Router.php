@@ -48,7 +48,7 @@ class Router
     /**
      * Route parser
      */
-    private RouteParser $route_parser;
+    private  RouteParser $route_parser;
 
     /**
      * faster router based on URL segment
@@ -59,19 +59,19 @@ class Router
     private bool $faster_router = false;
 
     /**
-     * @param class-string $route_parser
+     * @param RouteParser $route_parser
      */
-
-    public function __construct(string $route_parser = null)
+    public function __construct(RouteParser $route_parser = null)
     {
         $this->request_method = $_SERVER['REQUEST_METHOD'];
         $this->request_uri = $_SERVER['REQUEST_URI'];
 
         if (!$route_parser) {
-            $this->route_parser = new ParseDocBlocks();
-        } else {
-            $this->route_parser = new $route_parser();
+            $route_parser = ParseDocBlocks::class;
         }
+
+        $this->route_parser = new $route_parser();
+        
     }
 
     /**

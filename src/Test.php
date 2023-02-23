@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble;
 
+use Attribute;
 use Pebble\Attributes\Route;
 
 class Test
@@ -36,6 +37,9 @@ class Test
         echo "Param: " . $params['id'];
     }
 
+    /**
+     * @param array<mixed> $params
+     */
 	#[Route(path: '/attributes/test/:id', verbs: ['GET', 'POST'], cast: ['id' => 'int'])]
     public function test_attributes(array $params): void
     {
