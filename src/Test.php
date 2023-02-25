@@ -13,6 +13,7 @@ class Test
      * @route /test/:param1
      * @verbs POST
      */
+    #[Route(path: '/test/:param1', verbs: ['POST'])]
     public function index(): void
     {
     }
@@ -21,17 +22,13 @@ class Test
      * @route /test/hello_world
      * @verbs POST
      */
+    #[Route(path: '/test/hello_world', verbs: ['POST'])]
     public function helloWorld(): void
     {
         echo "Hello world";
     }
 
-    /**
-     * @param array<mixed> $params
-     * @route /cast/test/:id
-     * @cast int:id
-     * @verbs GET
-     */
+    #[Route(path: '/cast/test/:id', cast: ['id' => 'int'])]
     public function testcast(array $params): void
     {
         echo "Param: " . $params['id'];

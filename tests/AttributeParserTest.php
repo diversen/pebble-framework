@@ -9,7 +9,7 @@ final class AttributeParserTest extends TestCase
     public function test_parseAttributes(): void
     {
         $attributes = AttributeParser::parseAttributes(Test::class);
-        $attribute = $attributes[0];
+        $attribute = $attributes[3];
 
         $arguments = $attribute['arguments'];
 

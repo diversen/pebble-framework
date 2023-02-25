@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 use Pebble\Exception\NotFoundException;
-use Pebble\Router\ParseDocBlocks;
+use Pebble\Router\ParseAttributes;
 use Pebble\Router\Utils;
 use InvalidArgumentException;
 use Pebble\Interfaces\RouteParser;
@@ -67,7 +67,7 @@ class Router
         $this->request_uri = $_SERVER['REQUEST_URI'];
 
         if (!$route_parser) {
-            $route_parser = ParseDocBlocks::class;
+            $route_parser = ParseAttributes::class;
         }
 
         $this->route_parser = new $route_parser();

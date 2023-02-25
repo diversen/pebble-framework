@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Pebble\Router;
 
 use Pebble\Router\Utils;
-use ReflectionClass;
-use ReflectionMethod;
 use Pebble\Interfaces\RouteParser;
 use Pebble\Attributes\Route;
 use Pebble\AttributeParser;
@@ -56,8 +54,12 @@ class ParseAttributes implements RouteParser
             }
 
             $args = $attribute['arguments'];
-            if (!isset($args['path']) || !isset($args['verbs'])) {
+            if (!isset($args['path'])) {
                 continue;
+            }
+
+            if (!isset($args['verbs'])) {
+                $args['verbs'] = ['GET'];
             }
 
             $routes = $this->getRouteDefinitions($class, $attribute['method_name'], $args);
