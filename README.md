@@ -11,7 +11,7 @@ A small framework and library for creating PHP applications.
 
 Requirements (PHP >= 8.1):
 
-    composer require diversen/pebble-framework:^9.0
+    composer require diversen/pebble-framework:^10.0
 
 # Install for testing
 
