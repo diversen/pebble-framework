@@ -9,6 +9,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use Pebble\Interfaces\RouteParser;
 use Pebble\Attributes\Route;
+use Pebble\AttributeParser;
 
 class ParseAttributes implements RouteParser
 {
@@ -46,31 +47,24 @@ class ParseAttributes implements RouteParser
     public function getRoutes(string $class)
     {
 
-        $reflection_class = new ReflectionClass($class);
-        $methods = $reflection_class->getMethods(ReflectionMethod::IS_PUBLIC);
         $method_routes = [];
-
-        foreach ($methods as $method) {
-
-            $method_name = $method->getName();
-            $attr = $method->getAttributes();
-
-            foreach ($attr as $attribute) {
-                $attr_name = $attribute->getName();
-                if ($attr_name !== Route::class) {
-                    continue;
-                }
-
-                $args = $attribute->getArguments();
-                if (!isset($args['path']) || !isset($args['verbs'])) {
-                    continue;
-                }
-
-                $routes = $this->getRouteDefinitions($class, $method_name, $args);
-                foreach ($routes as $route) {
-                    $method_routes[] = $route;
-                }
+        $attr = AttributeParser::parseAttributes($class);
+        foreach($attr as $attribute) {
+            $attr_name = $attribute['attribute_name'];
+            if ($attr_name !== Route::class) {
+                continue;
             }
+
+            $args = $attribute['arguments'];
+            if (!isset($args['path']) || !isset($args['verbs'])) {
+                continue;
+            }
+
+            $routes = $this->getRouteDefinitions($class, $attribute['method_name'], $args);
+            foreach ($routes as $route) {
+                $method_routes[] = $route;
+            }
+            
         }
 
         return $method_routes;
