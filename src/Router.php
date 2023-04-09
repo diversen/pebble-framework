@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Pebble;
 
 use Pebble\Exception\NotFoundException;
-use Pebble\Router\ParseAttributes;
+
 use Pebble\Router\Utils;
 use InvalidArgumentException;
-use Pebble\Interfaces\RouteParser;
+use Pebble\Router\ParseAttributes;
+use Pebble\Router\Request;
 use stdClass;
 
 class Router
@@ -24,11 +25,6 @@ class Router
      * @var array<callable>
      */
     private array $middleware = [];
-
-    /**
-     * Current route being executed
-     */
-    private static string $current_route;
 
     /**
      * Class to create middleware object from
@@ -48,7 +44,7 @@ class Router
     /**
      * Route parser
      */
-    private  RouteParser $route_parser;
+    private ParseAttributes $route_parser;
 
     /**
      * faster router based on URL segment
@@ -58,19 +54,11 @@ class Router
      */
     private bool $faster_router = false;
 
-    /**
-     * @param RouteParser $route_parser
-     */
-    public function __construct(RouteParser $route_parser = null)
+    public function __construct()
     {
         $this->request_method = $_SERVER['REQUEST_METHOD'];
         $this->request_uri = $_SERVER['REQUEST_URI'];
-
-        if (!$route_parser) {
-            $route_parser = ParseAttributes::class;
-        }
-
-        $this->route_parser = new $route_parser();
+        $this->route_parser = new ParseAttributes();
         
     }
 
@@ -270,14 +258,6 @@ class Router
     }
 
     /**
-     * Get current route being run
-     */
-    public static function getCurrentRoute(): string
-    {
-        return self::$current_route;
-    }
-
-    /**
      * Sets middleware class. If it is not set then `stdClass` will be used
      */
     public function setMiddlewareClass(string $class): void
@@ -290,27 +270,23 @@ class Router
      */
     public function run(): void
     {
-        if ($this->middleware_class) {
-            $middleware_object = new $this->middleware_class();
-        } else {
-            $middleware_object = new stdClass();
-        }
 
         $route = $this->getFirstRoute();
 
         $params = $this->route_parser->getParams($route);
         $params = $route['params'];
 
-        self::$current_route = $route['route'];
+        $request = new Request($params);
+        $request->setCurrentRoute($route['route']);
 
         foreach ($this->middleware as $middleware) {
-            $middleware($params, $middleware_object);
+            $middleware($request);
         }
 
         $class_method = $route['method'];
         $class = $route['class'];
         $object = new $class();
 
-        $object->$class_method($params, $middleware_object);
+        $object->$class_method($request);
     }
 }

@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Pebble\Router;
 
 use Pebble\Router\Utils;
-use Pebble\Interfaces\RouteParser;
 use Pebble\Attributes\Route;
 use Pebble\AttributeParser;
 
-class ParseAttributes implements RouteParser
+class ParseAttributes
 {
 
     /**
