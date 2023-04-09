@@ -10,7 +10,6 @@ use Pebble\Router\Utils;
 use InvalidArgumentException;
 use Pebble\Router\ParseAttributes;
 use Pebble\Router\Request;
-use stdClass;
 
 class Router
 {
@@ -25,11 +24,6 @@ class Router
      * @var array<callable>
      */
     private array $middleware = [];
-
-    /**
-     * Class to create middleware object from
-     */
-    private ?string $middleware_class = null;
 
     /**
      * Request URI
@@ -59,7 +53,6 @@ class Router
         $this->request_method = $_SERVER['REQUEST_METHOD'];
         $this->request_uri = $_SERVER['REQUEST_URI'];
         $this->route_parser = new ParseAttributes();
-        
     }
 
     /**
@@ -258,19 +251,10 @@ class Router
     }
 
     /**
-     * Sets middleware class. If it is not set then `stdClass` will be used
-     */
-    public function setMiddlewareClass(string $class): void
-    {
-        $this->middleware_class = $class;
-    }
-
-    /**
      * When all routes are loaded then the first route found will be executed
      */
     public function run(): void
     {
-
         $route = $this->getFirstRoute();
 
         $params = $this->route_parser->getParams($route);

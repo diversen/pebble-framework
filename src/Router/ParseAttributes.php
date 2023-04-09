@@ -10,7 +10,6 @@ use Pebble\AttributeParser;
 
 class ParseAttributes
 {
-
     /**
      * @param array<mixed> $args
      * @return array<mixed>
@@ -40,13 +39,13 @@ class ParseAttributes
 
     /**
      * @param class-string $class
+     * @return array<mixed>
      */
     public function getRoutes(string $class)
     {
-
         $method_routes = [];
         $attr = AttributeParser::parseAttributes($class);
-        foreach($attr as $attribute) {
+        foreach ($attr as $attribute) {
             $attr_name = $attribute['attribute_name'];
             if ($attr_name !== Route::class) {
                 continue;
@@ -65,7 +64,6 @@ class ParseAttributes
             foreach ($routes as $route) {
                 $method_routes[] = $route;
             }
-            
         }
 
         return $method_routes;
@@ -78,7 +76,6 @@ class ParseAttributes
      */
     private function castParams(array $cast, array $params): array
     {
-
         $cast_to_map = [
             'int' => 'intval',
             'float' => 'floatval',
@@ -106,9 +103,9 @@ class ParseAttributes
         if (!$route['cast']) {
             return $route['params'];
         }
-        
+
         $route['params'] = $this->castParams($route['cast'], $route['params']);
-        
+
         $params = $route['params'];
         return $params;
     }

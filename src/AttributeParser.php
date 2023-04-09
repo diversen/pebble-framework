@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 namespace Pebble;
+
 use ReflectionClass;
 
-class AttributeParser {
-
+class AttributeParser
+{
     /**
      * @param class-string $class_name
      * @return array<mixed>
@@ -18,11 +19,10 @@ class AttributeParser {
         $attributes = [];
 
         foreach ($methods as $method) {
-
             $attribute_ary = [];
             $method_name = $method->getName();
 
-            
+
             $attr = $method->getAttributes();
             $attribute_ary['method_name'] = $method_name;
             if (empty($attr)) {
@@ -42,5 +42,4 @@ class AttributeParser {
 
         return $attributes;
     }
-    
 }

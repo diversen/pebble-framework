@@ -3,15 +3,15 @@
 namespace Pebble\Attributes;
 
 #[\Attribute]
-class Route {
-
+class Route
+{
     /**
-     * @param array<string> $verbs
+     * @param array<mixed> $verbs
      * @param array<string,string> $cast
      */
     public function __construct(
         string $path,
-        array $verbs,
+        array $verbs = ['GET'],
         array $cast = []
     ) {
         $this->path = $path;
@@ -19,9 +19,9 @@ class Route {
         $this->cast = $cast;
     }
 
-    
+
     public string $path;
-    
+
     /**
      * @var array<mixed>
      */

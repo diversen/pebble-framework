@@ -9,7 +9,6 @@ use Pebble\Router\Request;
 
 class Test
 {
-
     #[Route(path: '/test/:param1', verbs: ['POST'])]
     public function index(Request $request): void
     {
@@ -31,10 +30,7 @@ class Test
         echo "Param: " . $request->param('id');
     }
 
-    /**
-     * @param array<mixed> $params
-     */
-	#[Route(path: '/attributes/test/:id', verbs: ['GET', 'POST'], cast: ['id' => 'int'])]
+    #[Route(path: '/attributes/test/:id', verbs: ['GET', 'POST'], cast: ['id' => 'int'])]
     public function test_attributes(Request $request): void
     {
         echo "Param: " . $request->param('id');
