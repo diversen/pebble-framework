@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble\Router;
 
+#[\AllowDynamicProperties]
 class Request
 {
     private $params = [];
