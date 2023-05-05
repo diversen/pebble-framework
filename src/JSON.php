@@ -56,6 +56,14 @@ class JSON
     }
 
     /**
+     * Render an error response where 'error' => true and 'message' => $message
+     */
+    public function renderErrorWithMessage(string $message): void
+    {
+        $this->renderError(['message' => $message]);
+    }
+
+    /**
      * Render a success response where 'error' => false
      * @param array<mixed> $response
      */
@@ -63,5 +71,13 @@ class JSON
     {
         $response['error'] = false;
         $this->render($response);
+    }
+
+    /**
+     * Render a success response where 'error' => false and 'message' => $message
+     */
+    public function renderSuccessWithMessage(string $message): void
+    {
+        $this->renderSuccess(['message' => $message]);
     }
 }
