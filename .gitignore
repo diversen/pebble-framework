@@ -5,3 +5,4 @@ config-locale
 .php-cs-fixer.cache
 tools/php-cs-fixer
 logs
+composer.lock
