@@ -41,6 +41,11 @@ class Router
     private ParseAttributes $route_parser;
 
     /**
+     * Base controller
+     */
+    private string $base_controller = '';
+
+    /**
      * faster router based on URL segment
      * e.g. /settings/test/:id
      * If faster router is enabled then there need to be a controller named App/Settings/*
@@ -190,8 +195,9 @@ class Router
     /**
      * Set faster router mode
      */
-    public function setFasterRouter(): void
+    public function setFasterRouter(string $base_controller = 'home'): void
     {
+        $this->base_controller = $base_controller;
         $this->faster_router = true;
     }
 
@@ -203,7 +209,7 @@ class Router
     {
         $first_segment = Utils::getUrlSegment($this->request_uri, 0);
         if (!$first_segment) {
-            $first_segment = 'home';
+            $first_segment = $this->base_controller;
         }
 
         $class_lower = strtolower($class);
