@@ -104,9 +104,7 @@ class ParseAttributes
             return $route['params'];
         }
 
-        $route['params'] = $this->castParams($route['cast'], $route['params']);
-
-        $params = $route['params'];
+        $params = $this->castParams($route['cast'], $route['params']);
         return $params;
     }
 }
