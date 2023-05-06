@@ -264,7 +264,6 @@ class Router
         $route = $this->getFirstRoute();
 
         $params = $this->route_parser->getParams($route);
-        $params = $route['params'];
 
         $request = new Request($params);
         $request->setCurrentRoute($route['route']);
