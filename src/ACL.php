@@ -7,6 +7,7 @@ namespace Pebble;
 use InvalidArgumentException;
 use Pebble\Auth;
 use Pebble\Exception\ForbiddenException;
+use Pebble\Exception\JSONException;
 use Pebble\DB;
 
 /**
@@ -37,7 +38,21 @@ class ACL extends Auth
             if (empty($error_message)) {
                 $error_message = 'You are not logged in. Please log in.';
             }
-            throw new ForbiddenException($error_message);
+            throw new ForbiddenException($error_message, 403);
+        }
+    }
+
+    /**
+     * Check if user is authenticated or throw a JSONException
+     * @throws JSONException
+     */
+    public function isAuthenticatedOrThrowJSONException(string $error_message = ''): void
+    {
+        if (!$this->isAuthenticated()) {
+            if (empty($error_message)) {
+                $error_message = 'You are not logged in. Please log in.';
+            }
+            throw new JSONException($error_message, 403);
         }
     }
 
