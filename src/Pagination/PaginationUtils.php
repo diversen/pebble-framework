@@ -233,6 +233,22 @@ class PaginationUtils
     }
 
     /**
+     * Get a array of sorting URLs and direction arrows
+     */
+    public function getSortingURLPaths(array $fields = []): array {
+        $ordering = [];
+        foreach($fields as $field) {
+            $alter_order_url = $this->getAlterOrderUrl($field);
+            $direction_arrow = $this->getCurrentDirectionArrow($field);
+            $ordering[$field] = [
+                'path' => $alter_order_url,
+                'arrow' => $direction_arrow,
+            ];
+        }
+        return $ordering;
+    }
+
+    /**
      * Get JasonGrimes/Paginator and with order by saved to session
      * @return Paginator
      * @param array<mixed> $default_order
