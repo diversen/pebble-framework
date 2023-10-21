@@ -34,8 +34,11 @@ class PaginationUtils
     private bool $should_change_field_order = true;
 
     /**
+     * Construct with default ORDER BY and session key. If session key is set
+     * then the ORDER BY is loaded from session if it is set. Otherwise the
+     * default ORDER BY is used.
      * @param array<mixed> $order_by_default e.g. `['title' => 'ASC', 'updated' => 'DESC']`.
-     * @param string $session_key  store the ordering in SESSION
+     * @param string $session_key
      */
     public function __construct(array $order_by_default, $session_key = null)
     {
@@ -249,22 +252,18 @@ class PaginationUtils
     }
 
     /**
-     * Get JasonGrimes/Paginator and with order by saved to session
+     * Get JasonGrimes/Paginator.
      * @return Paginator
-     * @param array<mixed> $default_order
      */
-    public static function getPaginator(
+    public function getPaginator(
         int $total_items,
         int $items_per_page,
         int $current_page,
         string $url,
-        array $default_order = [],
         int $max_pages = 10,
-        string $session_key = null,
     ) {
-        $pagination_utils = new PaginationUtils($default_order, $session_key);
-        $url_pattern = $pagination_utils->getPaginationURLPattern($url);
 
+        $url_pattern = $this->getPaginationURLPattern($url);
         $paginator = new Paginator($total_items, $items_per_page, $current_page, $url_pattern);
         $paginator->setMaxPagesToShow($max_pages);
 
