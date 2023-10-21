@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Exception;
 use Pebble\URL;
 use JasonGrimes\Paginator;
+use Pebble\Pager;
 
 /**
  * Class that helps render pagination with order_by, from, and saves the order_by and from in session.
@@ -34,22 +35,29 @@ class PaginationUtils
     private bool $should_change_field_order = true;
 
     /**
+     * session key used to save ORDER BY
+     */
+    private string $session_key;
+
+    /**
      * Construct with default ORDER BY and session key. If session key is set
      * then the ORDER BY is loaded from session if it is set. Otherwise the
      * default ORDER BY is used.
      * @param array<mixed> $order_by_default e.g. `['title' => 'ASC', 'updated' => 'DESC']`.
-     * @param string $session_key
+     * @param string $session_key session key to save ORDER BY in
      */
-    public function __construct(array $order_by_default, $session_key = null)
+    public function __construct(array $order_by_default, $session_key)
     {
+        $this->session_key = $session_key;
+
         $this->order_by_default_init = $order_by_default;
         $this->order_by_default = $order_by_default;
-        if ($session_key) {
-            $this->order_by_default = $_SESSION[$session_key] ?? $order_by_default;
-            if (!$this->validateFields($this->order_by_default)) {
-                $this->order_by_default = $this->order_by_default_init;
-            }
+
+        $this->order_by_default = $_SESSION[$session_key] ?? $order_by_default;
+        if (!$this->validateFields($this->order_by_default)) {
+            $this->order_by_default = $this->order_by_default_init;
         }
+        
     }
 
     public function setShouldChangeFieldOrder(bool $val): void
@@ -80,6 +88,8 @@ class PaginationUtils
     }
 
     /**
+     * Generate new ORDER BY from current ORDER BY and `$_GET['alter']`
+     * Reverse direction of field if it is in ORDER BY
      * @param array<mixed> $order_by
      * @return array<mixed>
      */
@@ -100,11 +110,13 @@ class PaginationUtils
             $direction = 'ASC';
         }
 
+        // Prevent changing field order
         if (!$this->should_change_field_order) {
             $order_by[$order_by_field] = $direction;
             return $order_by;
         }
 
+        // Generate new ORDER BY
         $new_order_by = [];
 
         // Set altered field as first ORDER BY
@@ -148,23 +160,25 @@ class PaginationUtils
     }
 
     /**
-     * Get ORDER BY from GET or if not set, use default (SESSION or constructor)
+     * Get ORDER BY from GET or if not set try to get from session.
+     * Can be used to perform a DB query
      * @return array<mixed> $order_by
      */
-    public function getOrderByFromRequest(string $session_key): array
+    public function getOrderBy(): array
     {
         $order_by = $this->getOrderByFromQuery();
 
         if (!isset($_GET['order_by'])) {
+
             // Prefer session but else get default order by
-            $order_by = $_SESSION[$session_key] ?? $order_by;
+            $order_by = $_SESSION[$this->session_key] ?? $order_by;
             if (!$this->validateFields($order_by)) {
                 $order_by = $this->order_by_default_init;
             }
         } else {
             // New sorting. Save to session
             if ($this->validateFields($order_by)) {
-                $_SESSION[$session_key] = $order_by;
+                $_SESSION[$this->session_key] = $order_by;
             }
         }
 
@@ -172,8 +186,15 @@ class PaginationUtils
     }
 
     /**
-     * Get the ORDER BY parameters from the URL or order by from settings OR
-     * get the default ORDER BY
+     * Get a Pager object from total and limit
+     */
+    public function getPager($total, $limit): Pager {
+        $pager = new Pager($total, $limit);
+        return $pager;
+    }
+
+    /**
+     * Get the ORDER BY parameters from the URL
      *
      * @return array<mixed> $order_by , e.g. `['title' => 'ASC', 'updated' => 'DESC']`
      */
@@ -189,6 +210,7 @@ class PaginationUtils
             $this->validateField($field);
             $this->validateDirection($direction);
         }
+
 
         return $this->getNewOrderBy($order_by);
     }
@@ -238,7 +260,8 @@ class PaginationUtils
     /**
      * Get a array of sorting URLs and direction arrows
      */
-    public function getSortingURLPaths(array $fields = []): array {
+    public function getSortingURLPaths(): array {
+        $fields = array_keys($this->order_by_default);
         $ordering = [];
         foreach($fields as $field) {
             $alter_order_url = $this->getAlterOrderUrl($field);
