@@ -57,7 +57,6 @@ class PaginationUtils
         if (!$this->validateFields($this->order_by_default)) {
             $this->order_by_default = $this->order_by_default_init;
         }
-        
     }
 
     public function setShouldChangeFieldOrder(bool $val): void
@@ -188,7 +187,8 @@ class PaginationUtils
     /**
      * Get a Pager object from total and limit
      */
-    public function getPager($total, $limit): Pager {
+    public function getPager(int $total, int $limit): Pager
+    {
         $pager = new Pager($total, $limit);
         return $pager;
     }
@@ -259,11 +259,13 @@ class PaginationUtils
 
     /**
      * Get a array of sorting URLs and direction arrows
+     * @return array<mixed> $ordering
      */
-    public function getSortingURLPaths(): array {
+    public function getSortingURLPaths(): array
+    {
         $fields = array_keys($this->order_by_default);
         $ordering = [];
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             $alter_order_url = $this->getAlterOrderUrl($field);
             $direction_arrow = $this->getCurrentDirectionArrow($field);
             $ordering[$field] = [
@@ -285,7 +287,6 @@ class PaginationUtils
         string $url,
         int $max_pages = 10,
     ) {
-
         $url_pattern = $this->getPaginationURLPattern($url);
         $paginator = new Paginator($total_items, $items_per_page, $current_page, $url_pattern);
         $paginator->setMaxPagesToShow($max_pages);
