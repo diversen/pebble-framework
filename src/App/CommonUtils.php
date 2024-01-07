@@ -35,7 +35,7 @@ class CommonUtils
     }
 
     /**
-     * Add "base path" to include_path. Base path is the same level as ./vendor
+     * Add "base_path" to include_path. Base path is the same level as ./vendor
      */
     public function addBaseToIncudePath(): void
     {
@@ -43,7 +43,7 @@ class CommonUtils
     }
 
     /**
-     * Add src path to include_path. Src path is the same level as "base path" + /src
+     * Add src path to include_path. Src path is the base_path + /src
      */
     public function addSrcToIncludePath(): void
     {
