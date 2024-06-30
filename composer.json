@@ -30,7 +30,7 @@
         "phpmailer/phpmailer": "^6.0",
         "erusev/parsedown": "^1.7",
         "diversen/simple-php-translation": "^3.0",
-        "diversen/minimal-cli-framework": "^6.0",
+        "diversen/minimal-cli-framework": "^7.0",
         "gregwar/captcha": "^1.1",
         "jasongrimes/paginator": "^1.0",
         "phpstan/phpstan": "^1.10"
