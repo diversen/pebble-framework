@@ -118,7 +118,7 @@ class DB
      * @param string $field
      * @param array<string> $where ['user_id' => 64]
      */
-    public function getTableNumRows(string $table, string $field='*', array $where = []): int
+    public function getTableNumRows(string $table, string $field = '*', array $where = []): int
     {
         $sql = "SELECT count($field) as num_rows FROM $table ";
         $sql .= $this->getWhereSql($where);
@@ -392,7 +392,7 @@ class DB
      * @param array<mixed> $limit [10, 10]
      * @return array<mixed>
      */
-    public function getAll(string $table, array $where =[], array $order_by = [], array $limit = []): array
+    public function getAll(string $table, array $where = [], array $order_by = [], array $limit = []): array
     {
         $sql = "SELECT * FROM `$table` ";
         $sql .= $this->getWhereSql($where);

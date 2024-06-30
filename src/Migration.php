@@ -6,6 +6,7 @@ namespace Pebble;
 
 use PDO;
 use Exception;
+
 use function Safe\scandir;
 use function Safe\file_get_contents;
 

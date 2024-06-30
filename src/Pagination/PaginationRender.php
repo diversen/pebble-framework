@@ -12,7 +12,8 @@ use JasonGrimes\Paginator;
  */
 class PaginationRender
 {
-    public function render(Paginator $paginator): void { ?>
+    public function render(Paginator $paginator): void
+    { ?>
 
         <div class="pagination"><?php
 
@@ -26,26 +27,26 @@ class PaginationRender
                 <span class='pagination-links'>&lt;&lt;</span><?php
             endif;
 
-            foreach ($paginator->getPages() as $page):
+        foreach ($paginator->getPages() as $page):
 
-                $css_class = 'pagination-links';
-                if ($page['url']):
-                    if ($page['isCurrent']):
-                        $css_class = 'pagination-links pagination-current';
-                    endif; ?>
+            $css_class = 'pagination-links';
+            if ($page['url']):
+                if ($page['isCurrent']):
+                    $css_class = 'pagination-links pagination-current';
+                endif; ?>
                     <a class="<?=$css_class?>" href="<?=$page['url']; ?>"><?=$page['num']; ?></a><?php
-                else: ?>
+            else: ?>
                     <span class="<?=$css_class?>" disabled><?php echo $page['num']; ?></span>
                 <?php endif; ?>
             <?php
 
-            endforeach;
+        endforeach;
 
-            if ($paginator->getNextUrl()):?>
+        if ($paginator->getNextUrl()):?>
                 <a class='pagination-links' href='<?=$paginator->getNextUrl()?>'>&gt;&gt;</a><?php
-            else: ?>
+        else: ?>
                 <span class='pagination-links'>&gt;&gt;</span><?php
-            endif; ?>        
+        endif; ?>        
             <?php
         endif; ?>
         </div><?php

@@ -134,7 +134,7 @@ class Translate
 
             $json = json_encode($LANG);
             if ($this->pretty_print_json) {
-                $json = json_encode($LANG, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+                $json = json_encode($LANG, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             }
             if ($json) {
                 $js = $this->addJsExport($json);

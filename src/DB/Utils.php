@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pebble\DB;
 
 use InvalidArgumentException;
+
 use function Safe\parse_url;
 
 class Utils

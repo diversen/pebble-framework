@@ -17,7 +17,7 @@ class JSON
      * @param int<1, max> $depth
      * @return mixed
      */
-    public static function response(mixed $value, int $flags = 0, int $depth= 512, bool $send_header = true)
+    public static function response(mixed $value, int $flags = 0, int $depth = 512, bool $send_header = true)
     {
         if ($send_header) {
             header('Content-Type: application/json; charset=utf-8');
@@ -40,7 +40,7 @@ class JSON
      * @param int $flags
      * @param int<1, max> $depth
      */
-    public function render($value, int $flags = 0, int $depth= 512, bool $send_header = true): void
+    public function render($value, int $flags = 0, int $depth = 512, bool $send_header = true): void
     {
         echo self::response($value, $flags, $depth, $send_header);
     }
