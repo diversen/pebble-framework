@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-use Aidantwoods\SecureHeaders\SecureHeaders;
 use Pebble\Service\ConfigService;
 
 /**
@@ -28,6 +27,7 @@ class CSP
 
     public function sendCSPHeaders(): void
     {
+
         $config = (new ConfigService())->getConfig();
 
         if (!$config->get("CSP.enabled")) {
@@ -37,6 +37,15 @@ class CSP
 
         $this->nonce = $config->get('CSP.nonce');
         $headers = $config->get('CSP.headers');
-        $headers->apply();
+
+        $policies = [];
+        foreach ($headers as $directive => $values) {
+            if (is_array($values)) {
+                $values = implode(' ', $values);
+            }
+            $policies[] = "$directive $values";
+        }
+        $policyString = implode('; ', $policies);
+        header("Content-Security-Policy: $policyString");
     }
 }
