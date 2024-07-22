@@ -34,10 +34,11 @@ class ACL extends Auth
      */
     public function isAuthenticatedOrThrow(string $error_message = ''): void
     {
+        if (empty($error_message)) {
+            $error_message = 'You are not logged in. Please log in.';
+        }
+
         if (!$this->isAuthenticated()) {
-            if (empty($error_message)) {
-                $error_message = 'You are not logged in. Please log in.';
-            }
             throw new ForbiddenException($error_message, 403);
         }
     }
@@ -48,10 +49,11 @@ class ACL extends Auth
      */
     public function isAuthenticatedOrThrowJSONException(string $error_message = ''): void
     {
+        if (empty($error_message)) {
+            $error_message = 'You are not logged in. Please log in.';
+        }
+
         if (!$this->isAuthenticated()) {
-            if (empty($error_message)) {
-                $error_message = 'You are not logged in. Please log in.';
-            }
             throw new JSONException($error_message, 403);
         }
     }
