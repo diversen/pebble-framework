@@ -54,6 +54,16 @@ final class TemplateTest extends TestCase
         $this->assertSame('<p>safe</p>', $str);
     }
 
+    public function testTemplateDataMayUseOptionsKey(): void
+    {
+        $template = __DIR__ . '/templates/options.tpl.php';
+        $str = Template::getOutput($template, [
+            'options' => ['user_view' => false],
+        ]);
+
+        $this->assertSame('public', $str);
+    }
+
     public function testTemplateCannotEscapeApplicationRoot(): void
     {
         $this->expectException(TemplateException::class);

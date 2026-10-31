@@ -101,10 +101,16 @@ class Template
     public static function render(string $template, $template_vars = [], array $options = []): void
     {
         try {
-            $template_vars = self::encodeData($template_vars, $options);
-            extract($template_vars, EXTR_SKIP);
-            $template = self::getTemplatePath($template);
-            require($template);
+            $__pebble_template_path = self::getTemplatePath($template);
+            $__pebble_template_vars = self::encodeData($template_vars, $options);
+
+            (static function (
+                string $__pebble_template_path,
+                array $__pebble_template_vars
+            ): void {
+                extract($__pebble_template_vars, EXTR_SKIP);
+                require $__pebble_template_path;
+            })($__pebble_template_path, $__pebble_template_vars);
         } catch (Throwable $e) {
             if ($e instanceof TemplateException) {
                 throw $e;
