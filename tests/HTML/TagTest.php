@@ -14,4 +14,16 @@ final class TagTest extends TestCase
         $expect = '<button title="Click me" disabled class="btn btn-primary">2 factor Login</button>';
         $this->assertSame($expect, $html);
     }
+
+    public function test_getTagEscapesContentAndAttributes(): void
+    {
+        $html = Tag::getTag('button', '<script>alert(1)</script>', [
+            'title' => '" onmouseover="alert(1)',
+        ]);
+
+        $this->assertStringNotContainsString('<script>', $html);
+        $this->assertStringNotContainsString('onmouseover="alert', $html);
+        $this->assertStringContainsString('&lt;script&gt;', $html);
+        $this->assertStringContainsString('&quot; onmouseover=&quot;', $html);
+    }
 }

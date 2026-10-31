@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pebble\DB;
 
+use InvalidArgumentException;
 use PDO;
 
 class DBStructure
@@ -49,7 +50,11 @@ class DBStructure
      */
     public function getTableKeys(string $table_name): array
     {
-        $sql = "SHOW keys FROM $table_name";
+        if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $table_name)) {
+            throw new InvalidArgumentException('Invalid table name');
+        }
+
+        $sql = "SHOW keys FROM `$table_name`";
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -59,7 +64,7 @@ class DBStructure
     /**
      * @return array<mixed>
      */
-    public function getForeignKeys(string $database = null): array
+    public function getForeignKeys(?string $database = null): array
     {
         if (!$database) {
             $database = $this->getDatabaseName();
@@ -67,11 +72,11 @@ class DBStructure
 
         $sql = "
         SELECT DISTINCT KCU.TABLE_NAME, KCU.COLUMN_NAME, REFERENCED_TABLE_SCHEMA, KCU.REFERENCED_TABLE_NAME, KCU.REFERENCED_COLUMN_NAME, UPDATE_RULE, DELETE_RULE  FROM information_schema.KEY_COLUMN_USAGE 
-        KCU INNER JOIN information_schema.referential_constraints RC ON KCU.CONSTRAINT_NAME = RC.CONSTRAINT_NAME WHERE TABLE_SCHEMA = '$database' AND KCU.REFERENCED_TABLE_NAME IS NOT NULL ORDER BY KCU.TABLE_NAME, KCU.COLUMN_NAME;
+        KCU INNER JOIN information_schema.referential_constraints RC ON KCU.CONSTRAINT_NAME = RC.CONSTRAINT_NAME WHERE TABLE_SCHEMA = :database AND KCU.REFERENCED_TABLE_NAME IS NOT NULL ORDER BY KCU.TABLE_NAME, KCU.COLUMN_NAME;
         ";
 
         $stmt = $this->dbh->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([':database' => $database]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }

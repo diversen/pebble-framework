@@ -10,6 +10,7 @@ use Pebble\Router\Utils;
 use InvalidArgumentException;
 use Pebble\Router\ParseAttributes;
 use Pebble\Router\Request;
+use Pebble\CSRF;
 
 class Router
 {
@@ -52,6 +53,11 @@ class Router
      * Anything atempt to loader a controller is skipped if there is no match inf faster_route mode
      */
     private bool $faster_router = false;
+
+    private bool $csrf_protection = true;
+
+    /** @var array<string> */
+    private array $csrf_exclusions = [];
 
     public function __construct()
     {
@@ -256,12 +262,42 @@ class Router
         $this->middleware[] = $callable;
     }
 
+    public function setCSRFProtection(bool $enabled): void
+    {
+        $this->csrf_protection = $enabled;
+    }
+
+    /** @param array<string> $routes */
+    public function setCSRFExclusions(array $routes): void
+    {
+        $this->csrf_exclusions = $routes;
+    }
+
+    private function validateCSRF(array $route): void
+    {
+        if (!$this->csrf_protection) {
+            return;
+        }
+
+        if (!in_array($this->request_method, ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
+            return;
+        }
+
+        if (in_array($route['route'], $this->csrf_exclusions, true)) {
+            return;
+        }
+
+        (new CSRF())->validateTokenOrThrow();
+    }
+
     /**
      * When all routes are loaded then the first route found will be executed
      */
     public function run(): void
     {
         $route = $this->getFirstRoute();
+
+        $this->validateCSRF($route);
 
         $params = $this->route_parser->getParams($route);
 

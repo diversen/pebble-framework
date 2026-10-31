@@ -37,10 +37,10 @@ CREATE TABLE `auth_cookie` (
   `cookie_id` varchar(255) NOT NULL,
   `auth_id` int(10) NOT NULL,
   `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `expires` int(10) DEFAULT '0',
+  `expires` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`auth_id`) REFERENCES `auth` (`id`) ON DELETE CASCADE,
-  KEY `idx_cookie` (`cookie_id`),
+  UNIQUE KEY `idx_cookie` (`cookie_id`),
   KEY `idx_auth_id` (`auth_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

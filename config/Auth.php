@@ -9,6 +9,10 @@ return
     'cookie_seconds' => 0,
     'cookie_path' => '/',
     'cookie_secure' => true,
-    'cookie_domain' => $_SERVER['SERVER_NAME'] ?? '',
-    'cookie_http' => true
+    // Empty creates a host-only cookie and avoids trusting request host headers.
+    'cookie_domain' => '',
+    'cookie_http' => true,
+    'cookie_samesite' => 'Lax',
+    // Server-side lifetime for browser-session authentication cookies.
+    'cookie_session_seconds' => 24 * 60 * 60,
 ];

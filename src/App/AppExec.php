@@ -89,12 +89,6 @@ class AppExec
 
             $this->app->run();
         } catch (Throwable $e) {
-            /**
-             * phpstan complains about the next line
-             * but it does not complain about the above line ($this->app->run)
-             * Both objects are created dynamically so I'm ignoring it for now.
-             * @phpstan-ignore-next-line
-             */
             $this->error->render($e);
         }
     }

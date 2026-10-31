@@ -30,7 +30,7 @@ class Migration
      */
     private $dbh;
 
-    public function __construct(PDO $dbh, string $migration_dir = null, string $migration_file = null)
+    public function __construct(PDO $dbh, ?string $migration_dir = null, ?string $migration_file = null)
     {
         $this->dbh = $dbh;
         if ($migration_dir) {
@@ -59,9 +59,12 @@ class Migration
 
     public function setCurrentVersion(?int $version = 0): void
     {
-        file_put_contents($this->migrationFile, $version);
         if (!$version) {
-            unlink($this->migrationFile);
+            if (is_file($this->migrationFile)) {
+                unlink($this->migrationFile);
+            }
+        } else {
+            file_put_contents($this->migrationFile, (string)$version, LOCK_EX);
         }
     }
 
@@ -130,7 +133,7 @@ class Migration
     /**
      * @return array<string>
      */
-    public function getUpFilesToExecute(int $target_version = null)
+    public function getUpFilesToExecute(?int $target_version = null)
     {
         $up_dir = $this->migrationDir . '/' . 'up';
         $sql_files = $this->dirToArray($up_dir);
@@ -170,7 +173,7 @@ class Migration
     /**
      * @return array<string>
      */
-    public function getDownFilesToExecute(int $target_version = null)
+    public function getDownFilesToExecute(?int $target_version = null)
     {
         $up_dir = $this->migrationDir . '/' . 'down';
         $sql_files = $this->dirToArray($up_dir);
@@ -199,7 +202,7 @@ class Migration
     /**
      * Executes up to and INCLUDING target_version
      */
-    public function up(int $target_version = null): void
+    public function up(?int $target_version = null): void
     {
         $files = $this->getUpFilesToExecute($target_version);
         if (empty($files)) {
@@ -207,7 +210,7 @@ class Migration
         }
 
         if (!$target_version) {
-            $version_file = array_pop($files);
+            $version_file = end($files);
             $target_version = $this->getVersionFromFile($version_file);
         }
 
@@ -223,7 +226,7 @@ class Migration
     /**
      * Executes down to and EXCLUDING target_version
      */
-    public function down(int $target_version = null): void
+    public function down(?int $target_version = null): void
     {
         $files = $this->getDownFilesToExecute($target_version);
         foreach ($files as $file) {

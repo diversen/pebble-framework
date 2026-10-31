@@ -93,6 +93,15 @@ final class MigrationTest extends TestCase
         $version = $m->getCurrentVersion();
         $this->assertEquals(0002, $version);
 
+        // Omitting the target must execute, not merely mark, the latest file.
+        $m->up();
+        $this->assertEquals(0003, $m->getCurrentVersion());
+        $tables = $db->prepareFetchAll('SHOW TABLES');
+        $tables = array_column($tables, 'Tables_in_pebble');
+        $this->assertContains('table_3', $tables);
+
+        $m->down(0002);
+
         $down_files = $m->getDownFilesToExecute(0001);
         $this->assertEquals(['0002.sql'], $down_files);
         $m->down(0001);

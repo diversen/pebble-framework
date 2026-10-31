@@ -25,8 +25,10 @@ class JSON
 
         if (self::$debug) {
             if (is_array($value)) {
-                $value['__POST'] = $_POST;
-                $value['__GET'] = $_GET;
+                $value['__REQUEST_KEYS'] = [
+                    'POST' => array_keys($_POST),
+                    'GET' => array_keys($_GET),
+                ];
             }
         }
 

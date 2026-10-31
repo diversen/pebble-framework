@@ -24,8 +24,7 @@ final class DBStructureTest extends TestCase
         $rows = $structure->getTableFields('auth');
         $this->assertContains('id', $rows[0]);
 
-        $keys = array_keys($rows[0]);
-        $this->assertContains('COLUMN_TYPE', $keys);
+        $this->assertArrayHasKey('column_type', $rows[0]);
 
         $keys = $structure->getTableKeys('auth');
         $this->assertEquals('PRIMARY', $keys[0]['Key_name']);
@@ -35,6 +34,15 @@ final class DBStructureTest extends TestCase
         $this->assertEquals('id', $foreign_keys[0]['REFERENCED_COLUMN_NAME']);
         $this->assertEquals('auth', $foreign_keys[0]['REFERENCED_TABLE_NAME']);
 
+    }
+
+    public function testTableKeysRejectsIdentifierInjection(): void
+    {
+        $db = (new DBService())->getDB();
+        $structure = new DBStructure($db->getDbh());
+
+        $this->expectException(InvalidArgumentException::class);
+        $structure->getTableKeys('auth; DROP TABLE auth');
     }
 }
 

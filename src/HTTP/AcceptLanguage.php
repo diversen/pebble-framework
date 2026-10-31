@@ -33,7 +33,7 @@ class AcceptLanguage
             $language_ary = explode(';', $lang);
 
             // Get language part. 'fr-CH', 'fr' ...
-            $language = $language_ary[0] ?? null;
+            $language = $language_ary[0];
             if (!$language) {
                 continue;
             }
@@ -47,7 +47,7 @@ class AcceptLanguage
             $language_ary = explode('-', $language);
 
             // e.g. 'fr', 'de'
-            $language = $language_ary[0] ?? null;
+            $language = $language_ary[0];
 
             // We assume the languages are correct sorted in the HTTP_ACCEPT_LANGUAGE return first match
             if (in_array($language, $options)) {

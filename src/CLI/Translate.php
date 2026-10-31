@@ -129,7 +129,7 @@ class Translate
 
             $js_lang_path = "$translate_dir_js/$lang";
             if (!file_exists($js_lang_path)) {
-                mkdir($js_lang_path, 0777, true);
+                mkdir($js_lang_path, 0750, true);
             }
 
             $json = json_encode($LANG);

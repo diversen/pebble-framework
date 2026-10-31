@@ -44,9 +44,9 @@ class Config
 
     /**
      * Get config array from a dir and a file
-     * @return array<mixed>
+     * @return mixed
      */
-    private function getConfigArray(string $dir, string $file): array
+    private function getConfigArray(string $dir, string $file): mixed
     {
         $config_file = $dir . "/$file";
         $config_array = require($config_file);

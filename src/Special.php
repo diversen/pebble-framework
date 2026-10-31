@@ -42,7 +42,7 @@ class Special
 
 
         if (is_string($value)) {
-            return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
+            return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         }
 
         return $value;
@@ -53,6 +53,6 @@ class Special
      */
     public static function decodeStr(string $str): string
     {
-        return htmlspecialchars_decode($str, ENT_COMPAT);
+        return htmlspecialchars_decode($str, ENT_QUOTES);
     }
 }

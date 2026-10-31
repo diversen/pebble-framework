@@ -53,6 +53,11 @@ class DB
             $options
         );
 
+        $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if ($this->dbh->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+            $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        }
+
         // Default fetch mode is FETCH_ASSOC
         $this->setPDOFetchMode(PDO::FETCH_ASSOC);
     }
@@ -120,6 +125,8 @@ class DB
      */
     public function getTableNumRows(string $table, string $field = '*', array $where = []): int
     {
+        $field = $this->quoteIdentifier($field, true);
+        $table = $this->quoteIdentifier($table);
         $sql = "SELECT count($field) as num_rows FROM $table ";
         $sql .= $this->getWhereSql($where);
         $row = $this->prepareFetch($sql, $where);
@@ -151,7 +158,7 @@ class DB
     /**
      * Returns last insert ID
      */
-    public function lastInsertId(string $name = null): string|false
+    public function lastInsertId(?string $name = null): string|false
     {
         return $this->dbh->lastInsertId($name);
     }
@@ -196,6 +203,26 @@ class DB
     }
 
     /**
+     * Quote a SQL identifier after validating every qualified segment.
+     */
+    private function quoteIdentifier(string $identifier, bool $allow_wildcard = false): string
+    {
+        if ($allow_wildcard && $identifier === '*') {
+            return '*';
+        }
+
+        $parts = explode('.', $identifier);
+        foreach ($parts as &$part) {
+            if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $part)) {
+                throw new InvalidArgumentException("Invalid SQL identifier: $identifier");
+            }
+            $part = "`$part`";
+        }
+
+        return implode('.', $parts);
+    }
+
+    /**
      * Insert into $table a new row generated from $values:
      * `$db->insert('users_table', ['user_email' => 'test@test.com', 'user_name' => 'John Doe']);`
      *
@@ -203,14 +230,18 @@ class DB
      */
     public function insert(string $table, array $values): bool
     {
+        if (empty($values)) {
+            throw new InvalidArgumentException('Insert values cannot be empty');
+        }
+
         $field_names = array_keys($values);
 
-        $sql = "INSERT INTO $table";
+        $sql = 'INSERT INTO ' . $this->quoteIdentifier($table);
 
         // Escape field names
         $field_names_escaped = [];
         foreach ($field_names as $key => $val) {
-            $field_names_escaped[] = "`$val`";
+            $field_names_escaped[] = $this->quoteIdentifier((string)$val);
         }
 
         // Insert values
@@ -254,7 +285,11 @@ class DB
      */
     public function update(string $table, array $values, array $where = []): bool
     {
-        $sql = "UPDATE $table SET ";
+        if (empty($values) || empty($where)) {
+            throw new InvalidArgumentException('Update values and where conditions cannot be empty');
+        }
+
+        $sql = 'UPDATE ' . $this->quoteIdentifier($table) . ' SET ';
 
         $final_values = [];
         $update_ary = [];
@@ -262,7 +297,7 @@ class DB
 
         // Generate named update parameters from insert value keys
         foreach ($values as $field => $value) {
-            $update_ary[] = " `$field`=" . ":$field ";
+            $update_ary[] = ' ' . $this->quoteIdentifier((string)$field) . '=' . ":$field ";
             $final_values[$field] = $value;
         }
 
@@ -281,7 +316,7 @@ class DB
                 $i += 1;
             }
 
-            $where_ary[] = " `$field`=" . ":$field_key ";
+            $where_ary[] = ' ' . $this->quoteIdentifier((string)$field) . '=' . ":$field_key ";
             $final_values[$field_key] = $value;
         }
 
@@ -303,7 +338,7 @@ class DB
         }
 
         foreach ($where as $field => $value) {
-            $where_ary[] = " `$field`=" . ":$field ";
+            $where_ary[] = ' ' . $this->quoteIdentifier((string)$field) . '=' . ":$field ";
         }
 
         $sql  = " WHERE ";
@@ -314,7 +349,7 @@ class DB
     /**
      * Return limit SQL
      *
-     * @param array<int> $limit index 0 is limit and index 1 is offset [0, 10]
+     * @param array<mixed> $limit index 0 is offset and index 1 is row count [0, 10]
      */
     public function getLimitSql(array $limit = []): string
     {
@@ -322,8 +357,15 @@ class DB
             return '';
         }
 
+        if (count($limit) !== 2 || !is_numeric($limit[0]) || !is_numeric($limit[1])) {
+            throw new InvalidArgumentException('Limit must contain a numeric offset and row count');
+        }
+
         $offset = (int)$limit[0];
         $limit = (int)$limit[1];
+        if ($offset < 0 || $limit < 0) {
+            throw new InvalidArgumentException('Limit values cannot be negative');
+        }
 
         return "LIMIT $offset, $limit ";
     }
@@ -340,10 +382,16 @@ class DB
         }
 
         foreach ($order_by as $field => $direction) {
-            if (!empty($allow) && !in_array($field, $allow)) {
+            if (!empty($allow) && !in_array($field, $allow, true)) {
                 throw new InvalidArgumentException("Invalid order by field: $field");
             }
-            $order_by_sql_ary[] = $field . " " . $direction;
+
+            $direction = strtoupper((string)$direction);
+            if (!in_array($direction, ['ASC', 'DESC'], true)) {
+                throw new InvalidArgumentException("Invalid order by direction: $direction");
+            }
+
+            $order_by_sql_ary[] = $this->quoteIdentifier((string)$field) . " $direction";
         }
 
         $order_by_sql = 'ORDER BY ';
@@ -359,12 +407,21 @@ class DB
      */
     public function delete(string $table, array $where = []): bool
     {
-        $sql = "DELETE FROM $table ";
+        if (empty($where)) {
+            throw new InvalidArgumentException('Delete conditions cannot be empty; use deleteAll() explicitly');
+        }
+
+        $sql = 'DELETE FROM ' . $this->quoteIdentifier($table) . ' ';
         $sql .= $this->getWhereSql($where);
 
         $where = $this->generateNamedParams($where);
         $res = $this->prepareExecute($sql, $where);
         return $res;
+    }
+
+    public function deleteAll(string $table): bool
+    {
+        return $this->prepareExecute('DELETE FROM ' . $this->quoteIdentifier($table));
     }
 
     /**
@@ -376,7 +433,7 @@ class DB
      */
     public function getOne(string $table, array $where = [], array $order_by = []): mixed
     {
-        $sql = "SELECT * FROM `$table` ";
+        $sql = 'SELECT * FROM ' . $this->quoteIdentifier($table) . ' ';
         $sql .= $this->getWhereSql($where);
         $sql .= $this->getOrderBySql($order_by);
         $row = $this->prepareFetch($sql, $where);
@@ -394,7 +451,7 @@ class DB
      */
     public function getAll(string $table, array $where = [], array $order_by = [], array $limit = []): array
     {
-        $sql = "SELECT * FROM `$table` ";
+        $sql = 'SELECT * FROM ' . $this->quoteIdentifier($table) . ' ';
         $sql .= $this->getWhereSql($where);
         $sql .= $this->getOrderBySql($order_by);
         $sql .= $this->getLimitSql($limit);

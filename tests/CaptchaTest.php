@@ -26,8 +26,15 @@ final class CaptchaTest extends TestCase
 
         $this->assertEquals($res, false);
 
+        // A failed attempt consumes the challenge too.
+        $this->assertFalse($captcha->validate($phrase));
+
+        $captcha->getBuilder();
+        $phrase = $_SESSION['captcha_phrase'];
+
         $res = $captcha->validate($phrase);
 
         $this->assertEquals($res, true);
+        $this->assertFalse($captcha->validate($phrase));
     }
 }

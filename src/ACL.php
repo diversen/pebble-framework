@@ -147,7 +147,7 @@ class ACL extends Auth
      * Checks array consisting of ['entity', 'entity_id', 'right', 'auth_id']
      * @param array<mixed> $access_rights
      */
-    public function hasAccessRightsOrThrow(array $access_rights, string $error_message = null): void
+    public function hasAccessRightsOrThrow(array $access_rights, ?string $error_message = null): void
     {
         $has_access_rights = $this->hasAccessRights($access_rights);
         if (!$has_access_rights) {

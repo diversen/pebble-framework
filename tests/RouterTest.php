@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Pebble\Exception\NotFoundException;
+use Pebble\Exception\ForbiddenException;
 use Pebble\Router;
 use Pebble\Router\ParseAttributes;
 use Pebble\Test;
@@ -10,6 +11,11 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        $_POST = [];
+        unset($_SESSION['csrf_token'], $_SERVER['HTTP_X_CSRF_TOKEN']);
+    }
 
     public function test_notFound(): void
     {
@@ -85,6 +91,45 @@ final class RouterTest extends TestCase
         $router->run();
 
         $this->expectOutputString('Param: 100');
+    }
+
+    public function testUnsafeRequestRequiresCSRFToken(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['REQUEST_URI'] = '/test/hello_world';
+
+        $router = new Router();
+        $router->addClass(Test::class);
+
+        $this->expectException(ForbiddenException::class);
+        $router->run();
+    }
+
+    public function testUnsafeRequestAcceptsValidCSRFToken(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['REQUEST_URI'] = '/test/hello_world';
+        $_SESSION['csrf_token'] = 'valid-token';
+        $_POST['csrf_token'] = 'valid-token';
+
+        $router = new Router();
+        $router->addClass(Test::class);
+        $router->run();
+
+        $this->addToAssertionCount(1);
+    }
+
+    public function testExplicitCSRFExclusion(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['REQUEST_URI'] = '/test/hello_world';
+
+        $router = new Router();
+        $router->setCSRFExclusions(['/test/:param1']);
+        $router->addClass(Test::class);
+        $router->run();
+
+        $this->addToAssertionCount(1);
     }
 
 

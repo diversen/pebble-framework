@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pebble;
 
-use Exception;
 use Pebble\Special;
 use Pebble\Exception\TemplateException;
+use Throwable;
 
 class Template
 {
@@ -31,11 +31,18 @@ class Template
      */
     public static function getOutput(string $template, array $template_vars = [], array $options = []): ?string
     {
+        $buffer_level = ob_get_level();
         ob_start();
 
-        self::render($template, $template_vars, $options);
-
-        $content = ob_get_clean();
+        try {
+            self::render($template, $template_vars, $options);
+            $content = ob_get_clean();
+        } catch (Throwable $e) {
+            while (ob_get_level() > $buffer_level) {
+                ob_end_clean();
+            }
+            throw $e;
+        }
         if (!$content) {
             throw new TemplateException("No content in template");
         }
@@ -48,13 +55,27 @@ class Template
      */
     private static function getTemplatePath(string $path): string
     {
-        if (self::$path) {
-            $try_path = self::$path . '/' . $path;
-            if (file_exists($try_path)) {
-                return $try_path;
-            }
+        $root = self::$path ?: Path::getBasePath();
+        $root_real = realpath($root);
+        if ($root_real === false) {
+            throw new TemplateException('Template root does not exist');
         }
-        return $path;
+
+        if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
+            $path = rtrim($root_real, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $path;
+        }
+
+        $path_real = realpath($path);
+        if ($path_real === false || !is_file($path_real)) {
+            throw new TemplateException('Template does not exist');
+        }
+
+        $root_prefix = rtrim($root_real, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        if ($path_real !== $root_real && !str_starts_with($path_real, $root_prefix)) {
+            throw new TemplateException('Template is outside the configured template root');
+        }
+
+        return $path_real;
     }
 
     /**
@@ -81,12 +102,15 @@ class Template
     {
         try {
             $template_vars = self::encodeData($template_vars, $options);
-            extract($template_vars);
+            extract($template_vars, EXTR_SKIP);
             $template = self::getTemplatePath($template);
             require($template);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            if ($e instanceof TemplateException) {
+                throw $e;
+            }
             $error = "Error in template: " . $e->getFile() . ". Line: " .  $e->getLine();
-            throw new TemplateException($error);
+            throw new TemplateException($error, previous: $e);
         }
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pebble;
 
 use Pebble\Exception\JSONException;
+use Pebble\Exception\ForbiddenException;
 
 class CSRF
 {
@@ -33,14 +34,14 @@ class CSRF
      * Validates the SESSION token against a value or the default value `$_POST['csrf_token']`
      * It also unsets the POST csrf_token
      */
-    public function validateToken(string $token = null): bool
+    public function validateToken(?string $token = null): bool
     {
         if (self::$disabled) {
             return true;
         }
 
         if (!$token) {
-            $token = $_POST['csrf_token'] ?? null;
+            $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
         }
 
         $session_csrf = $_SESSION['csrf_token'] ?? null;
@@ -49,7 +50,7 @@ class CSRF
             return false;
         }
 
-        if (hash_equals($token, $session_csrf)) {
+        if (hash_equals($session_csrf, $token)) {
             return true;
         }
 
@@ -65,6 +66,13 @@ class CSRF
     {
         if (!$this->validateToken()) {
             throw new JSONException($this->error_message, 403);
+        }
+    }
+
+    public function validateTokenOrThrow(): void
+    {
+        if (!$this->validateToken()) {
+            throw new ForbiddenException($this->error_message, 403);
         }
     }
 

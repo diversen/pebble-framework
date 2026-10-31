@@ -124,12 +124,21 @@ class Auth
      */
     public function updatePassword(int $id, string $password): bool
     {
-        $random = $this->getRandom(32);
-        $options = ['cost' => 12];
-        $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
+        return $this->db->inTransactionExec(function () use ($id, $password): bool {
+            $random = $this->getRandom(32);
+            $options = ['cost' => 12];
+            $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
 
-        $sql = "UPDATE auth SET `password_hash` = ?, `random` = ? WHERE id = ?";
-        return $this->db->prepareExecute($sql, [$password_hash, $random, $id]);
+            $sql = "UPDATE auth SET `password_hash` = ?, `random` = ? WHERE id = ?";
+            $updated = $this->db->prepareExecute($sql, [$password_hash, $random, $id]);
+            $revoked = $this->unlinkAllCookies($id);
+            return $updated && $revoked;
+        });
+    }
+
+    private function hashCookieToken(string $token): string
+    {
+        return hash('sha256', $token);
     }
 
     /**
@@ -139,8 +148,16 @@ class Auth
     private function getValidCookieRow(): array
     {
         if (isset($_COOKIE['auth'])) {
-            $sql = "SELECT * FROM auth_cookie WHERE cookie_id = ?";
-            $row = $this->db->prepareFetch($sql, [$_COOKIE['auth']]);
+            $sql = <<<SQL
+                SELECT auth_cookie.*
+                FROM auth_cookie
+                INNER JOIN auth ON auth.id = auth_cookie.auth_id
+                WHERE auth_cookie.cookie_id = ?
+                    AND auth_cookie.expires > ?
+                    AND auth.verified = 1
+                    AND auth.locked = 0
+            SQL;
+            $row = $this->db->prepareFetch($sql, [$this->hashCookieToken($_COOKIE['auth']), time()]);
             return $row;
         }
 
@@ -180,10 +197,10 @@ class Auth
     public function unlinkCurrentCookie(): ?bool
     {
         if (isset($_COOKIE['auth'])) {
-
-            // Delete current cookie
             $sql = "DELETE FROM auth_cookie WHERE cookie_id = ?";
-            return $this->db->prepareExecute($sql, [$_COOKIE['auth']]);
+            $removed = $this->db->prepareExecute($sql, [$this->hashCookieToken($_COOKIE['auth'])]);
+            (new Cookie($this->auth_cookie_settings))->clearCookie('auth');
+            return $removed;
         }
         return null;
     }
@@ -209,15 +226,38 @@ class Auth
         $bool = $cookie->setCookie('auth', $random, $expires);
 
         if ($bool) {
-            return $this->setCookieDB($random, $auth['id'], $expires);
+            return $this->setCookieDB($random, $auth['id'], $this->getCookieExpiresAt($expires));
         }
 
         return false;
     }
 
-    private function setCookieDB(string $random, int $auth_id, int $expires = 0): bool
+    /**
+     * Return an absolute server-side expiry for an authentication token.
+     * Browser-session cookies still need a bounded lifetime on the server so
+     * that a copied token cannot remain valid indefinitely.
+     */
+    private function getCookieExpiresAt(int $expires): int
+    {
+        if ($expires < 0) {
+            throw new \InvalidArgumentException('Cookie lifetime cannot be negative');
+        }
+
+        $lifetime = $expires;
+        if ($lifetime === 0) {
+            $lifetime = (int)($this->auth_cookie_settings['cookie_session_seconds'] ?? 86400);
+        }
+
+        if ($lifetime < 1) {
+            throw new \InvalidArgumentException('Server-side cookie lifetime must be greater than zero');
+        }
+
+        return time() + $lifetime;
+    }
+
+    private function setCookieDB(string $random, int $auth_id, int $expires_at): bool
     {
         $sql = "INSERT INTO auth_cookie (`cookie_id`, `auth_id`, `expires`) VALUES (?, ?, ?) ";
-        return $this->db->prepareExecute($sql, [$random, $auth_id, $expires]);
+        return $this->db->prepareExecute($sql, [$this->hashCookieToken($random), $auth_id, $expires_at]);
     }
 }

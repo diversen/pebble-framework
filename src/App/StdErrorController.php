@@ -34,8 +34,10 @@ class StdErrorController
     {
         $error_code = $this->getErrorCode($e);
         if ($this->env === 'dev') {
-            echo "<h3>" . ' '  . $error_code . ' ' . $e->getMessage() . "</h3>";
-            echo "<pre>" . ExceptionTrace::get($e) . "</pre>";
+            $message = htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $trace = htmlspecialchars(ExceptionTrace::get($e), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            echo "<h3> $error_code $message</h3>";
+            echo "<pre>$trace</pre>";
         } else {
             echo '<h3>A sever error happened. The incidence has been logged.</h3>';
         }

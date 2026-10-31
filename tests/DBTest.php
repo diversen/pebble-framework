@@ -398,6 +398,30 @@ EOF;
         $this->assertEquals($where, " WHERE  `id`=:id  AND  `test`=:test  ");
     }
 
+    public function testDynamicIdentifiersRejectInjection(): void
+    {
+        $db = $this->__getDB();
+
+        $this->expectException(InvalidArgumentException::class);
+        $db->getAll('account_test; DROP TABLE auth');
+    }
+
+    public function testOrderDirectionRejectsInjection(): void
+    {
+        $db = $this->__getDB();
+
+        $this->expectException(InvalidArgumentException::class);
+        $db->getOrderBySql(['email' => 'DESC; DROP TABLE auth']);
+    }
+
+    public function testDeleteRequiresConditions(): void
+    {
+        $db = $this->__getDB();
+
+        $this->expectException(InvalidArgumentException::class);
+        $db->delete('account_test');
+    }
+
     public function test_setPDOFetchMode(): void
     {
         $this->__cleanup();

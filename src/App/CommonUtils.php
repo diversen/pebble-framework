@@ -10,7 +10,6 @@ use Pebble\Path;
 use Pebble\Session;
 use Pebble\Headers;
 use Pebble\JSON;
-use Pebble\CSRF;
 use Pebble\Template;
 use Pebble\HTTP\AcceptLanguage;
 use Pebble\Service\ConfigService;
@@ -67,6 +66,8 @@ class CommonUtils
     public function sessionStart(): bool
     {
         $session_config = (new ConfigService())->getConfig()->getSection('Session');
+        ini_set('session.use_strict_mode', '1');
+        ini_set('session.use_only_cookies', '1');
         Session::setConfigSettings($session_config);
         return session_start();
     }
@@ -105,9 +106,6 @@ class CommonUtils
         $config = (new ConfigService())->getConfig();
         if ($config->get('App.env') === 'dev') {
             JSON::$debug = true;
-
-            // Easier to run tests
-            CSRF::$disabled = true;
         }
     }
 }

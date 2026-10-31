@@ -11,8 +11,10 @@ use Gregwar\Captcha\CaptchaBuilder;
  */
 class Captcha
 {
+    private const LIFETIME_SECONDS = 600;
+
     /**
-     * @return \Gregwar\Captcha\CaptchaBuilder;
+     * @return \Gregwar\Captcha\CaptchaBuilder
      */
     public function getBuilder(): \Gregwar\Captcha\CaptchaBuilder
     {
@@ -20,6 +22,7 @@ class Captcha
         $builder->build();
 
         $_SESSION['captcha_phrase'] = $builder->getPhrase();
+        $_SESSION['captcha_expires'] = time() + self::LIFETIME_SECONDS;
 
         return $builder;
     }
@@ -40,9 +43,15 @@ class Captcha
      */
     public function validate(string $phrase): bool
     {
-        if (mb_strtolower($phrase) != mb_strtolower($_SESSION['captcha_phrase'])) {
+        $expected = $_SESSION['captcha_phrase'] ?? null;
+        $expires = (int)($_SESSION['captcha_expires'] ?? 0);
+
+        unset($_SESSION['captcha_phrase'], $_SESSION['captcha_expires']);
+
+        if (!is_string($expected) || $expires < time()) {
             return false;
         }
-        return true;
+
+        return hash_equals(mb_strtolower($expected), mb_strtolower($phrase));
     }
 }

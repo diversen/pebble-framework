@@ -19,7 +19,7 @@ class DBCache
      * @param string $table
      * @param \Pebble\DB $db
      */
-    public function __construct(\Pebble\DB $db, string $table = null)
+    public function __construct(\Pebble\DB $db, ?string $table = null)
     {
         $this->db = $db;
         if ($table) {
