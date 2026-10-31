@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Pebble\Exception\NotFoundException;
 use Pebble\Exception\ForbiddenException;
+use Pebble\Exception\JSONException;
 use Pebble\Router;
 use Pebble\Router\ParseAttributes;
 use Pebble\Test;
@@ -14,7 +15,7 @@ final class RouterTest extends TestCase
     protected function tearDown(): void
     {
         $_POST = [];
-        unset($_SESSION['csrf_token'], $_SERVER['HTTP_X_CSRF_TOKEN']);
+        unset($_SESSION['csrf_token'], $_SERVER['HTTP_X_CSRF_TOKEN'], $_SERVER['HTTP_ACCEPT']);
     }
 
     public function test_notFound(): void
@@ -117,6 +118,19 @@ final class RouterTest extends TestCase
         $router->run();
 
         $this->addToAssertionCount(1);
+    }
+
+    public function testUnsafeJSONRequestGetsJSONError(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['REQUEST_URI'] = '/test/hello_world';
+        $_SERVER['HTTP_ACCEPT'] = 'application/json';
+
+        $router = new Router();
+        $router->addClass(Test::class);
+
+        $this->expectException(JSONException::class);
+        $router->run();
     }
 
     public function testExplicitCSRFExclusion(): void

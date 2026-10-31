@@ -287,7 +287,14 @@ class Router
             return;
         }
 
-        (new CSRF())->validateTokenOrThrow();
+        $csrf = new CSRF();
+        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+        if (str_contains($accept, 'application/json')) {
+            $csrf->validateTokenJSON();
+            return;
+        }
+
+        $csrf->validateTokenOrThrow();
     }
 
     /**

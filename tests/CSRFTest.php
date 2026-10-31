@@ -7,6 +7,12 @@ use PHPUnit\Framework\TestCase;
 
 final class CSRFTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        $_POST = [];
+        unset($_SESSION['csrf_token']);
+    }
+
     public function test_getToken(): void
     {
         $token = (new CSRF())->getToken();
@@ -19,5 +25,22 @@ final class CSRFTest extends TestCase
         $token = $csrf->getToken();
         $_POST['csrf_token'] = $token;
         $this->assertEquals(true, $csrf->validateToken());
+    }
+
+    public function testSetCSRFTokenReusesSessionToken(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = '/account/signin';
+
+        $first = new CSRF();
+        $first->setCSRFToken();
+        $token = $first->getCSRFToken();
+
+        $_SERVER['REQUEST_URI'] = '/account/signup';
+        $second = new CSRF();
+        $second->setCSRFToken();
+
+        $this->assertSame($token, $second->getCSRFToken());
+        $this->assertSame($token, $_SESSION['csrf_token']);
     }
 }
