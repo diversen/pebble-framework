@@ -9,6 +9,26 @@ use PHPUnit\Framework\TestCase;
 
 final class AuthTest extends TestCase
 {
+    public function testCustomCookieIgnoresLegacyAndLogsOut(): void
+    {
+        $this->__setup();
+        $auth = new \Pebble\Auth($this->db, ['cookie_name' => 'QUICKNOTESAUTH']);
+        try {
+            $auth->createAndVerify('cookie-name@test.invalid', 'test-password');
+            $row = $auth->getByWhere(['email' => 'cookie-name@test.invalid']);
+            $_COOKIE['auth'] = 'legacy-cookie';
+            $this->assertTrue($auth->setCookie($row));
+            $this->assertSame('legacy-cookie', $_COOKIE['auth']);
+            $this->assertTrue($auth->isAuthenticated());
+            $auth->unlinkCurrentCookie();
+            $this->assertFalse($auth->isAuthenticated());
+            $this->assertArrayNotHasKey('QUICKNOTESAUTH', $_COOKIE);
+        } finally {
+            $this->db->prepareExecute('DELETE FROM auth WHERE email = ?', ['cookie-name@test.invalid']);
+            unset($_COOKIE['auth'], $_COOKIE['QUICKNOTESAUTH']);
+        }
+    }
+
     /**
      * @var \Pebble\Auth
      */

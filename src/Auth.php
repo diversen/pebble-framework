@@ -22,12 +22,18 @@ class Auth
      */
     public $auth_cookie_settings;
 
+    private string $cookie_name;
+
     /**
      * @param array<mixed> $auth_cookie_settings
      */
     public function __construct(DB $db, array $auth_cookie_settings)
     {
         $this->auth_cookie_settings = $auth_cookie_settings;
+        $this->cookie_name = $auth_cookie_settings['cookie_name'] ?? 'auth';
+        if (!preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $this->cookie_name)) {
+            throw new \InvalidArgumentException('Invalid authentication cookie name');
+        }
         $this->db = $db;
     }
 
@@ -147,7 +153,7 @@ class Auth
      */
     private function getValidCookieRow(): array
     {
-        if (isset($_COOKIE['auth'])) {
+        if (isset($_COOKIE[$this->cookie_name])) {
             $sql = <<<SQL
                 SELECT auth_cookie.*
                 FROM auth_cookie
@@ -157,7 +163,7 @@ class Auth
                     AND auth.verified = 1
                     AND auth.locked = 0
             SQL;
-            $row = $this->db->prepareFetch($sql, [$this->hashCookieToken($_COOKIE['auth']), time()]);
+            $row = $this->db->prepareFetch($sql, [$this->hashCookieToken($_COOKIE[$this->cookie_name]), time()]);
             return $row;
         }
 
@@ -196,10 +202,10 @@ class Auth
      */
     public function unlinkCurrentCookie(): ?bool
     {
-        if (isset($_COOKIE['auth'])) {
+        if (isset($_COOKIE[$this->cookie_name])) {
             $sql = "DELETE FROM auth_cookie WHERE cookie_id = ?";
-            $removed = $this->db->prepareExecute($sql, [$this->hashCookieToken($_COOKIE['auth'])]);
-            (new Cookie($this->auth_cookie_settings))->clearCookie('auth');
+            $removed = $this->db->prepareExecute($sql, [$this->hashCookieToken($_COOKIE[$this->cookie_name])]);
+            (new Cookie($this->auth_cookie_settings))->clearCookie($this->cookie_name);
             return $removed;
         }
         return null;
@@ -223,7 +229,7 @@ class Auth
         $random = $this->getRandom(32);
 
         $cookie = new Cookie($this->auth_cookie_settings);
-        $bool = $cookie->setCookie('auth', $random, $expires);
+        $bool = $cookie->setCookie($this->cookie_name, $random, $expires);
 
         if ($bool) {
             return $this->setCookieDB($random, $auth['id'], $this->getCookieExpiresAt($expires));
